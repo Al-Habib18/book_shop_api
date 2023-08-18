@@ -1,0 +1,2716 @@
+# @format
+
+openapi: 3.0.0
+servers:
+    - description: Development
+      url: http://localhost:4000/docs
+info:
+    description: This is a online book shop API
+    version: "1.0.0"
+    title: Book-shop-api
+    contact:
+        email: alhabib607173@gmail.com
+    license:
+        name: Apache 2.0
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+    - name: Auth
+      description: Authentication Endpoinst (public)
+    - name: User
+      description: User Endpoints
+    - name: Book
+      description: Book Endpoints
+    - name: Cart
+      description: Cart Endpoints
+    - name: Order
+      description: Order Endpoints
+    - name: Payment
+      description: Payment Endpoints
+    - name: Review
+      description: Review Endpoints
+    - name: Photo
+      description: Photo Endpoints
+paths:
+    /auth/singup:
+        post:
+            description: Create a new account
+            tags: [Auth]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: Al-habib
+                                email:
+                                    type: string
+                                    example: alhabib@gmail.com
+                                password:
+                                    type: string
+                                    format: password
+                                    example: pass123
+                                role:
+                                    type: string
+                                    enum: [customer, author]
+                                    example: author
+                                account_number:
+                                    type: string
+                                    example: 01313306149
+                                address:
+                                    type: object
+                                    properties:
+                                        zilla:
+                                            type: string
+                                            example: Rangpur
+                                        upzilla:
+                                            type: string
+                                            example: Pirgonj
+            responses:
+                201:
+                    description: Signup successfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int32
+                                        example: 201
+                                    message:
+                                        type: string
+                                        example: Signup successfull
+                                    data:
+                                        type: object
+                                        properties:
+                                            access_token:
+                                                type: string
+                                                example: adkljklsdfddfsfsdf
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                example: /auth/signup
+                                            signin:
+                                                type: string
+                                                example: /auth/singin
+                400:
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+    /auth/singin:
+        post:
+            description: Login to your account
+            tags: [Auth]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+                                    example: alhabib@gmail.com
+                                password:
+                                    type: string
+                                    format: password
+                                    example: pass123
+                            required: [email, password]
+            responses:
+                "200":
+                    description: Singup succefull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int 32
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Signin succefull
+                                    data:
+                                        type: object
+                                        properties:
+                                            access_token:
+                                                type: string
+                                                example: sdfasdxasdfersdf
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                example: "/auth/singin"
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /users/{id}/books:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of books for  a specific author
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Books retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Book"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/books?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/books?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/books?page=1&limit=5"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /users/{id}/orders:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of orders for a specific user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Orders retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Order"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/orders?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/orders?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/orders?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /users/{id}/payments:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of payment for a specific user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Payment retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Payment"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/payments?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/payments?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/payments?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /users/{id}/reviews:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of reviews for a specific user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Review retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          example: 2123
+                                                      bookId:
+                                                          type: integer
+                                                          example: 3223
+                                                      ratting:
+                                                          type: number
+                                                          format: float
+                                                          example: 4.3
+                                                      summary:
+                                                          type: string
+                                                          example: it meets certain standards of readability, maintainability, and reliability.
+                                                - $ref: "#/components/schemas/Timestamp"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/Review?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/Review?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/Review?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+    /users/{id}/photos:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of photos for a specific user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchTitle"
+            responses:
+                "200":
+                    description: Photos retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Photo"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/photos?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/photos?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id/photos?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /users/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            tags: [User]
+            description: Retrive a single a user
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Successfully retrived a user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/User"
+
+                "404":
+                    $ref: "#/components/responses/404"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Update a user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: User update successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/User"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: delete a User
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: User deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+    /users:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of users
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Get a list of user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 123
+                                                      name:
+                                                          type: string
+                                                          example: al-habib
+                                                      email:
+                                                          type: string
+                                                          format: email
+                                                          example: habib@gmail.com
+                                                      role:
+                                                          type: string
+                                                          enum:
+                                                              [
+                                                                  customer,
+                                                                  author,
+                                                                  admin,
+                                                              ]
+                                                          default: author
+                                                      account:
+                                                          type: string
+                                                          example: 013306169
+                                                      address:
+                                                          type: object
+                                                          properties:
+                                                              zilla:
+                                                                  type: string
+                                                                  example: Rangpur
+                                                              upzilla:
+                                                                  type: string
+                                                                  example: Pirgonj
+
+                                                - $ref: "#/components/schemas/Timestamp"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /books?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /users?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /users?page=1&limit=5
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            security:
+                - bearerAuth: []
+            description: Create a user
+            tags: [User]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: asif
+                                email:
+                                    type: string
+                                    format: email
+                                    example: asif@gmail.com
+                                password:
+                                    type: string
+                                    format: password
+                                    example: pass123
+                                role:
+                                    type: string
+                                    enum: [customer, author, admin]
+                                    default: customer
+                                account:
+                                    type: string
+                                    example: "0131231232"
+                                address:
+                                    type: object
+                                    properties:
+                                        zilla:
+                                            type: string
+                                            example: Rangpur
+                                        upzilla:
+                                            type: string
+                                            example: Pirgonj
+                            required: [name, email, password]
+            responses:
+                "201":
+                    description: User created successfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    user:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                format: int32
+                                                example: 32434
+                                            name:
+                                                type: string
+                                                example: asif ahmed
+                                            email:
+                                                type: string
+                                                format: email
+                                            role:
+                                                type: string
+                                                example: customer
+                                            account:
+                                                type: string
+                                                example: 013133061**
+                                            address:
+                                                type: object
+                                                properties:
+                                                    zilla:
+                                                        type: string
+                                                        example: Rangpur
+                                                    upzilla:
+                                                        type: string
+                                                        example: pirgonj
+                                    links:
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                                            edit:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                                            delete:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+
+                "401":
+                    $ref: "#/components/responses/400"
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /books/{id}/reviews:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of reviews for a specific book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Review retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Review"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/reviews?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/reviews?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/reviews?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /books/{id}/photos:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of photos for a specific book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchTitle"
+            responses:
+                "200":
+                    description: Photos retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Photo"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/photos?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/photos?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/photos?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /books/{id}/authors:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a listo of authors for a specific book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Authors retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/User"
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/authors?page=2&limit=5"
+                                            nextPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/authors?page=3&limit=5"
+                                            prevPage:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/authors?page=1&limit=5"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /books/{id}:
+        get:
+            description: Retrive a single book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - in: query
+                  name: expand
+                  description: expand author
+                  schema:
+                      type: string
+                      enum: [none, author]
+                      example: none
+            responses:
+                "200":
+                    description: Single article view
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Book"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id"
+                                            author:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/authors"
+                                            review:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/reviews"
+                                            cover:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id/photos"
+                "400":
+                    $ref: "#/components/responses/400"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Upadate a book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                    example: Clean Code
+                                author:
+                                    type: string
+                                    example: Robert C.Martin
+                                publisher:
+                                    type: string
+                                    example: Pearson
+                                category:
+                                    type: string
+                                    enum:
+                                        [
+                                            science,
+                                            regional,
+                                            history,
+                                            novel,
+                                            accademic,
+                                        ]
+                                    example: science
+                                summary:
+                                    type: string
+                                    example: The book covers a wide range of topics related to clean code, including naming conventions, formatting, comments, and error handling.
+                                price:
+                                    type: integer
+                                    format: int32
+                                    example: 3000
+            responses:
+                "200":
+                    description: Book updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Book"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/books/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: delete a book
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: Book deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /books:
+        get:
+            description: Retrive all publishe books
+            tags: [Book]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Return a list of articles
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 123
+                                                      title:
+                                                          type: string
+                                                          example: Clean Architecture
+                                                      author:
+                                                          type: string
+                                                          example: Robert C.Martin
+                                                      publisher:
+                                                          type: string
+                                                          example: Pearson
+                                                      summary:
+                                                          type: string
+                                                          example: A Craftsmans's Guide to Software Structure and Desing
+                                                      price:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 5000
+                                                      category:
+                                                          type: string
+                                                          enum:
+                                                              [
+                                                                  science,
+                                                                  regional,
+                                                                  novel,
+                                                                  history,
+                                                                  accademic,
+                                                              ]
+                                                          example: science
+                                                      availability:
+                                                          type: string
+                                                          enum:
+                                                              [
+                                                                  available,
+                                                                  unavailable,
+                                                              ]
+                                                          example: available
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /books?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /books?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /books?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            description: Create a book
+            tags: [Book]
+            requestBody:
+                content:
+                    appliction/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                    example: The Pragmatic Programmer
+                                author:
+                                    type: string
+                                    example: Thomas Hunt
+                                publisher:
+                                    type: string
+                                    example: Addison-Wesley
+                                category:
+                                    type: string
+                                    enum:
+                                        [
+                                            science,
+                                            regional,
+                                            novel,
+                                            history,
+                                            accademic,
+                                        ]
+                                    example: science
+                                summary:
+                                    type: string
+                                    example: The book covers a wide range of topics, including software design, testing, debugging, and project management.
+                                price:
+                                    type: integer
+                                    format: int32
+                                    example: 4000
+                            required: [title, author, price]
+
+            responses:
+                "201":
+                    description: Successfully created a book
+                    content:
+                        appliction/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Book"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "books/:id"
+                                            author:
+                                                type: string
+                                                format: url
+                                                example: "books/:id/authors"
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /carts/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            tags: [Cart]
+            description: Retrive a single a cart
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Successfully retrived a cart
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Cart"
+
+                "404":
+                    $ref: "#/components/responses/404"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Update a cart
+            tags: [Cart]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Cart updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Cart"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/cart/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: Delete a cart
+            tags: [Cart]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: Cart deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /carts:
+        get:
+            description: Retrive a list of carts
+            tags: [Cart]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Carts retured successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 2342
+                                                      userId:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 23423
+                                                      books:
+                                                          type: array
+                                                          items:
+                                                              type: object
+                                                              properties:
+                                                                  id:
+                                                                      type: integer
+                                                                      format: int32
+                                                                      example: 2342
+                                                                  title:
+                                                                      type: string
+                                                                      example: clean code
+                                                      quantity:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3
+                                                      amount:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3240
+
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /books?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /books?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /books?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            description: Create a cart
+            tags: [Cart]
+            requestBody:
+                content:
+                    appliction/json:
+                        schema:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    bookId:
+                                        type: integer
+                                        example: 23423
+
+            responses:
+                "201":
+                    description: Successfully created a Cart
+                    content:
+                        appliction/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1232
+                                            books:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        id:
+                                                            type: integer
+                                                            example: 324324
+                                                        title:
+                                                            type: string
+                                                            example: clean code
+                                            quantity:
+                                                type: integer
+                                                example: 4
+                                            amount:
+                                                type: integer
+                                                example: 12000
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "books/:id"
+                                            author:
+                                                type: string
+                                                format: url
+                                                example: "books/:id/authors"
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /orders/{id}/user:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive  the user of order
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+
+            responses:
+                "200":
+                    description: User retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/User"
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /orders/{id}/cart:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive the cart of order
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: User retrive succussfull
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Cart"
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /orders/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a single Order
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Single article view
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Order"
+                                    links:
+                                        type: object
+                                        properties:
+                                            cart:
+                                                type: string
+                                                format: url
+                                                example: "/orders/:id/cart"
+                                            author:
+                                                type: string
+                                                format: url
+                                                example: "/order/:id/users"
+                "400":
+                    $ref: "#/components/responses/400"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Upadate a order
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                cartId:
+                                    type: integer
+                                    format: int32
+                                    example: 23423
+                                orderStatus:
+                                    type: string
+                                    enum: [pending, successfull, canceled]
+                                    default: pending
+                                shippingMethod:
+                                    type: string
+                                    enum: [standard, priority]
+                                    default: standard
+            responses:
+                "200":
+                    description: Order updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1232
+                                            books:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        id:
+                                                            type: integer
+                                                            example: 2342
+                                                        title:
+                                                            type: string
+                                                            example: Design Patterns
+                                            quantity:
+                                                type: integer
+                                                example: 4
+                                            amount:
+                                                type: integer
+                                                example: 12000
+                                            orderStatus:
+                                                type: string
+                                                enum:
+                                                    [
+                                                        pending,
+                                                        successfull,
+                                                        cancel,
+                                                    ]
+                                                default: pending
+                                            shippingMethod:
+                                                type: string
+                                                enum: [standard, priority]
+                                                default: standard
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: delete a book
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: Order deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /orders:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of orders
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Order retured successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 32423
+                                                      userId:
+                                                          type: integer
+                                                      cartId:
+                                                          type: integer
+                                                      shippingMethod:
+                                                          type: string
+                                                          example: standard
+                                                      orderStatus:
+                                                          type: string
+                                                          example: pending
+                                                      quantity:
+                                                          type: integer
+                                                          example: 4
+                                                      amonut:
+                                                          type: integer
+                                                          example: 12000
+
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /orders?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /orders?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /orders?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            security:
+                - bearerAuth: []
+            description: Order a cart
+            tags: [Order]
+            requestBody:
+                content:
+                    appliction/json:
+                        schema:
+                            type: object
+                            properties:
+                                cartId:
+                                    type: integer
+                                    example: 24234
+                                orderStatus:
+                                    type: string
+                                    enum: [pending, successfull, canceled]
+                                    default: pending
+                                shippingMethod:
+                                    type: string
+                                    enum: [standard, priority]
+                                    default: standard
+
+            responses:
+                "201":
+                    description: Successfully created a Cart
+                    content:
+                        appliction/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1232
+                                            books:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        id:
+                                                            type: integer
+                                                            example: 2342
+                                                        title:
+                                                            type: string
+                                                            example: Design Patterns
+                                            quantity:
+                                                type: integer
+                                                example: 4
+                                            amount:
+                                                type: integer
+                                                example: 12000
+                                            orderStatus:
+                                                type: string
+                                                enum:
+                                                    [
+                                                        pending,
+                                                        successfull,
+                                                        cancel,
+                                                    ]
+                                                default: pending
+                                            shippingMethod:
+                                                type: string
+                                                enum: [standard, priority]
+                                                default: standard
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "orders/:id"
+                                            author:
+                                                type: string
+                                                format: url
+                                                example: "users/:id"
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /payments/{id}/user:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive the user for given a payment
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: User retrived succussfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/User"
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /payments/{id}/order:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive the order for given a payment
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: User retrived succussfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    oder:
+                                        $ref: "#/components/schemas/Order"
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: "/payments/:id/user"
+                                            cart:
+                                                type: string
+                                                format: url
+                                                example: "/orders/:id/cart"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /payments/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a single payment
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Succussfully retrived a Payment
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    payment:
+                                        allOf:
+                                            - type: object
+                                              properties:
+                                                  id:
+                                                      type: integer
+                                                      format: int32
+                                                      example: 942384
+                                                  user:
+                                                      type: object
+                                                      properties:
+                                                          id:
+                                                              type: integer
+                                                              format: int32
+                                                              example: 54354
+                                                          name:
+                                                              type: string
+                                                              example: anamul
+                                                  oderId:
+                                                      type: integer
+                                                      example: 123123
+                                                  paymentMethod:
+                                                      type: string
+                                                      example: bKash
+                                                  patymentStatus:
+                                                      type: string
+                                                      example: pending
+                                            - $ref: "#/components/schemas/Timestamp"
+                                    links:
+                                        type: object
+                                        properties:
+                                            order:
+                                                type: string
+                                                format: url
+                                                example: "/payments/:id/order"
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: "/payments/:id/users"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Upadate a Payment
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                orderId:
+                                    type: integer
+                                    format: int32
+                                    example: 23423
+                                paymentMethod:
+                                    type: string
+                                    enum: [bKash, Roket, Nagad]
+                                    default: bKash
+                                paymentStatus:
+                                    type: string
+                                    enum: [pending, successfull, canceled]
+                                    default: pending
+
+            responses:
+                "200":
+                    description: Order updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Payment"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: Delete a Payment
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: Order deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /payments:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of payments
+            tags: [Payment]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
+            responses:
+                "200":
+                    description: Payments retured successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 32423
+                                                      userId:
+                                                          type: integer
+                                                          example: 123123
+                                                      oderId:
+                                                          type: integer
+                                                          example: 3242
+                                                      amonut:
+                                                          type: integer
+                                                          example: 12000
+                                                      paymentMethod:
+                                                          type: string
+                                                          example: bKash
+                                                      paymentStatus:
+                                                          type: string
+                                                          example: pending
+
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /payments?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /payments?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /payments?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            security:
+                - bearerAuth: []
+            description: Order a cart
+            tags: [Payment]
+            requestBody:
+                content:
+                    appliction/json:
+                        schema:
+                            type: object
+                            properties:
+                                orderId:
+                                    type: integer
+                                    format: int32
+                                    example: 234234
+                                peymentMethod:
+                                    type: string
+                                    enum: [bKash, roket, nagad]
+                                    default: bKash
+                                amount:
+                                    type: integer
+                                    format: int32
+                                    example: 3000
+            responses:
+                "201":
+                    description: Payment created succussfully
+                    content:
+                        appliction/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1232
+                                            amount:
+                                                type: integer
+                                                example: 12000
+                                            paymentMethod:
+                                                type: string
+                                                example: bKash
+                                            paymentStatus:
+                                                type: string
+                                                example: pending
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                                            order:
+                                                type: string
+                                                format: url
+                                                example: "/orders/:id"
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /reviews/{id}/user:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a user for specific review
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: User retrive successfull
+                    content:
+                        application/josn:
+                            schema:
+                                type: object
+                                properties:
+                                    user:
+                                        $ref: "#/components/schemas/User"
+
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /reviews/{id}/book:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive book for specific review
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Book retrived successfully
+                    content:
+                        application/josn:
+                            schema:
+                                type: object
+                                properties:
+                                    user:
+                                        $ref: "#/components/schemas/Book"
+
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /reviews/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a single review
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Succussfully retrived a review
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    review:
+                                        allOf:
+                                            - type: object
+                                              properties:
+                                                  id:
+                                                      type: integer
+                                                      format: int32
+                                                      example: 942384
+                                                  user:
+                                                      type: object
+                                                      properties:
+                                                          id:
+                                                              type: integer
+                                                              format: int32
+                                                              example: 54354
+                                                          name:
+                                                              type: string
+                                                              example: anamul
+                                                  book:
+                                                      type: object
+                                                      properties:
+                                                          id:
+                                                              type: integer
+                                                              format: int32
+                                                              example: 54354
+                                                          name:
+                                                              type: string
+                                                              example: Refactoring to Patterns
+                                                  rating:
+                                                      type: number
+                                                      format: float
+                                                      example: 4.4
+                                                  summary:
+                                                      type: string
+                                                      example: Refactoring to Patterns is a book that provides guidance on how to refactor code to design patterns.
+                                            - $ref: "#/components/schemas/Timestamp"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: "/reviews/:id/book"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        patch:
+            security:
+                - bearerAuth: []
+            description: Upadate a Payment
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                ratting:
+                                    type: integer
+                                    format: int32
+                                    example: 4
+                                summary:
+                                    type: string
+                                    example: Refactoring to Patterns is a book that provides guidance on how to refactor code to design patterns.
+
+            responses:
+                "200":
+                    description: Order updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/Payment"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+        delete:
+            security:
+                - bearerAuth: []
+            description: Delete a review
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "204":
+                    description: Review deleted successfully
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
+
+    /reviews:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of Review
+            tags: [Review]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
+            responses:
+                "200":
+                    description: Payments retured successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 32423
+                                                      userId:
+                                                          type: integer
+                                                          example: 123123
+                                                      bookId:
+                                                          type: integer
+                                                          example: 3423
+                                                      book:
+                                                          type: string
+                                                          example: Refatoring to Patterns
+                                                      rattting:
+                                                          type: number
+                                                          format: float
+                                                          example: 4.3
+                                                      summary:
+                                                          type: string
+                                                          example: "Refactoring to Patterns is a book that provides guidance on how to refactor code to design patterns."
+
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /review?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /review?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /review?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+        post:
+            security:
+                - bearerAuth: []
+            description: Create a review
+            tags: [Review]
+            requestBody:
+                content:
+                    appliction/json:
+                        schema:
+                            type: object
+                            properties:
+                                bookId:
+                                    type: integer
+                                    format: int32
+                                    example: 234234
+                                ratting:
+                                    type: integer
+                                    format: int32
+                                    example: 4
+                                summary:
+                                    type: string
+                                    example: it meets certain standards of readability, maintainability, and reliability.
+
+            responses:
+                "201":
+                    description: Payment created succussfully
+                    content:
+                        appliction/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1232
+                                            bookId:
+                                                type: integer
+                                                example: 234234
+                                            book:
+                                                type: string
+                                                example: clean code
+                                            ratting:
+                                                type: number
+                                                format: float
+                                                example: 4.5
+                                            summary:
+                                                type: string
+                                                example: it meets certain standards of readability, maintainability, and reliability.
+
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "500":
+                    $ref: "#/components/responses/500"
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        Book:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                      title:
+                          type: string
+                          example: Clean Architecture
+                      author:
+                          type: string
+                          example: Robert C.Martin
+                      publisher:
+                          type: string
+                          example: Pearson
+                      summary:
+                          type: string
+                          example: Craftsmans's Guide to Software Structure and Desing
+                      price:
+                          type: integer
+                          format: int32
+                          example: 5000
+                      category:
+                          type: string
+                          enum: [science, regional, novel, history, accademic]
+                          example: science
+                      avilability:
+                          type: string
+                          enum: [available, unavailable]
+                          example: available
+                - $ref: "#/components/schemas/Timestamp"
+        User:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 345
+                      name:
+                          type: string
+                          example: al-habib
+                      email:
+                          type: string
+                          format: email
+                          example: habib@gmail.com
+                      role:
+                          type: string
+                          example: customer
+                      # user here condition for account number ...important
+                      address:
+                          type: object
+                          properties:
+                              zilla:
+                                  type: string
+                                  example: Rangpur
+                              upzilla:
+                                  type: string
+                                  example: Pirgonj
+
+                - $ref: "#/components/schemas/Timestamp"
+
+        Order:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 345
+                      user:
+                          type: object
+                          properties:
+                              id:
+                                  type: integer
+                                  format: int32
+                                  example: 234324
+                              name:
+                                  type: string
+                      cartId:
+                          type: integer
+                          example: 23123
+                      quantity:
+                          type: integer
+                          example: 4
+                      amount:
+                          type: integer
+                          example: 12000
+                      orderStatus:
+                          type: string
+                          default: pending
+                      shippingMethod:
+                          type: string
+
+                - $ref: "#/components/schemas/Timestamp"
+        Payment:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 123123
+                      userId:
+                          type: integer
+                          example: 123123
+
+                      orderId:
+                          type: integer
+                          format: int32
+                          example: 945645
+                      paymentMethod:
+                          type: string
+                          example: bKash
+                      paymentStatus:
+                          type: string
+                          example: pending
+                - $ref: "#/components/schemas/Timestamp"
+        Review:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 8945334
+                      bookId:
+                          type: integer
+                          format: int32
+                          example: 4234523
+                      rating:
+                          type: number
+                          example: 4.5
+                      userId:
+                          type: integer
+                          format: int32
+                          example: 234234234
+                - $ref: "#/components/schemas/Timestamp"
+        Photo:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 23423
+                      userId:
+                          type: integer
+                          format: int32
+                          example: 934853
+                      bookId:
+                          type: integer
+                          format: int32
+                          example: 234234
+                      status:
+                          type: string
+                          example: profile
+                      url:
+                          type: string
+                          example: "www.localphoto.com/photos/:345345"
+                - $ref: "#/components/schemas/Timestamp"
+        Cart:
+            allOf:
+                - type: object
+                  properties:
+                      id:
+                          type: integer
+                          format: int32
+                          example: 234234
+                      userId:
+                          type: object
+                          properties:
+                              id:
+                                  type: integer
+                                  format: int32
+                                  example: 234234
+                              name:
+                                  type: string
+                                  example: asif ahmed
+                      book:
+                          type: array
+                          items:
+                              type: object
+                              properties:
+                                  id:
+                                      type: integer
+                                      format: int32
+                                      example: 32342
+                                  title:
+                                      type: string
+                                      example: grokking algoorithms
+                      quantity:
+                          type: integer
+                          format: int32
+                          example: 5
+                      amount:
+                          type: integer
+                          format: int32
+                          example: 12000
+                - $ref: "#/components/schemas/Timestamp"
+        Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                    example: 2
+                limit:
+                    type: integer
+                    format: int32
+                    example: 5
+                next:
+                    type: integer
+                    format: int32
+                    example: 3
+                prev:
+                    type: integer
+                    format: int32
+                    example: 1
+                totalPage:
+                    type: integer
+                    format: int32
+                    example: 5
+                totalItems:
+                    type: integer
+                    format: int32
+                    example: 30
+            required:
+                - page
+                - limit
+                - totalPages
+                - totalItems
+
+        Timestamp:
+            type: object
+            properties:
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+            required: [createdAt, updatedAt]
+
+    parameters:
+        pageParam:
+            in: query
+            name: page
+            description: current page number
+            required: true
+            schema:
+                type: integer
+                format: int32
+                example: 2
+        limitParam:
+            in: query
+            name: limit
+            description: maximum items to be returned
+            required: true
+            schema:
+                type: integer
+                format: int32
+                example: 10
+        sortTypeParam:
+            in: query
+            name: sortType
+            description: type of sort (asc or dsc)
+            schema:
+                type: string
+                enum: [asc, dsc]
+                example: dsc
+        sortByParam:
+            in: query
+            name: sortBy
+            description: Sort Key
+            schema:
+                type: string
+                example: updatedAt
+        searchParam:
+            in: query
+            name: search
+            description: Search term
+            schema:
+                type: string
+                example: title
+        searchTitle:
+            in: query
+            name: searchTitle
+            description: Search term
+            schema:
+                type: string
+                enum: [none, profile, cover]
+                default: none
+        idPathParam:
+            in: path
+            name: id
+            required: true
+            description: Item Id
+            schema:
+                type: string
+                example: 1d2sf3sf12f31dflsd242df
+    responses:
+        "500":
+            description: Internal Server Error
+            content:
+                "application/json":
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 500
+                            error:
+                                type: string
+                                example: Internal Server Error
+                            message:
+                                type: string
+                                example: We are sorry for the inconvenience. Please try again later
+        "400":
+            description: Bad Request
+            content:
+                "application/json":
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 400
+                            error:
+                                type: string
+                                example: Bad Request
+                            data:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        field:
+                                            type: string
+                                            example: email
+                                        message:
+                                            type: string
+                                            example: Invalid email
+                                        in:
+                                            type: string
+                                            enum: [query, body]
+                                            example: body
+        "401":
+            description: Unauthorized
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 401
+                            error:
+                                type: string
+                                example: Unauthorized
+                            message:
+                                type: string
+                                example: You don't have the right permissions
+        "404":
+            description: Recource Not Found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 404
+                            error:
+                                type: string
+                                example: Not Found
+                            message:
+                                type: string
+                                example: Requested resource not found
