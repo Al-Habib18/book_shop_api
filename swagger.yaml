@@ -439,6 +439,21 @@ paths:
             tags: [User]
             parameters:
                 - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: habib
+                                role:
+                                    type: string
+                                    example: customer
+                                account:
+                                    type: integer
+                                    example: 13306149
             responses:
                 "200":
                     description: User update successfully
@@ -840,7 +855,7 @@ paths:
                 - $ref: "#/components/parameters/idPathParam"
             requestBody:
                 content:
-                    application/json:
+                    "application/json":
                         schema:
                             type: object
                             properties:
@@ -855,14 +870,6 @@ paths:
                                     example: Pearson
                                 category:
                                     type: string
-                                    enum:
-                                        [
-                                            science,
-                                            regional,
-                                            history,
-                                            novel,
-                                            accademic,
-                                        ]
                                     example: science
                                 summary:
                                     type: string

@@ -22,7 +22,7 @@ const userSchema = new Schema(
             default: "customer",
         },
         account: {
-            type: Number,
+            type: String,
         },
     },
     { timestamps: true }

@@ -2,12 +2,44 @@
 
 const User = require("../../model/User");
 const defaults = require("../../config/defaults");
-const { BadRequest } = require("../../utils/error");
+const { BadRequest, notFound } = require("../../utils/error");
 const { generateHash } = require("../../utils/hashing");
 
 const findUserByEmail = async (email) => {
     const user = await User.findOne({ email: email });
     return user ? user : false;
+};
+
+const findUserById = async (id) => {
+    if (!id) {
+        throw BadRequest("Id is required");
+    }
+    return await User.findById(id).select("-password");
+};
+
+const updateProperties = async (id, { name, role, account }) => {
+    const user = await findUserById(id);
+    if (!user) {
+        throw notFound();
+    }
+
+    const payload = { name, role, account };
+
+    Object.keys(payload).forEach(
+        (key) => (user[key] = payload[key] ?? user[key])
+    );
+
+    await user.save();
+    return user;
+};
+
+const removeItem = async (id) => {
+    const user = await findUserById(id);
+    if (!user) {
+        throw notFound();
+    }
+
+    return User.findByIdAndDelete(id);
 };
 
 const isUserExist = async (email) => {
@@ -73,4 +105,7 @@ module.exports = {
     create,
     count,
     findAll,
+    findUserById,
+    updateProperties,
+    removeItem,
 };
