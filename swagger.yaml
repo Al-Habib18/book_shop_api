@@ -804,13 +804,7 @@ paths:
             tags: [Book]
             parameters:
                 - $ref: "#/components/parameters/idPathParam"
-                - in: query
-                  name: expand
-                  description: expand author
-                  schema:
-                      type: string
-                      enum: [none, author]
-                      example: none
+
             responses:
                 "200":
                     description: Single article view
@@ -828,10 +822,6 @@ paths:
                                                 type: string
                                                 format: url
                                                 example: "/books/:id"
-                                            author:
-                                                type: string
-                                                format: url
-                                                example: "/books/:id/authors"
                                             review:
                                                 type: string
                                                 format: url
@@ -1011,7 +1001,7 @@ paths:
             tags: [Book]
             requestBody:
                 content:
-                    appliction/json:
+                    "application/json":
                         schema:
                             type: object
                             properties:
@@ -1019,21 +1009,15 @@ paths:
                                     type: string
                                     example: The Pragmatic Programmer
                                 author:
-                                    type: string
-                                    example: Thomas Hunt
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: Thomous Hunt
                                 publisher:
                                     type: string
                                     example: Addison-Wesley
                                 category:
                                     type: string
-                                    enum:
-                                        [
-                                            science,
-                                            regional,
-                                            novel,
-                                            history,
-                                            accademic,
-                                        ]
                                     example: science
                                 summary:
                                     type: string
@@ -1060,11 +1044,7 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "books/:id"
-                                            author:
-                                                type: string
-                                                format: url
-                                                example: "books/:id/authors"
+                                                example: "/api/v1/books/:id"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -2328,8 +2308,10 @@ components:
                           type: string
                           example: Clean Architecture
                       author:
-                          type: string
-                          example: Robert C.Martin
+                          type: array
+                          items:
+                              type: string
+                              example: Thomous Hunt
                       publisher:
                           type: string
                           example: Pearson
@@ -2344,10 +2326,6 @@ components:
                           type: string
                           enum: [science, regional, novel, history, accademic]
                           example: science
-                      avilability:
-                          type: string
-                          enum: [available, unavailable]
-                          example: available
                 - $ref: "#/components/schemas/Timestamp"
         User:
             allOf:

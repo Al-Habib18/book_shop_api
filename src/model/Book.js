@@ -9,15 +9,14 @@ const bookSchema = new Schema(
             required: true,
         },
         author: {
-            type: Schema.ObjectId, // user.id
+            type: [String],
             required: true,
         },
         publisher: {
             type: String,
         },
         category: {
-            String,
-            enum: [regional, science, novel, accademic, history],
+            type: String,
         },
         summary: {
             type: String,
@@ -25,12 +24,8 @@ const bookSchema = new Schema(
         price: {
             type: Number,
         },
-        availability: {
-            type: String,
-            enum: [available, unavailable],
-        },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const Book = model("Book", bookSchema);

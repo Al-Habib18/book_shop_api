@@ -23,8 +23,6 @@ const getHATEOAS = ({
         const queryString = generateQueryString({ ...query, page: page - 1 });
         links.prev = `/api/v1/users${path}?${queryString}`;
     }
-    console.log("links.prev  : ", links.prev);
-    console.log("links.next : ", links.next);
     return links;
 };
 

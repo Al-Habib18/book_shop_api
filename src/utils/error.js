@@ -6,7 +6,7 @@ const notFound = (msg = "Resource not found") => {
     return error;
 };
 
-const BadRequest = (msg = "Bad Request") => {
+const badRequest = (msg = "Bad Request") => {
     const error = new Error(msg);
     error.status = 400;
     return error;
@@ -18,4 +18,4 @@ const serverError = (msg = "Internal Server Error") => {
     return error;
 };
 
-module.exports = { BadRequest, notFound, serverError };
+module.exports = { badRequest, notFound, serverError };

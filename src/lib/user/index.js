@@ -2,7 +2,7 @@
 
 const User = require("../../model/User");
 const defaults = require("../../config/defaults");
-const { BadRequest, notFound } = require("../../utils/error");
+const { badRequest, notFound } = require("../../utils/error");
 const { generateHash } = require("../../utils/hashing");
 
 const findUserByEmail = async (email) => {
@@ -12,7 +12,7 @@ const findUserByEmail = async (email) => {
 
 const findUserById = async (id) => {
     if (!id) {
-        throw BadRequest("Id is required");
+        throw badRequest("Id is required");
     }
     return await User.findById(id).select("-password");
 };
@@ -56,12 +56,12 @@ const create = async ({
     account = "",
 }) => {
     if (!name || !email || !password) {
-        throw BadRequest();
+        throw badRequest();
     }
 
     let hasUser = await isUserExist(email);
     if (hasUser) {
-        throw BadRequest("User already exists");
+        throw badRequest("User already exists");
     }
 
     password = await generateHash(password);
@@ -93,12 +93,11 @@ const findAll = async ({
     return users;
 };
 
-const count = async ({ search = "" }) => {
+const count = ({ search = "" }) => {
     const filter = {
         name: { $regex: search, $options: "i" },
     };
-    const totalUsers = await User.count(filter);
-    return totalUsers;
+    return User.count(filter);
 };
 
 module.exports = {

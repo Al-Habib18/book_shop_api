@@ -1,7 +1,8 @@
 /** @format */
+/** @format */
 
 const defaults = require("../../../../config/defaults");
-const userService = require("../../../../lib/user");
+const bookService = require("../../../../lib/book");
 const { getPagination } = require("../../../../utils/pagination");
 const getHATEOAS = require("../../../../utils/HATEOAS");
 const { notFound } = require("../../../../utils/error");
@@ -14,17 +15,18 @@ const findAllItems = async (req, res, next) => {
     const search = req.query.search || defaults.search;
 
     try {
-        const users = await userService.findAll({
+        const books = await bookService.findAll({
             page,
             limit,
             sortType,
             sortBy,
             search,
         });
-        if (!users) {
+
+        if (!books) {
             throw notFound();
         }
-        const totalItems = await userService.count({ search });
+        const totalItems = await bookService.count({ search });
 
         const pagination = getPagination({ totalItems, limit, page });
 
@@ -38,7 +40,7 @@ const findAllItems = async (req, res, next) => {
         });
 
         const response = {
-            data: users,
+            data: books,
             pagination,
             links,
         };
