@@ -2,7 +2,7 @@
 
 const express = require("express");
 const applyMiddleware = require("./middleware");
-// const routes = require("./routes");
+const routes = require("./routes");
 
 // import seed for making fake users
 // const { seedUser } = require("./seed");
@@ -11,7 +11,7 @@ const applyMiddleware = require("./middleware");
 const app = express();
 
 applyMiddleware(app);
-// app.use(routes);
+app.use(routes);
 
 app.get("/health", (req, res) => {
     res.status(200).json({

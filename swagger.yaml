@@ -3,13 +3,13 @@
 openapi: 3.0.0
 servers:
     - description: Development
-      url: http://localhost:4000/docs
+      url: http://localhost:4000/api/v1
 info:
     description: This is a online book shop API
     version: "1.0.0"
     title: Book-shop-api
     contact:
-        email: alhabib607173@gmail.com
+        email: alhabib607273@gmail.com
     license:
         name: Apache 2.0
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -31,7 +31,7 @@ tags:
     - name: Photo
       description: Photo Endpoints
 paths:
-    /auth/singup:
+    /auth/register:
         post:
             description: Create a new account
             tags: [Auth]
@@ -101,7 +101,7 @@ paths:
                     $ref: "#/components/responses/400"
                 "500":
                     $ref: "#/components/responses/500"
-    /auth/singin:
+    /auth/login:
         post:
             description: Login to your account
             tags: [Auth]
@@ -519,25 +519,11 @@ paths:
                                                           example: habib@gmail.com
                                                       role:
                                                           type: string
-                                                          enum:
-                                                              [
-                                                                  customer,
-                                                                  author,
-                                                                  admin,
-                                                              ]
-                                                          default: author
+                                                          example: "customer"
+
                                                       account:
                                                           type: string
                                                           example: 013306169
-                                                      address:
-                                                          type: object
-                                                          properties:
-                                                              zilla:
-                                                                  type: string
-                                                                  example: Rangpur
-                                                              upzilla:
-                                                                  type: string
-                                                                  example: Pirgonj
 
                                                 - $ref: "#/components/schemas/Timestamp"
                                     pagination:
@@ -548,16 +534,17 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: /books?page=2&limit=5
+                                                example: /api/v1/users?page=2&limit=5
                                             next:
                                                 type: string
                                                 format: url
-                                                example: /users?page=3&limit=5
+                                                example: /api/v1/users?page=3&limit=5
                                             prev:
                                                 type: string
                                                 format: url
-                                                example: /users?page=1&limit=5
-
+                                                example: /api/v1/users?page=1&limit=5
+                "404":
+                    $ref: "#/components/responses/404"
                 "400":
                     $ref: "#/components/responses/400"
                 "500":
@@ -591,15 +578,7 @@ paths:
                                 account:
                                     type: string
                                     example: "0131231232"
-                                address:
-                                    type: object
-                                    properties:
-                                        zilla:
-                                            type: string
-                                            example: Rangpur
-                                        upzilla:
-                                            type: string
-                                            example: Pirgonj
+
                             required: [name, email, password]
             responses:
                 "201":
@@ -628,29 +607,29 @@ paths:
                                             account:
                                                 type: string
                                                 example: 013133061**
-                                            address:
-                                                type: object
-                                                properties:
-                                                    zilla:
-                                                        type: string
-                                                        example: Rangpur
-                                                    upzilla:
-                                                        type: string
-                                                        example: pirgonj
+                                            # address:
+                                            #     type: object
+                                            #     properties:
+                                            #         zilla:
+                                            #             type: string
+                                            #             example: Rangpur
+                                            #         upzilla:
+                                            #             type: string
+                                            #             example: pirgonj
                                     links:
                                         properties:
                                             self:
                                                 type: string
                                                 format: url
                                                 example: "/users/:id"
-                                            edit:
-                                                type: string
-                                                format: url
-                                                example: "/users/:id"
-                                            delete:
-                                                type: string
-                                                format: url
-                                                example: "/users/:id"
+                                            # edit:
+                                            #     type: string
+                                            #     format: url
+                                            #     example: "/users/:id"
+                                            # delete:
+                                            #     type: string
+                                            #     format: url
+                                            #     example: "/users/:id"
 
                 "401":
                     $ref: "#/components/responses/400"
@@ -2382,15 +2361,6 @@ components:
                           type: string
                           example: customer
                       # user here condition for account number ...important
-                      address:
-                          type: object
-                          properties:
-                              zilla:
-                                  type: string
-                                  example: Rangpur
-                              upzilla:
-                                  type: string
-                                  example: Pirgonj
 
                 - $ref: "#/components/schemas/Timestamp"
 
@@ -2601,22 +2571,23 @@ components:
             description: type of sort (asc or dsc)
             schema:
                 type: string
-                enum: [asc, dsc]
-                example: dsc
+                enum: [asc, desc]
+                default: desc
         sortByParam:
             in: query
             name: sortBy
             description: Sort Key
             schema:
                 type: string
-                example: updatedAt
+                enum: [createdAt, updatedAt]
+                default: updatedAt
         searchParam:
             in: query
             name: search
             description: Search term
             schema:
                 type: string
-                example: title
+                example: title or name
         searchTitle:
             in: query
             name: searchTitle

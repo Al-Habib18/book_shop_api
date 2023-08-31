@@ -24,18 +24,8 @@ const userSchema = new Schema(
         account: {
             type: Number,
         },
-        addres: {
-            type: {
-                zilla: {
-                    type: String,
-                },
-                upzilla: {
-                    type: String,
-                },
-            },
-        },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const User = model("User", userSchema);
