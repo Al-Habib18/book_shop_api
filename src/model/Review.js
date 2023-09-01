@@ -4,15 +4,15 @@ const { Schema, model } = require("mongoose");
 
 const reviewSchema = new Schema(
     {
-        user: {
+        userId: {
+            type: Schema.ObjectId,
+            //TODO: required: true,
+        },
+        bookId: {
             type: Schema.ObjectId,
             required: true,
         },
-        book: {
-            type: Schema.ObjectId,
-            required: true,
-        },
-        rating: {
+        ratting: {
             type: Number,
             required: true,
         },
@@ -20,7 +20,7 @@ const reviewSchema = new Schema(
             type: String,
         },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const Review = model("Review", reviewSchema);

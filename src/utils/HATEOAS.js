@@ -11,17 +11,17 @@ const getHATEOAS = ({
     page = 1,
 }) => {
     const links = {
-        self: `/api/v1/users${url}`,
+        self: `${url}`,
     };
 
     if (hasNext) {
         const queryString = generateQueryString({ ...query, page: page + 1 });
-        links.next = `/api/v1/users${path}?${queryString}`;
+        links.next = `${path}?${queryString}`;
     }
 
     if (hasPrev) {
         const queryString = generateQueryString({ ...query, page: page - 1 });
-        links.prev = `/api/v1/users${path}?${queryString}`;
+        links.prev = `${path}?${queryString}`;
     }
     return links;
 };

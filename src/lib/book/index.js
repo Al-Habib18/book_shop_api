@@ -55,6 +55,7 @@ const removeItem = async (id) => {
     return Book.findByIdAndDelete(id);
 };
 
+// find a book by id
 const findBookById = (id) => {
     if (!id) {
         badRequest("id is required");

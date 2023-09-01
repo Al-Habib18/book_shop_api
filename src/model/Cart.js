@@ -13,7 +13,7 @@ const cartSchema = new Schema(
             required: true,
         },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const Cart = model("Cart", cartSchema);

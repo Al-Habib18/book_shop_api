@@ -1208,7 +1208,7 @@ paths:
             tags: [Cart]
             requestBody:
                 content:
-                    appliction/json:
+                    application/json:
                         schema:
                             type: array
                             items:
@@ -1222,7 +1222,7 @@ paths:
                 "201":
                     description: Successfully created a Cart
                     content:
-                        appliction/json:
+                        application/json:
                             schema:
                                 type: object
                                 properties:
@@ -1554,7 +1554,7 @@ paths:
             tags: [Order]
             requestBody:
                 content:
-                    appliction/json:
+                    application/json:
                         schema:
                             type: object
                             properties:
@@ -1574,7 +1574,7 @@ paths:
                 "201":
                     description: Successfully created a Cart
                     content:
-                        appliction/json:
+                        application/json:
                             schema:
                                 type: object
                                 properties:
@@ -2075,14 +2075,14 @@ paths:
                                     links:
                                         type: object
                                         properties:
-                                            self:
+                                            book:
                                                 type: string
                                                 format: url
-                                                example: "/users/:id"
+                                                example: "/api/v1/book/:id"
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/reviews/:id/book"
+                                                example: "/api/v1/user/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -2165,6 +2165,7 @@ paths:
                 - $ref: "#/components/parameters/limitParam"
                 - $ref: "#/components/parameters/sortTypeParam"
                 - $ref: "#/components/parameters/sortByParam"
+                - $ref: "#/components/parameters/searchParam"
             responses:
                 "200":
                     description: Payments retured successfully
@@ -2232,14 +2233,13 @@ paths:
             tags: [Review]
             requestBody:
                 content:
-                    appliction/json:
+                    "application/json":
                         schema:
                             type: object
                             properties:
                                 bookId:
-                                    type: integer
-                                    format: int32
-                                    example: 234234
+                                    type: string
+                                    example: 64f0a96f225f0a8434489535
                                 ratting:
                                     type: integer
                                     format: int32
@@ -2252,7 +2252,7 @@ paths:
                 "201":
                     description: Payment created succussfully
                     content:
-                        appliction/json:
+                        application/json:
                             schema:
                                 type: object
                                 properties:
@@ -2263,8 +2263,8 @@ paths:
                                                 type: integer
                                                 example: 1232
                                             bookId:
-                                                type: integer
-                                                example: 234234
+                                                type: string
+                                                example: 64f0a96f225f0a8434489535
                                             book:
                                                 type: string
                                                 example: clean code
@@ -2275,14 +2275,6 @@ paths:
                                             summary:
                                                 type: string
                                                 example: it meets certain standards of readability, maintainability, and reliability.
-
-                                    links:
-                                        type: object
-                                        properties:
-                                            self:
-                                                type: string
-                                                format: url
-                                                example: "/users/:id"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -2572,7 +2564,7 @@ components:
             description: Search term
             schema:
                 type: string
-                example: title or name
+                example: search
         searchTitle:
             in: query
             name: searchTitle

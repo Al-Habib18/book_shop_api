@@ -23,7 +23,7 @@ const paymentSchema = new Schema(
             default: "pending",
         },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const Payment = model("Payment", paymentSchema);

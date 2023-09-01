@@ -23,7 +23,7 @@ const orderSchema = new Schema(
             default: "pending",
         },
     },
-    { timeseries: true }
+    { timestamps: true }
 );
 
 const Order = model("Order", orderSchema);
