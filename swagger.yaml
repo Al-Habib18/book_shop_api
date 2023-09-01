@@ -1085,6 +1085,14 @@ paths:
             tags: [Cart]
             parameters:
                 - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                type: string
+                                example: 64f167d158
             responses:
                 "200":
                     description: Cart updated successfully
@@ -1094,14 +1102,45 @@ paths:
                                 type: object
                                 properties:
                                     data:
-                                        $ref: "#/components/schemas/Cart"
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 2342
+                                                      books:
+                                                          type: array
+                                                          items:
+                                                              type: object
+                                                              properties:
+                                                                  id:
+                                                                      type: integer
+                                                                      format: int32
+                                                                      example: 2342
+                                                                  title:
+                                                                      type: string
+                                                                      example: clean code
+                                                      quantity:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3
+                                                      amount:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3240
+
+                                                - $ref: "#/components/schemas/Timestamp"
                                     links:
                                         type: object
                                         properties:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/cart/:id"
+                                                example: "/api/v1/cart/:id"
+
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -1165,12 +1204,15 @@ paths:
                                                               type: object
                                                               properties:
                                                                   id:
-                                                                      type: integer
-                                                                      format: int32
-                                                                      example: 2342
+                                                                      type: string
+                                                                      example: sd23sd423jfb
                                                                   title:
                                                                       type: string
-                                                                      example: clean code
+                                                                      example: grokking algoorithms
+                                                                  price:
+                                                                      type: integer
+                                                                      example: 800
+
                                                       quantity:
                                                           type: integer
                                                           format: int32
@@ -1212,11 +1254,8 @@ paths:
                         schema:
                             type: array
                             items:
-                                type: object
-                                properties:
-                                    bookId:
-                                        type: integer
-                                        example: 23423
+                                type: string
+                                example: 64f167d158
 
             responses:
                 "201":
@@ -1243,23 +1282,15 @@ paths:
                                                         title:
                                                             type: string
                                                             example: clean code
+                                                        price:
+                                                            type: integer
+                                                            example: 500
                                             quantity:
                                                 type: integer
                                                 example: 4
                                             amount:
                                                 type: integer
                                                 example: 12000
-                                    links:
-                                        type: object
-                                        properties:
-                                            self:
-                                                type: string
-                                                format: url
-                                                example: "books/:id"
-                                            author:
-                                                type: string
-                                                format: url
-                                                example: "books/:id/authors"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -1990,7 +2021,13 @@ paths:
                                 properties:
                                     user:
                                         $ref: "#/components/schemas/User"
-
+                                    links:
+                                        type: object
+                                        properties:
+                                            book:
+                                                type: string
+                                                format: url
+                                                example: "/api/v1/reviews/:id/book"
                 "404":
                     $ref: "#/components/responses/404"
                 "500":
@@ -2012,9 +2049,15 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    user:
+                                    data:
                                         $ref: "#/components/schemas/Book"
-
+                                    links:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: api/v1/reviews/:id/user
                 "404":
                     $ref: "#/components/responses/404"
                 "500":
@@ -2448,7 +2491,7 @@ components:
                           type: integer
                           format: int32
                           example: 234234
-                      userId:
+                      user:
                           type: object
                           properties:
                               id:

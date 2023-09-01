@@ -92,6 +92,14 @@ const count = ({ search = "" }) => {
     return Book.count(filter);
 };
 
+const bookObj = async (id) => {
+    if (!id) {
+        throw badRequest("Id is required");
+    }
+    const book = await Book.findById(id).select("id title price");
+    return book;
+};
+
 module.exports = {
     create,
     updateProperties,
@@ -99,4 +107,5 @@ module.exports = {
     findBookById,
     findAll,
     count,
+    bookObj,
 };

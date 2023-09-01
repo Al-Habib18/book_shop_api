@@ -6,11 +6,17 @@ const cartSchema = new Schema(
     {
         user: {
             type: Schema.ObjectId,
-            required: true,
+            //TODO:required: true,
         },
         book: {
-            type: Schema.ObjectId,
+            type: [Schema.ObjectId],
             required: true,
+        },
+        quantity: {
+            type: Number,
+        },
+        amount: {
+            type: Number,
         },
     },
     { timestamps: true }
