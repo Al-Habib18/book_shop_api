@@ -53,20 +53,12 @@ paths:
                                     example: pass123
                                 role:
                                     type: string
-                                    enum: [customer, author]
+                                    enum: [customer, author, admin]
                                     example: author
-                                account_number:
+                                account:
                                     type: string
                                     example: 01313306149
-                                address:
-                                    type: object
-                                    properties:
-                                        zilla:
-                                            type: string
-                                            example: Rangpur
-                                        upzilla:
-                                            type: string
-                                            example: Pirgonj
+
             responses:
                 201:
                     description: Signup successfull
@@ -91,12 +83,10 @@ paths:
                                     links:
                                         type: object
                                         properties:
-                                            self:
+                                            login:
                                                 type: string
-                                                example: /auth/signup
-                                            signin:
-                                                type: string
-                                                example: /auth/singin
+                                                example: /api/v1/login
+
                 400:
                     $ref: "#/components/responses/400"
                 "500":
@@ -134,7 +124,7 @@ paths:
                                         example: 200
                                     message:
                                         type: string
-                                        example: Signin succefull
+                                        example: login successfull
                                     data:
                                         type: object
                                         properties:

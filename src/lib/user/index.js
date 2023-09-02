@@ -108,6 +108,8 @@ module.exports = {
     count,
     findAll,
     findUserById,
+    findUserByEmail,
     updateProperties,
     removeItem,
+    isUserExist,
 };

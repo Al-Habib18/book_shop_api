@@ -5,7 +5,9 @@ const bookRoutes = require("./bookRoutes");
 const reviewRoutes = require("./reviewRoutes");
 const cartRoutes = require("./cartRoutes");
 const orderRoutes = require("./orderRoutes");
+const authRoutes = require("./authRoutes");
 
+router.use("/api/v1/auth", authRoutes);
 router.use("/api/v1/users", userRoutes);
 router.use("/api/v1/books", bookRoutes);
 router.use("/api/v1/reviews", reviewRoutes);
