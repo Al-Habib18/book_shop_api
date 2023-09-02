@@ -34,6 +34,9 @@ const updateProperties = async (id, { name, role, account }) => {
 };
 
 const removeItem = async (id) => {
+    if (!id) {
+        throw badRequest("Id is required");
+    }
     const user = await findUserById(id);
     if (!user) {
         throw notFound();

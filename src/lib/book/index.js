@@ -47,6 +47,8 @@ const updateProperties = async (
 
 // delete a book
 const removeItem = async (id) => {
+    if (!id) throw badRequest("id is required");
+
     const book = await Book.findById(id);
     if (!book) {
         throw notFound();

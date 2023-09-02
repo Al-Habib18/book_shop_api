@@ -15,7 +15,7 @@ const findById = (id) => {
     if (!id) {
         throw badRequest("Id is required");
     }
-    return Cart.findById(id).populate("book");
+    return Cart.findById(id);
 };
 
 // count all cart
@@ -60,6 +60,8 @@ const updateProperties = async (
 
 // delete a carts
 const removeItem = async (id) => {
+    if (!id) throw badRequest("id is required");
+
     const cart = await Cart.findById(id);
     if (!cart) {
         throw notFound();
@@ -67,6 +69,7 @@ const removeItem = async (id) => {
 
     return Cart.findByIdAndDelete(id);
 };
+
 module.exports = {
     create,
     findById,

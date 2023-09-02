@@ -6,11 +6,14 @@ const orderSchema = new Schema(
     {
         user: {
             type: Schema.ObjectId,
-            required: true,
+            //TODO: required: true,
         },
         cart: {
             type: Schema.ObjectId,
             required: true,
+        },
+        amount: {
+            type: Number,
         },
         shippingMethod: {
             type: String,

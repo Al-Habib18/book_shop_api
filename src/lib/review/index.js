@@ -70,8 +70,11 @@ const updateProperties = async (id, { ratting = 0, summary = "" }) => {
 };
 // delete a review
 const removeItem = async (id) => {
-    const review = await Review.findById(id);
+    if (!id) {
+        throw badRequest("id is required");
+    }
 
+    const review = await Review.findById(id);
     if (!review) {
         throw notFound();
     }

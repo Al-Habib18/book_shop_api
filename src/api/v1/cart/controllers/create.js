@@ -1,5 +1,5 @@
 /** @format */
-const cartSercice = require("../../../../lib/cart");
+const cartService = require("../../../../lib/cart");
 const bookService = require("../../../../lib/book");
 
 const create = async (req, res, next) => {
@@ -16,7 +16,7 @@ const create = async (req, res, next) => {
 
         const quantity = bookArray.length;
 
-        const cart = await cartSercice.create({ bookArray, quantity, amount });
+        const cart = await cartService.create({ bookArray, quantity, amount });
 
         const data = {
             id: cart.id,

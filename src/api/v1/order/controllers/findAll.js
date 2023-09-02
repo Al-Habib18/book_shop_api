@@ -1,7 +1,8 @@
 /** @format */
+/** @format */
 
 const defaults = require("../../../../config/defaults");
-const cartService = require("../../../../lib/cart");
+const orderService = require("../../../../lib/order");
 const { getPagination } = require("../../../../utils/pagination");
 const getHATEOAS = require("../../../../utils/HATEOAS");
 const { notFound } = require("../../../../utils/error");
@@ -12,17 +13,17 @@ const findAll = async (req, res, next) => {
     const sortBy = req.query.sortBy || defaults.sortBy;
 
     try {
-        const carts = await cartService.findAll({
+        const orders = await orderService.findAll({
             page,
             limit,
             sortType,
             sortBy,
         });
-        if (!carts) {
+        if (!orders) {
             throw notFound();
         }
 
-        const totalItems = await cartService.count();
+        const totalItems = await orderService.count();
 
         const pagination = getPagination({ totalItems, limit, page });
 
@@ -35,7 +36,7 @@ const findAll = async (req, res, next) => {
             page,
         });
 
-        const response = { data: carts, pagination, links };
+        const response = { data: orders, pagination, links };
 
         res.status(200).json(response);
     } catch (err) {
