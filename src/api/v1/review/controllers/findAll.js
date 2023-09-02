@@ -20,7 +20,7 @@ const findAllItem = async (req, res, next) => {
             sortBy,
             search,
         });
-        if (!reviews) {
+        if (reviews.length < 1) {
             throw notFound();
         }
 

@@ -2,18 +2,19 @@
 
 const router = require("express").Router();
 const { bookControllers } = require("../api/v1/book");
+const authenticate = require("../middleware/authenticate");
 
-router.get("/:id/reviews", bookControllers.findReviews);
+router.get("/:id/reviews", authenticate, bookControllers.findReviews);
 
 router
     .route("/:id")
-    .get(bookControllers.findSingleItem)
-    .patch(bookControllers.updateItem)
-    .delete(bookControllers.deleteItem);
+    .get(authenticate, bookControllers.findSingleItem)
+    .patch(authenticate, bookControllers.updateItem)
+    .delete(authenticate, bookControllers.deleteItem);
 
 router
     .route("/")
     .get(bookControllers.findAllItems)
-    .post(bookControllers.createItem);
+    .post(authenticate, bookControllers.createItem);
 
 module.exports = router;

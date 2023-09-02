@@ -10,9 +10,8 @@ const findUser = async (req, res, next) => {
         if (!review) {
             throw notFound();
         }
-        // TODO: there in no userId in review
-        const book = await userService.findUserById(review.userId);
-        if (!book) {
+        const user = await userService.findUserById(review.userId);
+        if (!user) {
             throw notFound();
         }
 
@@ -21,7 +20,7 @@ const findUser = async (req, res, next) => {
         };
 
         const response = {
-            data: book,
+            data: user,
             links,
         };
 

@@ -6,7 +6,7 @@ const reviewSchema = new Schema(
     {
         userId: {
             type: Schema.ObjectId,
-            //TODO: required: true,
+            required: true,
         },
         bookId: {
             type: Schema.ObjectId,

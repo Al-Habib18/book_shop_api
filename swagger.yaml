@@ -740,56 +740,10 @@ paths:
                 "500":
                     $ref: "#/components/responses/500"
 
-    /books/{id}/authors:
+    /books/{id}:
         get:
             security:
                 - bearerAuth: []
-            description: Retrive a listo of authors for a specific book
-            tags: [Book]
-            parameters:
-                - $ref: "#/components/parameters/idPathParam"
-                - $ref: "#/components/parameters/pageParam"
-                - $ref: "#/components/parameters/limitParam"
-                - $ref: "#/components/parameters/sortTypeParam"
-                - $ref: "#/components/parameters/sortByParam"
-            responses:
-                "200":
-                    description: Authors retrive succussfull
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    data:
-                                        type: array
-                                        items:
-                                            $ref: "#/components/schemas/User"
-                                    pagination:
-                                        $ref: "#/components/schemas/Pagination"
-                                    links:
-                                        type: object
-                                        properties:
-                                            self:
-                                                type: string
-                                                format: url
-                                                example: "/books/:id/authors?page=2&limit=5"
-                                            nextPage:
-                                                type: string
-                                                format: url
-                                                example: "/books/:id/authors?page=3&limit=5"
-                                            prevPage:
-                                                type: string
-                                                format: url
-                                                example: "/books/:id/authors?page=1&limit=5"
-                "401":
-                    $ref: "#/components/responses/401"
-                "404":
-                    $ref: "#/components/responses/404"
-                "500":
-                    $ref: "#/components/responses/500"
-
-    /books/{id}:
-        get:
             description: Retrive a single book
             tags: [Book]
             parameters:
@@ -987,6 +941,8 @@ paths:
                 "500":
                     $ref: "#/components/responses/500"
         post:
+            security:
+                - bearerAuth: []
             description: Create a book
             tags: [Book]
             requestBody:
@@ -998,6 +954,7 @@ paths:
                                 title:
                                     type: string
                                     example: The Pragmatic Programmer
+
                                 author:
                                     type: array
                                     items:
@@ -1164,6 +1121,8 @@ paths:
 
     /carts:
         get:
+            security:
+                - bearerAuth: []
             description: Retrive a list of carts
             tags: [Cart]
             parameters:
@@ -1242,6 +1201,8 @@ paths:
                 "500":
                     $ref: "#/components/responses/500"
         post:
+            security:
+                - bearerAuth: []
             description: Create a cart
             tags: [Cart]
             requestBody:
@@ -1287,7 +1248,12 @@ paths:
                                             amount:
                                                 type: integer
                                                 example: 12000
-
+                                    links:
+                                        type: object
+                                        properties:
+                                            cart:
+                                                type: string
+                                                example: "/api/v1/cart/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -2323,7 +2289,12 @@ paths:
                                             summary:
                                                 type: string
                                                 example: it meets certain standards of readability, maintainability, and reliability.
-
+                                    links:
+                                        type: object
+                                        properties:
+                                            book:
+                                                type: string
+                                                example: "/api/v1/book/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":

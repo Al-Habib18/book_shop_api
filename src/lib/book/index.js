@@ -5,17 +5,19 @@ const { badRequest, notFound } = require("../../utils/error");
 // create a new book
 const create = async ({
     title,
+    userId,
     author,
     publisher = "",
     category = "",
     summary = "",
     price,
 }) => {
-    if (!title || !author || !price) {
-        throw badRequest("title ,author, price of book is required");
+    if (!title || !userId || !author || !price) {
+        throw badRequest();
     }
     const book = new Book({
         title,
+        userId,
         author,
         publisher,
         category,

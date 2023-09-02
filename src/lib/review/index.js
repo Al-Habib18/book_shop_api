@@ -3,9 +3,12 @@ const Review = require("../../model/Review");
 const { notFound, badRequest } = require("../../utils/error");
 
 // create a new review
-const create = async ({ bookId, ratting, summary = "" }) => {
+const create = async ({ userId, bookId, ratting, summary = "" }) => {
+    if (!userId || !bookId || !ratting) {
+        throw badRequest();
+    }
     const review = new Review({
-        //TODO: userId,
+        userId,
         bookId,
         ratting,
         summary,

@@ -17,5 +17,10 @@ const serverError = (msg = "Internal Server Error") => {
     error.status = 500;
     return error;
 };
+const authenticationError = (msg = "Authentication Failed") => {
+    const error = new Error(msg);
+    error.status = 401;
+    return error;
+};
 
-module.exports = { badRequest, notFound, serverError };
+module.exports = { badRequest, notFound, serverError, authenticationError };

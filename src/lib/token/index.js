@@ -22,4 +22,22 @@ const generateToken = ({
     }
 };
 
-module.exports = { generateToken };
+const verifyToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
+    try {
+        const decoded = jwt.decode(token, secret);
+        return decoded;
+    } catch (err) {
+        console.log("[JWT]", err);
+        throw serverError();
+    }
+};
+
+module.exports = { generateToken, verifyToken };
+const decodeToken = ({ token, algorithm = "HS256" }) => {
+    try {
+        return jwt.decode(token, { algorithms: [algorithm] });
+    } catch (err) {
+        console.log("[JWT]", err);
+        throw serverError();
+    }
+};

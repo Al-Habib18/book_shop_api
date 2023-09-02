@@ -2,12 +2,15 @@
 const { badRequest, notFound } = require("../../utils/error");
 const Cart = require("../../model/Cart");
 
-const create = async ({ bookArray = [], quantity = 0, amount = 0 }) => {
+const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
+    if (!userId) {
+        throw badRequest();
+    }
     if (quantity === 0) {
         throw badRequest("bookId is required");
     }
     const book = bookArray;
-    const cart = new Cart({ book, quantity, amount });
+    const cart = new Cart({ userId, book, quantity, amount });
     await cart.save();
     return cart;
 };
