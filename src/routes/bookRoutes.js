@@ -3,6 +3,8 @@
 const router = require("express").Router();
 const { bookControllers } = require("../api/v1/book");
 
+router.get("/:id/reviews", bookControllers.findReviews);
+
 router
     .route("/:id")
     .get(bookControllers.findSingleItem)

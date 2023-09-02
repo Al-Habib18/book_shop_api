@@ -1349,17 +1349,36 @@ paths:
                                 type: object
                                 properties:
                                     data:
-                                        type: array
-                                        items:
-                                            $ref: "#/components/schemas/Cart"
+                                        allOf:
+                                            - type: object
+                                              properties:
+                                                  id:
+                                                      type: string
+                                                      example: f2ssdf34d234
+                                                  user:
+                                                      type: string
+                                                      example: f2ssdf34d234
 
+                                                  book:
+                                                      type: array
+                                                      example: ds23dsferwe2
+
+                                                  quantity:
+                                                      type: integer
+                                                      format: int32
+                                                      example: 5
+                                                  amount:
+                                                      type: integer
+                                                      format: int32
+                                                      example: 12000
+                                            - $ref: "#/components/schemas/Timestamp"
                                     links:
                                         type: object
                                         properties:
-                                            self:
+                                            user:
                                                 type: string
                                                 format: url
-                                                example: "/users/:id"
+                                                example: "/api/v1/users/:id"
 
                 "401":
                     $ref: "#/components/responses/401"

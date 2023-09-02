@@ -5,6 +5,7 @@ const findAllItems = require("./findAllItems");
 const findSingleItem = require("./findSingleItem");
 const updateItem = require("./updateItem");
 const deleteItem = require("./deleteItem");
+const findReviews = require("./findReviews");
 
 module.exports = {
     createItem,
@@ -12,4 +13,5 @@ module.exports = {
     findSingleItem,
     updateItem,
     deleteItem,
+    findReviews,
 };

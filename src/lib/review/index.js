@@ -81,6 +81,18 @@ const removeItem = async (id) => {
     return Review.findByIdAndDelete(id);
 };
 
+// find all reviews of a book
+const findReviews = async (id, { page, limit, sortType, sortBy, search }) => {
+    if (!id) {
+        throw badRequest("id is required");
+    }
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+
+    return Review.find({ bookId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+};
 module.exports = {
     create,
     removeItem,
@@ -88,4 +100,5 @@ module.exports = {
     findReviewById,
     findAll,
     count,
+    findReviews,
 };
