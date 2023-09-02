@@ -11,7 +11,6 @@ const create = async (req, res, next) => {
         for (let bookId of bookArray) {
             const book = await bookService.bookObj(bookId);
             books.push(book);
-            console.log(book.price);
             amount += book.price;
         }
 

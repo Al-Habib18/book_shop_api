@@ -6,7 +6,6 @@ const create = async (req, res, next) => {
     const { bookId, ratting, summary } = req.body;
     // const userId = req.user.id;
     try {
-        console.log("ratting :", ratting);
         const review = await reviewService.create({
             //TODO: userId,
             bookId,

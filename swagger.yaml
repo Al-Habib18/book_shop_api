@@ -1071,7 +1071,13 @@ paths:
                                 properties:
                                     data:
                                         $ref: "#/components/schemas/Cart"
-
+                                    links:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: "/api/v1/users/:id"
                 "404":
                     $ref: "#/components/responses/404"
                 "401":
@@ -1175,7 +1181,7 @@ paths:
                 - $ref: "#/components/parameters/limitParam"
                 - $ref: "#/components/parameters/sortTypeParam"
                 - $ref: "#/components/parameters/sortByParam"
-                - $ref: "#/components/parameters/searchParam"
+
             responses:
                 "200":
                     description: Carts retured successfully
@@ -2157,7 +2163,7 @@ paths:
 
             responses:
                 "200":
-                    description: Order updated successfully
+                    description: Payment updated successfully
                     content:
                         application/json:
                             schema:
@@ -2425,14 +2431,12 @@ components:
                           type: integer
                           format: int32
                           example: 123123
-                      userId:
-                          type: integer
-                          example: 123123
-
-                      orderId:
-                          type: integer
-                          format: int32
-                          example: 945645
+                      bookId:
+                          type: string
+                          example: 9dfs4f5p6gdf45
+                      book:
+                          type: string
+                          example: Clean Architecture
                       paymentMethod:
                           type: string
                           example: bKash
@@ -2513,6 +2517,9 @@ components:
                                   title:
                                       type: string
                                       example: grokking algoorithms
+                                  price:
+                                      type: integer
+                                      example: 400
                       quantity:
                           type: integer
                           format: int32

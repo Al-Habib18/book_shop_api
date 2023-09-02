@@ -22,27 +22,6 @@ const count = ({ search = "" }) => {
     return Review.count(filter);
 };
 
-const findAll2 = async ({
-    page = 1,
-    limit = 10,
-    sortType = "desc",
-    sortBy = "updatedAt",
-    search = "",
-}) => {
-    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
-
-    const filter = {
-        title: { $regex: search, $options: "i" },
-    };
-
-    const books = await Book.find(filter)
-        .sort(sortString)
-        .skip(page * limit - limit)
-        .limit(limit)
-        .select("-summary");
-
-    return books;
-};
 //find all reviews
 const findAll = async ({
     page = 1,
@@ -74,7 +53,6 @@ const findReviewById = async (id) => {
 
 // update a review
 const updateProperties = async (id, { ratting = 0, summary = "" }) => {
-    console.log("i am updating", id);
     const review = await Review.findById(id);
 
     if (!review) {

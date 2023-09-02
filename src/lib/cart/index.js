@@ -11,7 +11,35 @@ const create = async ({ bookArray = [], quantity = 0, amount = 0 }) => {
     await cart.save();
     return cart;
 };
+const findById = (id) => {
+    if (!id) {
+        throw badRequest("Id is required");
+    }
+    return Cart.findById(id).populate("book");
+};
 
+// count all cart
+const count = () => {
+    return Cart.count();
+};
+
+//find all carts
+const findAll = async ({
+    page = 1,
+    limit = 5,
+    sortBy = "updatedAt",
+    sortType = "desc",
+}) => {
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+    const carts = await Cart.find({})
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+
+    return carts;
+};
+
+// update a carts
 const updateProperties = async (
     id,
     { bookArray = [], quantity = 0, amount = 0 }
@@ -30,13 +58,7 @@ const updateProperties = async (
     return cart;
 };
 
-const findById = (id) => {
-    if (!id) {
-        throw badRequest("Id is required");
-    }
-    return Cart.findById(id);
-};
-
+// delete a carts
 const removeItem = async (id) => {
     const cart = await Cart.findById(id);
     if (!cart) {
@@ -45,4 +67,11 @@ const removeItem = async (id) => {
 
     return Cart.findByIdAndDelete(id);
 };
-module.exports = { create, updateProperties, removeItem };
+module.exports = {
+    create,
+    findById,
+    findAll,
+    updateProperties,
+    removeItem,
+    count,
+};

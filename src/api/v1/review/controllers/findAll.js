@@ -50,5 +50,3 @@ const findAllItem = async (req, res, next) => {
 };
 
 module.exports = findAllItem;
-
-const findAllItems = async (req, res, next) => {};
