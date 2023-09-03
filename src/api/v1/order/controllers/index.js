@@ -6,5 +6,14 @@ const findAll = require("./findAll");
 const update = require("./update");
 const remove = require("./delete");
 const findCart = require("./findCart");
+const findUser = require("./findUser");
 
-module.exports = { create, findSingle, findAll, update, remove, findCart };
+module.exports = {
+    create,
+    findSingle,
+    findAll,
+    update,
+    remove,
+    findCart,
+    findUser,
+};

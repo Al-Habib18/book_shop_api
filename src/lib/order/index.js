@@ -4,14 +4,14 @@ const { badRequest, notFound } = require("../../utils/error");
 const Order = require("../../model/Order");
 const { page, limit } = require("../../config/defaults");
 
-const create = async ({ cartId, shippingMethod = "", amount = 0 }) => {
-    if (!cartId) {
-        throw badRequest("cartId is required");
+const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
+    if (!cartId || !userId) {
+        throw badRequest();
     }
 
     const order = new Order({
-        // TODO: user
-        cart: cartId,
+        userId,
+        cartId,
         shippingMethod,
         amount,
     });
@@ -75,6 +75,20 @@ const removeItem = async (id) => {
 
     return Order.findByIdAndDelete(id);
 };
+
+const findByUserId = async (
+    id,
+    { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
+) => {
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+
+    const orders = await Order.find({ userId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+
+    return orders;
+};
 module.exports = {
     create,
     findById,
@@ -82,4 +96,5 @@ module.exports = {
     count,
     removeItem,
     updatePorperties,
+    findByUserId,
 };

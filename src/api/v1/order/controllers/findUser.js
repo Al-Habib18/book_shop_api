@@ -1,22 +1,23 @@
 /** @format */
+
 const orderService = require("../../../../lib/order");
-const cartService = require("../../../../lib/cart");
+const userService = require("../../../../lib/user");
 const { badRequest } = require("../../../../utils/error");
 
-const findCart = async (req, res, next) => {
+const findUser = async (req, res, next) => {
     const { id } = req.params;
     try {
         const order = await orderService.findById(id);
         if (!order) {
             throw badRequest("Invalid id");
         }
-
-        const cart = await cartService.findById(order.cartId);
+        console.log("Order found");
+        const user = await userService.findUserById(order.userId);
         const links = {
-            user: `/api/v1/users/${order.userIs}`,
+            cart: `/api/v1/carts/${order.cartId}`,
         };
         const respose = {
-            data: cart,
+            data: user,
             links,
         };
         res.status(200).json(respose);
@@ -25,4 +26,4 @@ const findCart = async (req, res, next) => {
     }
 };
 
-module.exports = findCart;
+module.exports = findUser;

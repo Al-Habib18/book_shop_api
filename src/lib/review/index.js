@@ -96,6 +96,21 @@ const findReviews = async (id, { page, limit, sortType, sortBy, search }) => {
         .skip(page * limit - limit)
         .limit(limit);
 };
+
+const findByUserId = async (
+    id,
+    { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
+) => {
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+
+    //TODO: implement summary regex for find reviews
+    const reviews = await Review.find({ userId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+
+    return reviews;
+};
 module.exports = {
     create,
     removeItem,
@@ -104,4 +119,5 @@ module.exports = {
     findAll,
     count,
     findReviews,
+    findByUserId,
 };

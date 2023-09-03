@@ -10,18 +10,18 @@ const findSingle = async (req, res, next) => {
         if (!order) {
             throw notFound();
         }
-        const cart = await cartSercice.findById(order.cart);
+        const cart = await cartSercice.findById(order.cartId);
         if (!cart) {
             throw notFound();
         }
-        const quantity = cart.book.length;
+        const quantity = cart.books.length;
         const data = {
             ...order._doc,
             quantity,
         };
         const links = {
-            cart: `/api/v1/cart/${order.cart}`,
-            //TODO: user : `/api/v1/user/${order.user}`
+            cart: `/api/v1/cart/${order.cartId}`,
+            user: `/api/v1/user/${order.userId}`,
         };
         const response = {
             data,

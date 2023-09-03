@@ -4,11 +4,11 @@ const { Schema, model } = require("mongoose");
 
 const orderSchema = new Schema(
     {
-        user: {
+        userId: {
             type: Schema.ObjectId,
-            //TODO: required: true,
+            required: true,
         },
-        cart: {
+        cartId: {
             type: Schema.ObjectId,
             required: true,
         },

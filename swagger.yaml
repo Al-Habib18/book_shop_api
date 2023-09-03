@@ -1286,10 +1286,10 @@ paths:
                                     links:
                                         type: object
                                         properties:
-                                            self:
+                                            cart:
                                                 type: string
                                                 format: url
-                                                example: "/users/:id"
+                                                example: "/api/v1/carts/${order.cartId}"
 
                 "401":
                     $ref: "#/components/responses/401"
@@ -1344,7 +1344,7 @@ paths:
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/users/:id"
+                                                example: "/api/v1/users/${order.userId}"
 
                 "401":
                     $ref: "#/components/responses/401"

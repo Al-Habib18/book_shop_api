@@ -104,6 +104,31 @@ const bookObj = async (id) => {
     return book;
 };
 
+const findByUserId = async (
+    id,
+    {
+        page = 1,
+        limit = 10,
+        sortType = "desc",
+        sortBy = "updatedAt",
+        search = "",
+    }
+) => {
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+
+    const filter = {
+        title: { $regex: search, $options: "i" },
+    };
+
+    //TODO: add title regex for find book
+    const books = await Book.find({ userId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+
+    return books;
+};
+
 module.exports = {
     create,
     updateProperties,
@@ -112,4 +137,5 @@ module.exports = {
     findAll,
     count,
     bookObj,
+    findByUserId,
 };

@@ -5,6 +5,7 @@ const { notFound } = require("../../../../utils/error");
 
 const create = async (req, res, next) => {
     const { cartId, shippingMethod } = req.body;
+    const userId = req.user.id;
     try {
         const cartObj = await cartSercice.findById(cartId);
         if (!cartObj) {
@@ -12,7 +13,7 @@ const create = async (req, res, next) => {
         }
         const amount = cartObj.amount;
         const order = await orderService.create({
-            //TODO: user
+            userId,
             cartId,
             shippingMethod,
             amount,
@@ -20,7 +21,7 @@ const create = async (req, res, next) => {
 
         const data = {
             id: order.id,
-            cart: order.cart,
+            cart: order.cartId,
             quantity: cartObj.quantity,
             amount: amount,
             orderStatus: order.orderStatus,
@@ -29,7 +30,7 @@ const create = async (req, res, next) => {
 
         const links = {
             order: `/api/v1/orders/${order.id}`,
-            cart: `/api/v1/cart/${cartObj.id}`,
+            cart: `/api/v1/cart/${order.cartId}`,
         };
         const response = {
             data,

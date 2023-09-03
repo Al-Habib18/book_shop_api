@@ -2,15 +2,20 @@
 
 const router = require("express").Router();
 const { orderControllers } = require("../api/v1/order");
+const authenticate = require("../middleware/authenticate");
 
-router.get("/:id/cart", orderControllers.findCart);
+router.get("/:id/cart", authenticate, orderControllers.findCart);
+router.get("/:id/user", authenticate, orderControllers.findUser);
 
 router
     .route("/:id")
-    .get(orderControllers.findSingle)
-    .patch(orderControllers.update)
-    .delete(orderControllers.remove);
+    .get(authenticate, orderControllers.findSingle)
+    .patch(authenticate, orderControllers.update)
+    .delete(authenticate, orderControllers.remove);
 
-router.route("/").get(orderControllers.findAll).post(orderControllers.create);
+router
+    .route("/")
+    .get(authenticate, orderControllers.findAll)
+    .post(authenticate, orderControllers.create);
 
 module.exports = router;
