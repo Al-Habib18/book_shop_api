@@ -28,6 +28,11 @@ const bookSchema = new Schema(
         price: {
             type: Number,
         },
+        available: {
+            type: String,
+            enum: ["yes", "no"],
+            default: "yes",
+        },
     },
     { timestamps: true }
 );

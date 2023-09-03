@@ -111,6 +111,11 @@ const findByUserId = async (
 
     return reviews;
 };
+
+const findByBookId = async (bookId) => {
+    const reviews = await Review.find({ bookId: bookId }).select("ratting");
+    return reviews;
+};
 module.exports = {
     create,
     removeItem,
@@ -120,4 +125,5 @@ module.exports = {
     count,
     findReviews,
     findByUserId,
+    findByBookId,
 };

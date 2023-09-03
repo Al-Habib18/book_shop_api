@@ -9,8 +9,8 @@ const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     if (quantity === 0) {
         throw badRequest("bookId is required");
     }
-    const book = bookArray;
-    const cart = new Cart({ userId, book, quantity, amount });
+    const books = bookArray;
+    const cart = new Cart({ userId, books, quantity, amount });
     await cart.save();
     return cart;
 };

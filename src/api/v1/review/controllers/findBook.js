@@ -15,12 +15,25 @@ const findBook = async (req, res, next) => {
             throw notFound();
         }
 
+        let totalRatting = 0;
+        const reviewArray = await reviewService.findByBookId(book.id);
+        for (const review of reviewArray) {
+            totalRatting += review.ratting;
+        }
+
+        const ratting = totalRatting / reviewArray.length;
+
         const links = {
             user: `api/v1/reviews/${id}/user `,
         };
 
+        const data = {
+            ...book._doc,
+            ratting,
+        };
         const response = {
-            data: book,
+            data: data,
+            ratting,
             links,
         };
 

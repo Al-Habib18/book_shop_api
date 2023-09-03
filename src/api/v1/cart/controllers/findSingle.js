@@ -13,18 +13,12 @@ const findSingle = async (req, res, next) => {
         if (!cart) {
             throw notFound();
         }
-        // TODO: uncomment this
-        // const userObj = await userService.findUserById(review.userId)
 
-        const data = {
-            ...cart._doc,
-            //TODO: user: userObj.name,
-        };
         const links = {
-            //TODO: user: `/api/v1/users/${userObj.id}`,
+            user: `/api/v1/users/${cart.userId}`,
         };
         const response = {
-            data,
+            data: cart,
             links,
         };
 

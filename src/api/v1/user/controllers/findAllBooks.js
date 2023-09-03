@@ -1,7 +1,7 @@
 /** @format */
 
 const defaults = require("../../../../config/defaults");
-const userService = require("../../../../lib/user");
+const reviewService = require("../../../../lib/review");
 const bookService = require("../../../../lib/book");
 const { getPagination } = require("../../../../utils/pagination");
 const getHATEOAS = require("../../../../utils/HATEOAS");
@@ -56,3 +56,20 @@ const allBooks = async (req, res, next) => {
 module.exports = allBooks;
 
 /** @format */
+// let bookArray = [];
+// for (let book of books) {
+//     let totalRatting = 0;
+//     const reviewArray = await reviewService.findByBookId(book.id);
+
+//     for (const review of reviewArray) {
+//         totalRatting += review.ratting;
+//     }
+//     const ratting = totalRatting / reviewArray.length;
+
+//     const isRatting = reviewArray.length;
+//     if (isRatting) {
+//         book.ratting = ratting;
+//     }
+//     bookArray.push(book);
+//     console.log("book ratting :", book.ratting);
+// }
