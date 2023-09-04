@@ -878,6 +878,10 @@ paths:
                                                 type: integer
                                                 format: int32
                                                 example: 4000
+                                            available:
+                                                type: string
+                                                enum: [yes, no]
+                                                default: yes
                                     links:
                                         type: object
                                         properties:

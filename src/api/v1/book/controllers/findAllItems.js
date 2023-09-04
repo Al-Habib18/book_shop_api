@@ -23,7 +23,7 @@ const findAllItems = async (req, res, next) => {
             search,
         });
 
-        if (!books) {
+        if (books.length < 1) {
             throw notFound();
         }
         const totalItems = await bookService.count({ search });
