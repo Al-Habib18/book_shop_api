@@ -11,7 +11,7 @@ const findUser = async (req, res, next) => {
         if (!order) {
             throw badRequest("Invalid id");
         }
-        console.log("Order found");
+
         const user = await userService.findUserById(order.userId);
         const links = {
             cart: `/api/v1/carts/${order.cartId}`,

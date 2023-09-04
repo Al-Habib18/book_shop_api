@@ -1,5 +1,6 @@
 /** @format */
 const Book = require("../../model/Book");
+const reviewService = require("../review");
 const { badRequest, notFound } = require("../../utils/error");
 
 // create a new book
@@ -55,7 +56,12 @@ const removeItem = async (id) => {
     if (!book) {
         throw notFound();
     }
+    let reviews = await reviewService.findByBookId(id);
 
+    // asyncronously delete all reviews of a book
+    for (const review of reviews) {
+        await reviewService.removeItem(review.id);
+    }
     return Book.findByIdAndDelete(id);
 };
 

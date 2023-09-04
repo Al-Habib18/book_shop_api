@@ -1,7 +1,7 @@
 /** @format */
 
-const { badRequest, notFound } = require("../../utils/error");
 const Order = require("../../model/Order");
+const { badRequest, notFound } = require("../../utils/error");
 const { page, limit } = require("../../config/defaults");
 
 const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
@@ -89,6 +89,13 @@ const findByUserId = async (
 
     return orders;
 };
+
+const findByCartId = async (id) => {
+    if (!id) {
+        throw badRequest();
+    }
+    return Order.find({ cartId: id });
+};
 module.exports = {
     create,
     findById,
@@ -97,4 +104,5 @@ module.exports = {
     removeItem,
     updatePorperties,
     findByUserId,
+    findByCartId,
 };

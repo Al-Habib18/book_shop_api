@@ -1,6 +1,10 @@
 /** @format */
 
 const User = require("../../model/User");
+const bookService = require("../book");
+const cartService = require("../cart");
+const orderService = require("../order");
+const reviewService = require("../review");
 const defaults = require("../../config/defaults");
 const { badRequest, notFound } = require("../../utils/error");
 const { generateHash } = require("../../utils/hashing");
@@ -42,7 +46,12 @@ const removeItem = async (id) => {
         throw notFound();
     }
 
-    return User.findByIdAndDelete(id);
+    const orders = await orderService.findByUserId(id, { page: 1, limit: 0 });
+    for (let order of orders) {
+        await orderService.removeItem(order.id);
+    }
+    // return User.findByIdAndDelete(id);
+    return 1;
 };
 
 const isUserExist = async (email) => {

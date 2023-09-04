@@ -1,6 +1,7 @@
 /** @format */
 const { badRequest, notFound } = require("../../utils/error");
 const Cart = require("../../model/Cart");
+const orderService = require("../order");
 
 const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     if (!userId) {
@@ -68,6 +69,12 @@ const removeItem = async (id) => {
     const cart = await Cart.findById(id);
     if (!cart) {
         throw notFound();
+    }
+
+    const orders = await orderService.findByCartId(cart.id);
+    //TODO: remove loop
+    for (let order of orders) {
+        await orderService.removeItem(order.id);
     }
 
     return Cart.findByIdAndDelete(id);
