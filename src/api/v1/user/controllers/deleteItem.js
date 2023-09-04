@@ -7,6 +7,7 @@ const deleteItem = async (req, res, next) => {
         await userService.removeItem(id);
         res.status(204).end();
     } catch (err) {
+        console.error(err);
         next(err);
     }
 };

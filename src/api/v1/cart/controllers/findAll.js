@@ -18,7 +18,7 @@ const findAll = async (req, res, next) => {
             sortType,
             sortBy,
         });
-        if (!carts) {
+        if (carts.length < 1) {
             throw notFound();
         }
 

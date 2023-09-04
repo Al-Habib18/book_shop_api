@@ -3,6 +3,7 @@ const { badRequest, notFound } = require("../../utils/error");
 const Cart = require("../../model/Cart");
 const orderService = require("../order");
 
+// create a new Cart
 const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     if (!userId) {
         throw badRequest();
@@ -15,6 +16,8 @@ const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     await cart.save();
     return cart;
 };
+
+// find cart by cart id
 const findById = (id) => {
     if (!id) {
         throw badRequest("Id is required");
@@ -22,6 +25,13 @@ const findById = (id) => {
     return Cart.findById(id);
 };
 
+// find cart by userId
+const findByUserId = (id) => {
+    if (!id) {
+        throw badRequest();
+    }
+    return Cart.find({ userId: id });
+};
 // count all cart
 const count = () => {
     return Cart.count();
@@ -72,7 +82,7 @@ const removeItem = async (id) => {
     }
 
     const orders = await orderService.findByCartId(cart.id);
-    //TODO: remove loop
+    //TODO: remove loop later
     for (let order of orders) {
         await orderService.removeItem(order.id);
     }
@@ -83,6 +93,7 @@ const removeItem = async (id) => {
 module.exports = {
     create,
     findById,
+    findByUserId,
     findAll,
     updateProperties,
     removeItem,

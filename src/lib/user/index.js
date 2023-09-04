@@ -1,19 +1,20 @@
 /** @format */
 
 const User = require("../../model/User");
+
 const bookService = require("../book");
 const cartService = require("../cart");
-const orderService = require("../order");
-const reviewService = require("../review");
-const defaults = require("../../config/defaults");
+
 const { badRequest, notFound } = require("../../utils/error");
 const { generateHash } = require("../../utils/hashing");
 
+// find a user by email
 const findUserByEmail = async (email) => {
     const user = await User.findOne({ email: email });
     return user ? user : false;
 };
 
+// find a user by user id
 const findUserById = async (id) => {
     if (!id) {
         throw badRequest("Id is required");
@@ -21,6 +22,7 @@ const findUserById = async (id) => {
     return await User.findById(id).select("-password");
 };
 
+// update a user
 const updateProperties = async (id, { name, role, account }) => {
     const user = await findUserById(id);
     if (!user) {
@@ -37,23 +39,34 @@ const updateProperties = async (id, { name, role, account }) => {
     return user;
 };
 
+// delete a user
 const removeItem = async (id) => {
     if (!id) {
         throw badRequest("Id is required");
     }
+
     const user = await findUserById(id);
     if (!user) {
         throw notFound();
     }
 
-    const orders = await orderService.findByUserId(id, { page: 1, limit: 0 });
-    for (let order of orders) {
-        await orderService.removeItem(order.id);
+    // delete all reviews and books of a user
+    const books = await bookService.findByUserId(id, { page: 1, limit: 0 });
+    for (const book of books) {
+        await bookService.removeItem(book.id);
     }
+
+    // delete all orders and carts of a user
+    const carts = await cartService.findByUserId(id);
+    for (const cart of carts) {
+        await cartService.removeItem(cart.id);
+    }
+
     // return User.findByIdAndDelete(id);
     return 1;
 };
 
+// check existence of a user
 const isUserExist = async (email) => {
     const user = await findUserByEmail(email);
     return user ? true : false;
@@ -105,6 +118,7 @@ const findAll = async ({
     return users;
 };
 
+// count users with search option
 const count = ({ search = "" }) => {
     const filter = {
         name: { $regex: search, $options: "i" },
