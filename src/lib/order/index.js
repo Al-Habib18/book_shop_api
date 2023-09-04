@@ -8,7 +8,11 @@ const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     if (!cartId || !userId) {
         throw badRequest();
     }
-
+    // check ,is already ordered by this cart?
+    const order_arr = await findByCartId(cartId);
+    if (order_arr.length > 0) {
+        throw badRequest();
+    }
     const order = new Order({
         userId,
         cartId,
@@ -18,7 +22,7 @@ const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     return order.save();
 };
 
-// find a  sing order
+// find a  single order by order_id
 const findById = async (id) => {
     if (!id) {
         throw badRequest("id is required");
@@ -76,6 +80,7 @@ const removeItem = async (id) => {
     return Order.findByIdAndDelete(id);
 };
 
+// find order by user id
 const findByUserId = async (
     id,
     { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
@@ -90,6 +95,7 @@ const findByUserId = async (
     return orders;
 };
 
+// find order by cart id
 const findByCartId = async (id) => {
     if (!id) {
         throw badRequest();

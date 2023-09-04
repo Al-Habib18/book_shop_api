@@ -1,6 +1,6 @@
 /** @format */
 
-const notFound = (msg = "Resource not found") => {
+const notFound = (msg = "Requested resource not found") => {
     const error = new Error(msg);
     error.status = 404;
     return error;
