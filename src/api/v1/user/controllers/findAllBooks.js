@@ -1,7 +1,6 @@
 /** @format */
 
 const defaults = require("../../../../config/defaults");
-const reviewService = require("../../../../lib/review");
 const bookService = require("../../../../lib/book");
 const { getPagination } = require("../../../../utils/pagination");
 const getHATEOAS = require("../../../../utils/HATEOAS");

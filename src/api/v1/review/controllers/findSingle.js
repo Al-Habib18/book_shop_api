@@ -1,7 +1,6 @@
 /** @format */
 const reviewService = require("../../../../lib/review");
 const bookService = require("../../../../lib/book");
-const userService = require("../../../../lib/user");
 
 const { notFound } = require("../../../../utils/error");
 

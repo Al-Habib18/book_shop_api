@@ -1,6 +1,5 @@
 /** @format */
 const bookService = require("../../../../lib/book");
-const reviewService = require("../../../../lib/review");
 const { notFound } = require("../../../../utils/error");
 
 const findSingleItem = async (req, res, next) => {
@@ -12,14 +11,8 @@ const findSingleItem = async (req, res, next) => {
             throw notFound();
         }
 
-        let totalRatting = 0;
-        const reviewArray = await reviewService.findByBookId(book.id);
-        for (const review of reviewArray) {
-            totalRatting += review.ratting;
-        }
-
-        const ratting = totalRatting / reviewArray.length;
-        const isRatting = reviewArray.length;
+        const ratting = await bookService.getRatting(id);
+        const isRatting = !!ratting;
 
         const links = {
             self: `/api/v1/books/${book.id}`,

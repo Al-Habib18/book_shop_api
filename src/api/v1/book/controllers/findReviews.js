@@ -1,6 +1,6 @@
 /** @format */
 
-const reviewService = require("../../../../lib/review");
+const bookService = require("../../../../lib/book");
 const { badRequest, notFound } = require("../../../../utils/error");
 const { getPagination } = require("../../../../utils/pagination");
 const defaults = require("../../../../config/defaults");
@@ -12,19 +12,20 @@ const findReviews = async (req, res, next) => {
     const limit = req.query.limit || defaults.limit;
     const sortType = req.query.sortType || defaults.sortType;
     const sortBy = req.query.sortBy || defaults.sortBy;
-    const search = req.query.search || defaults.search;
+    //TODO: const search = req.query.search || defaults.search;
     try {
         if (!id) {
             throw badRequest("Id is required");
         }
-        const reviews = await reviewService.findReviews(id, {
+        const reviews = await bookService.getReviews(id, {
             page,
             limit,
             sortType,
             sortBy,
         });
+
         if (reviews.length < 1) {
-            throw notFound("Review not found");
+            throw notFound();
         }
 
         const totalItems = reviews.length;

@@ -135,6 +135,34 @@ const findByUserId = async (
     return books;
 };
 
+// ratting of a book
+/**
+ * @param {BooK id}
+ * returns {ratting}
+ */
+const getRatting = async (id) => {
+    let totalRatting = 0;
+    const reviewArray = await reviewService.findByBookId(id);
+
+    for (const review of reviewArray) {
+        totalRatting += review.ratting;
+    }
+
+    const ratting = totalRatting / reviewArray.length;
+    return ratting;
+};
+
+// get all reviews of a given book
+const getReviews = async (id, { page, limit, sortType, sortBy }) => {
+    const reviews = await reviewService.findReviews(id, {
+        page,
+        limit,
+        sortType,
+        sortBy,
+    });
+    return reviews;
+};
+
 module.exports = {
     create,
     updateProperties,
@@ -144,4 +172,6 @@ module.exports = {
     count,
     bookObj,
     findByUserId,
+    getRatting,
+    getReviews,
 };

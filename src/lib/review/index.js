@@ -116,6 +116,11 @@ const findByBookId = async (bookId) => {
     const reviews = await Review.find({ bookId: bookId }).select("ratting");
     return reviews;
 };
+
+// get ratting of a book
+/**
+ * @param {string} bookId
+ */
 module.exports = {
     create,
     removeItem,
