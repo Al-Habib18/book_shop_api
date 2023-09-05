@@ -14,6 +14,11 @@ const loginValidator = (req, res, next) => {
         if (!isValidEmail) {
             throw badRequest("Invalid Email");
         }
+        if (password.length < 4)
+            throw badRequest("Your password must be at least 4 characters");
+
+        if (password.length > 10)
+            throw badRequest("Your password must be less than 11 characters");
 
         next();
     } catch (e) {
