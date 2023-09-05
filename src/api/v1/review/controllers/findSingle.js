@@ -21,8 +21,8 @@ const findSingle = async (req, res, next) => {
             //TODO: user: userObj.name,
         };
         const links = {
-            book: `/api/v1/books/${bookObj.id}`, // ${review.bookId}
-            // user : `/api/v1/users/${userObj.id}`
+            book: `/api/v1/books/${review.bookId}`,
+            user: `/api/v1/users/${review.userId}`,
         };
         const response = {
             data,

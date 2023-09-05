@@ -3,7 +3,7 @@
 /** @format */
 
 const defaults = require("../../../../config/defaults");
-const reviewService = require("../../../../lib/review");
+const userService = require("../../../../lib/user");
 const { getPagination } = require("../../../../utils/pagination");
 const getHATEOAS = require("../../../../utils/HATEOAS");
 const { notFound } = require("../../../../utils/error");
@@ -17,7 +17,7 @@ const allReviews = async (req, res, next) => {
     const sortBy = req.query.sortBy || defaults.sortBy;
 
     try {
-        const reviews = await reviewService.findByUserId(id, {
+        const reviews = await userService.getAllReviews(id, {
             page,
             limit,
             sortType,

@@ -1,5 +1,6 @@
 /** @format */
 const Book = require("../../model/Book");
+const defaults = require("../../config/defaults");
 const reviewService = require("../review");
 const { badRequest, notFound } = require("../../utils/error");
 
@@ -110,21 +111,25 @@ const bookObj = async (id) => {
     return book;
 };
 
+// find all books of a given user
 const findByUserId = async (
     id,
     {
-        page = 1,
-        limit = 10,
+        page = defaults.page || 1,
+        limit = defaults.limit || 5,
         sortType = "desc",
         sortBy = "updatedAt",
         search = "",
     }
 ) => {
+    if (!id) {
+        throw badRequest("Id is required");
+    }
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
 
-    const filter = {
-        title: { $regex: search, $options: "i" },
-    };
+    // const filter = {
+    //     title: { $regex: search, $options: "i" },
+    // };
 
     //TODO: add title regex for find book
     const books = await Book.find({ userId: id })

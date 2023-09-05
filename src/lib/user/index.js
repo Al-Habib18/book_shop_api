@@ -4,6 +4,8 @@ const User = require("../../model/User");
 
 const bookService = require("../book");
 const cartService = require("../cart");
+const orderService = require("../order");
+const reviewService = require("../review");
 
 const { badRequest, notFound } = require("../../utils/error");
 const { generateHash } = require("../../utils/hashing");
@@ -126,6 +128,40 @@ const count = ({ search = "" }) => {
     return User.count(filter);
 };
 
+// get all books of a user
+const getAllBooks = async (id, { page, limit, sortType, sortBy, search }) => {
+    const books = await bookService.findByUserId(id, {
+        page,
+        limit,
+        sortType,
+        sortBy,
+        search,
+    });
+    return books;
+};
+
+//get all reviews of a user
+const getAllReviews = async (id, { page, limit, sortType, sortBy }) => {
+    const reviews = await reviewService.findByUserId(id, {
+        page,
+        limit,
+        sortType,
+        sortBy,
+    });
+    return reviews;
+};
+
+//get all orders of user
+const getAllOrders = async (id, { page, limit, sortType, sortBy }) => {
+    const orders = await orderService.findByUserId(id, {
+        page,
+        limit,
+        sortType,
+        sortBy,
+    });
+    return orders;
+};
+
 module.exports = {
     create,
     count,
@@ -135,4 +171,7 @@ module.exports = {
     updateProperties,
     removeItem,
     isUserExist,
+    getAllBooks,
+    getAllReviews,
+    getAllOrders,
 };
