@@ -1,21 +1,24 @@
 /** @format */
 const reviewService = require("../../../../lib/review");
-const bookService = require("../../../../lib/book");
+const { notFound } = require("../../../../utils/error");
 
 const create = async (req, res, next) => {
     const { bookId, ratting, summary } = req.body;
     const userId = req.user.id;
     try {
+        const book = reviewService.getBook(bookId);
+        if (!book) {
+            throw notFound("Book not found");
+        }
         const review = await reviewService.create({
             userId,
             bookId,
             ratting,
             summary,
         });
-        const bookObj = await bookService.findBookById(bookId);
 
         const data = {
-            book: bookObj.title,
+            book: book.title,
             ...review._doc,
         };
         const links = {
@@ -23,7 +26,7 @@ const create = async (req, res, next) => {
         };
         const response = { data, links };
 
-        res.status(201).json({ data: response });
+        res.status(201).json(response);
     } catch (err) {
         next(err);
     }

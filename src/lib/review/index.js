@@ -1,5 +1,6 @@
 /** @format */
 const Review = require("../../model/Review");
+const bookService = require("../book");
 const { notFound, badRequest } = require("../../utils/error");
 
 // create a new review
@@ -7,6 +8,17 @@ const create = async ({ userId, bookId, ratting, summary = "" }) => {
     if (!userId || !bookId || !ratting) {
         throw badRequest();
     }
+    // only one user can create a review of a book
+    const reviews = await findByBookId(bookId, { page: 1, limit: 0 });
+    for (const review of reviews) {
+        let reviewerId = `${review.userId}`;
+        if (reviewerId === userId) {
+            throw badRequest(
+                "You hav already been created a review to this book"
+            );
+        }
+    }
+
     const review = new Review({
         userId,
         bookId,
@@ -84,23 +96,14 @@ const removeItem = async (id) => {
     return Review.findByIdAndDelete(id);
 };
 
-// find all reviews of a book
-const findReviews = async (id, { page, limit, sortType, sortBy, search }) => {
-    if (!id) {
-        throw badRequest("id is required");
-    }
-    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
-
-    return Review.find({ bookId: id })
-        .sort(sortString)
-        .skip(page * limit - limit)
-        .limit(limit);
-};
-
+// find all reviews of a user
 const findByUserId = async (
     id,
     { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
 ) => {
+    if (!id ?? !page ?? !limit) {
+        throw badRequest();
+    }
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
 
     //TODO: implement summary regex for find reviews
@@ -112,9 +115,29 @@ const findByUserId = async (
     return reviews;
 };
 
-const findByBookId = async (bookId) => {
-    const reviews = await Review.find({ bookId: bookId }).select("ratting");
+// find all reviews of a given book
+const findByBookId = async (
+    id,
+    { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
+) => {
+    if (!id ?? !page ?? !limit) {
+        throw badRequest();
+    }
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+
+    //TODO: implement summary regex for find reviews
+    const reviews = await Review.find({ bookId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
+
     return reviews;
+};
+
+// get a book by book_id
+const getBook = async (id) => {
+    const book = await bookService.findBookById(id);
+    return book;
 };
 
 // get ratting of a book
@@ -128,7 +151,7 @@ module.exports = {
     findReviewById,
     findAll,
     count,
-    findReviews,
     findByUserId,
     findByBookId,
+    getBook,
 };

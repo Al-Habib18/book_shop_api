@@ -16,7 +16,10 @@ const findBook = async (req, res, next) => {
         }
 
         let totalRatting = 0;
-        const reviewArray = await reviewService.findByBookId(book.id);
+        const reviewArray = await reviewService.findByBookId(book.id, {
+            page: 1,
+            limit: 0,
+        });
         for (const review of reviewArray) {
             totalRatting += review.ratting;
         }

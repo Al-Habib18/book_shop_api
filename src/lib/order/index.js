@@ -2,17 +2,20 @@
 
 const Order = require("../../model/Order");
 const { badRequest, notFound } = require("../../utils/error");
-const { page, limit } = require("../../config/defaults");
+const defaults = require("../../config/defaults");
 
 const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     if (!cartId || !userId) {
         throw badRequest();
     }
+
     // check ,is already ordered by this cart?
     const order_arr = await findByCartId(cartId);
+
     if (order_arr.length > 0) {
         throw badRequest();
     }
+
     const order = new Order({
         userId,
         cartId,
@@ -32,8 +35,8 @@ const findById = async (id) => {
 
 // find all orders
 const findAll = async ({
-    page = 1,
-    limit = 5,
+    page = defaults.page || 1,
+    limit = defaults.limit || 5,
     sortType = "desc",
     sortBy = "updatedAt",
 }) => {
@@ -102,6 +105,7 @@ const findByCartId = async (id) => {
     }
     return Order.find({ cartId: id });
 };
+
 module.exports = {
     create,
     findById,

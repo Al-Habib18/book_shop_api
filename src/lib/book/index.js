@@ -1,7 +1,6 @@
 /** @format */
 const Book = require("../../model/Book");
 const defaults = require("../../config/defaults");
-const reviewService = require("../review");
 const { badRequest, notFound } = require("../../utils/error");
 
 // create a new book
@@ -57,7 +56,7 @@ const removeItem = async (id) => {
     if (!book) {
         throw notFound();
     }
-    let reviews = await reviewService.findByBookId(id);
+    let reviews = await reviewService.findByBookId(id, { page: 1, limit: 0 });
 
     // asyncronously delete all reviews of a book
     for (const review of reviews) {
@@ -147,7 +146,10 @@ const findByUserId = async (
  */
 const getRatting = async (id) => {
     let totalRatting = 0;
-    const reviewArray = await reviewService.findByBookId(id);
+    const reviewArray = await reviewService.findByBookId(id, {
+        page: 1,
+        limit: 0,
+    });
 
     for (const review of reviewArray) {
         totalRatting += review.ratting;
@@ -155,17 +157,6 @@ const getRatting = async (id) => {
 
     const ratting = totalRatting / reviewArray.length;
     return ratting;
-};
-
-// get all reviews of a given book
-const getReviews = async (id, { page, limit, sortType, sortBy }) => {
-    const reviews = await reviewService.findReviews(id, {
-        page,
-        limit,
-        sortType,
-        sortBy,
-    });
-    return reviews;
 };
 
 module.exports = {
@@ -178,5 +169,4 @@ module.exports = {
     bookObj,
     findByUserId,
     getRatting,
-    getReviews,
 };

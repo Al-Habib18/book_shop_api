@@ -1,17 +1,20 @@
 /** @format */
 const orderService = require("../../../../lib/order");
-const cartSercice = require("../../../../lib/cart");
+const cartService = require("../../../../lib/cart");
+
 const { notFound } = require("../../../../utils/error");
 
 const create = async (req, res, next) => {
     const { cartId, shippingMethod } = req.body;
     const userId = req.user.id;
+
     try {
-        const cartObj = await cartSercice.findById(cartId);
-        if (!cartObj) {
+        const cart = await cartService.findById(cartId);
+        if (!cart) {
             throw notFound();
         }
-        const amount = cartObj.amount;
+
+        const amount = cart.amount;
         const order = await orderService.create({
             userId,
             cartId,
@@ -22,7 +25,7 @@ const create = async (req, res, next) => {
         const data = {
             id: order.id,
             cart: order.cartId,
-            quantity: cartObj.quantity,
+            quantity: cart.quantity,
             amount: amount,
             orderStatus: order.orderStatus,
             shippingMethod: order.shippingMethod,

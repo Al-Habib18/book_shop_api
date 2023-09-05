@@ -1,12 +1,12 @@
 /** @format */
 
-const bookService = require("../../../../lib/book");
+const reviewService = require("../../../../lib/review");
 const { badRequest, notFound } = require("../../../../utils/error");
 const { getPagination } = require("../../../../utils/pagination");
 const defaults = require("../../../../config/defaults");
 const getHATEOAS = require("../../../../utils/HATEOAS");
 
-const findReviews = async (req, res, next) => {
+const findByBookId = async (req, res, next) => {
     const { id } = req.params;
     const page = req.query.page || defaults.page;
     const limit = req.query.limit || defaults.limit;
@@ -17,13 +17,12 @@ const findReviews = async (req, res, next) => {
         if (!id) {
             throw badRequest("Id is required");
         }
-        const reviews = await bookService.getReviews(id, {
+        const reviews = await reviewService.findByBookId(id, {
             page,
             limit,
             sortType,
             sortBy,
         });
-
         if (reviews.length < 1) {
             throw notFound();
         }
@@ -50,4 +49,4 @@ const findReviews = async (req, res, next) => {
     }
 };
 
-module.exports = findReviews;
+module.exports = findByBookId;
