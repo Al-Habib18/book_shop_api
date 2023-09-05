@@ -1,6 +1,5 @@
 /** @format */
 const reviewService = require("../../../../lib/review");
-const bookService = require("../../../../lib/book");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
@@ -10,10 +9,11 @@ const update = async (req, res, next) => {
             ratting,
             summary,
         });
-        const bookObj = await bookService.findBookById(review.bookId);
+
+        const book = await reviewService.getBookByReview(review.bookId);
 
         const response = {
-            book: bookObj.title,
+            book: book.title,
             ...review._doc,
         };
 

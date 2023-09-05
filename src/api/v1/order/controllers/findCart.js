@@ -1,6 +1,5 @@
 /** @format */
 const orderService = require("../../../../lib/order");
-const cartService = require("../../../../lib/cart");
 const { badRequest } = require("../../../../utils/error");
 
 const findCart = async (req, res, next) => {
@@ -11,7 +10,7 @@ const findCart = async (req, res, next) => {
             throw badRequest("Invalid id");
         }
 
-        const cart = await cartService.findById(order.cartId);
+        const cart = await orderService.getCart(order.cartId);
         const links = {
             user: `/api/v1/users/${order.userIs}`,
         };

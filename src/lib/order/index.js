@@ -1,6 +1,9 @@
 /** @format */
 
 const Order = require("../../model/Order");
+const cartService = require("../cart");
+const userService = require("../user");
+
 const { badRequest, notFound } = require("../../utils/error");
 const defaults = require("../../config/defaults");
 
@@ -8,12 +11,11 @@ const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     if (!cartId || !userId) {
         throw badRequest();
     }
-
     // check ,is already ordered by this cart?
     const order_arr = await findByCartId(cartId);
 
     if (order_arr.length > 0) {
-        throw badRequest();
+        throw badRequest("Order already created by this cart");
     }
 
     const order = new Order({
@@ -106,6 +108,16 @@ const findByCartId = async (id) => {
     return Order.find({ cartId: id });
 };
 
+// get cart of a  by cart id
+const getCart = (id) => {
+    return cartService.findById(id);
+};
+
+// get user of a order by user id
+const getUser = (id) => {
+    return userService.findById(id);
+};
+
 module.exports = {
     create,
     findById,
@@ -115,4 +127,6 @@ module.exports = {
     updatePorperties,
     findByUserId,
     findByCartId,
+    getCart,
+    getUser,
 };

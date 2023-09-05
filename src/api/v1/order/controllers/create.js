@@ -1,6 +1,5 @@
 /** @format */
 const orderService = require("../../../../lib/order");
-const cartService = require("../../../../lib/cart");
 
 const { notFound } = require("../../../../utils/error");
 
@@ -9,11 +8,10 @@ const create = async (req, res, next) => {
     const userId = req.user.id;
 
     try {
-        const cart = await cartService.findById(cartId);
+        const cart = await orderService.getCart(cartId);
         if (!cart) {
-            throw notFound();
+            throw notFound("cart not found");
         }
-
         const amount = cart.amount;
         const order = await orderService.create({
             userId,
@@ -47,16 +45,3 @@ const create = async (req, res, next) => {
 };
 
 module.exports = create;
-
-const create2 = async (req, res, next) => {
-    const cart = await cartSercice.create({ bookArray, quantity, amount });
-
-    const data = {
-        id: cart.id,
-        books,
-        quantity,
-        amount,
-    };
-
-    res.status(200).json({ data });
-};

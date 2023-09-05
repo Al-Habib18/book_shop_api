@@ -1229,7 +1229,7 @@ paths:
                 - $ref: "#/components/parameters/idPathParam"
             responses:
                 "200":
-                    description: User retrive succussfull
+                    description: Order retrive succussfull
                     content:
                         application/json:
                             schema:

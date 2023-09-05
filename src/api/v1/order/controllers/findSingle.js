@@ -1,6 +1,5 @@
 /** @format */
 const orderService = require("../../../../lib/order");
-const cartSercice = require("../../../../lib/cart");
 const { notFound } = require("../../../../utils/error");
 
 const findSingle = async (req, res, next) => {
@@ -10,11 +9,12 @@ const findSingle = async (req, res, next) => {
         if (!order) {
             throw notFound();
         }
-        const cart = await cartSercice.findById(order.cartId);
+        const cart = await orderService.getCart(order.cartId);
         if (!cart) {
             throw notFound();
         }
         const quantity = cart.books.length;
+
         const data = {
             ...order._doc,
             quantity,

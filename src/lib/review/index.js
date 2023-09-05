@@ -140,6 +140,12 @@ const getBook = async (id) => {
     return book;
 };
 
+// get a book by review_id
+const getBookByReview = async (id) => {
+    const book = await bookService.findBookById(id);
+    return book;
+};
+
 // get ratting of a book
 /**
  * @param {string} bookId
@@ -154,4 +160,5 @@ module.exports = {
     findByUserId,
     findByBookId,
     getBook,
+    getBookByReview,
 };

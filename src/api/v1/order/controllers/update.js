@@ -1,6 +1,5 @@
 /** @format */
 const orderService = require("../../../../lib/order");
-const cartSercice = require("../../../../lib/cart");
 const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
@@ -13,7 +12,7 @@ const update = async (req, res, next) => {
             shippingMethod,
         });
 
-        const cartObj = await cartSercice.findById(cartId);
+        const cartObj = await orderService.getCart(cartId);
         if (!cartObj) {
             throw notFound("Cart not found");
         }
@@ -27,7 +26,7 @@ const update = async (req, res, next) => {
 
         const links = {
             self: `/api/v1/orders/${order.id}`,
-            // TODO: user : `/api/v1/users/${order.user}`,
+            user: `/api/v1/users/${order.user}`,
             cart: `/api/v1/carts/${order.cart}`,
         };
         const response = {

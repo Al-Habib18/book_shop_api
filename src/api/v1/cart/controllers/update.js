@@ -1,6 +1,6 @@
 /** @format */
-const cartSercice = require("../../../../lib/cart");
-const bookService = require("../../../../lib/book");
+const cartService = require("../../../../lib/cart");
+
 const { badRequest, notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
@@ -8,21 +8,15 @@ const update = async (req, res, next) => {
     const bookArray = req.body;
 
     try {
-        const books = [];
-        let amount = 0;
+        const booksObj = await cartService.getBooks({ bookArray });
+        const quantity = booksObj.length;
 
-        for (let bookId of bookArray) {
-            const book = await bookService.bookObj(bookId);
-            if (!book) {
-                throw badRequest(`this id (${bookId}) dosen't exist`);
-            }
-            books.push(book);
+        let amount = 0;
+        for (let book of booksObj) {
             amount += book.price;
         }
 
-        const quantity = books.length;
-
-        const cart = await cartSercice.updateProperties(id, {
+        const cart = await cartService.updateProperties(id, {
             bookArray,
             quantity,
             amount,
@@ -30,7 +24,7 @@ const update = async (req, res, next) => {
 
         const data = {
             id: cart.id,
-            books,
+            books: booksObj,
             quantity,
             amount,
         };

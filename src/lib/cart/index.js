@@ -1,7 +1,7 @@
 /** @format */
 const { badRequest, notFound } = require("../../utils/error");
 const Cart = require("../../model/Cart");
-const orderService = require("../order");
+const bookService = require("../book");
 
 // create a new Cart
 const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
@@ -81,13 +81,21 @@ const removeItem = async (id) => {
         throw notFound();
     }
 
-    const orders = await orderService.findByCartId(cart.id);
-    //TODO: remove loop later
-    for (let order of orders) {
-        await orderService.removeItem(order.id);
-    }
-
     return Cart.findByIdAndDelete(id);
+};
+
+// get books of a requested cart
+const getBooks = async ({ bookArray = [] }) => {
+    let booksObj = [];
+
+    for (let bookId of bookArray) {
+        const book = await bookService.bookObj(bookId);
+        if (!book) {
+            throw badRequest("Please provide  valid book");
+        }
+        booksObj.push(book);
+    }
+    return booksObj;
 };
 
 module.exports = {
@@ -98,4 +106,5 @@ module.exports = {
     updateProperties,
     removeItem,
     count,
+    getBooks,
 };
