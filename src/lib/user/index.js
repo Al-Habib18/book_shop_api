@@ -8,7 +8,7 @@ const orderService = require("../order");
 const reviewService = require("../review");
 
 const { badRequest, notFound } = require("../../utils/error");
-const { generateHash } = require("../../utils/hashing");
+const { generateHash, hasMatched } = require("../../utils/hashing");
 
 // find a user by email
 const findUserByEmail = async (email) => {
@@ -162,6 +162,25 @@ const getAllOrders = async (id, { page, limit, sortType, sortBy }) => {
     return orders;
 };
 
+// change password of user
+const changePassword = async (id, { oldPassword, newPassword }) => {
+    let user = await User.findById(id);
+    if (!user) {
+        throw notFound();
+    }
+    let currentPassword = user.password;
+
+    const isMatched = await hasMatched(oldPassword, currentPassword);
+
+    if (!isMatched) {
+        throw badRequest("invalid password");
+    }
+    const password = await generateHash(newPassword);
+
+    user.password = password;
+
+    return user.save();
+};
 module.exports = {
     create,
     count,
@@ -174,4 +193,5 @@ module.exports = {
     getAllBooks,
     getAllReviews,
     getAllOrders,
+    changePassword,
 };

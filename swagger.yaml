@@ -167,9 +167,8 @@ paths:
                                                 - type: object
                                                   properties:
                                                       id:
-                                                          type: integer
-                                                          format: int32
-                                                          example: 123
+                                                          type: string
+                                                          example: 1sdf2ds3
                                                       title:
                                                           type: string
                                                           example: Clean Architecture
@@ -291,11 +290,11 @@ paths:
                                                 - type: object
                                                   properties:
                                                       id:
-                                                          type: integer
-                                                          example: 2123
+                                                          type: string
+                                                          example: 2sdf12dfsdf3
                                                       bookId:
-                                                          type: integer
-                                                          example: 3223
+                                                          type: string
+                                                          example: 3sd2fsdfsd23
                                                       ratting:
                                                           type: number
                                                           format: float
@@ -327,7 +326,51 @@ paths:
                     $ref: "#/components/responses/404"
                 "500":
                     $ref: "#/components/responses/500"
-
+    /users/{id}/password:
+        patch:
+            security:
+                - bearerAuth: []
+            description: Update a user's password
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    "application/json":
+                        schema:
+                            type: object
+                            properties:
+                                oldPassword:
+                                    type: string
+                                    example: pass123
+                                newPassword:
+                                    type: string
+                                    example: pass111
+            responses:
+                "200":
+                    description: Password update successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/User"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/users/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
     /users/{id}:
         get:
             security:
@@ -443,9 +486,8 @@ paths:
                                                 - type: object
                                                   properties:
                                                       id:
-                                                          type: integer
-                                                          format: int32
-                                                          example: 123
+                                                          type: string
+                                                          example: 1df2sdfsdf3
                                                       name:
                                                           type: string
                                                           example: al-habib
@@ -528,9 +570,8 @@ paths:
                                         type: object
                                         properties:
                                             id:
-                                                type: integer
-                                                format: int32
-                                                example: 32434
+                                                type: string
+                                                example: 32dsd4sdf34
                                             name:
                                                 type: string
                                                 example: asif ahmed
@@ -856,6 +897,9 @@ paths:
                                     data:
                                         type: object
                                         properties:
+                                            id:
+                                                type: string
+                                                example: 12dskfs2
                                             title:
                                                 type: string
                                                 example: The Pragmatic Programmer
@@ -918,9 +962,8 @@ paths:
                                             - type: object
                                               properties:
                                                   id:
-                                                      type: integer
-                                                      format: int32
-                                                      example: 234234
+                                                      type: string
+                                                      example: 23sd4dfdf34
                                                   user:
                                                       type: string
                                                       example: 12ds2123sd
@@ -982,9 +1025,9 @@ paths:
                                                 - type: object
                                                   properties:
                                                       id:
-                                                          type: integer
-                                                          format: int32
-                                                          example: 2342
+                                                          type: string
+
+                                                          example: 2sdf3sdf42
                                                       books:
                                                           type: array
                                                           items:
@@ -1122,8 +1165,6 @@ paths:
                 "500":
                     $ref: "#/components/responses/500"
         post:
-            security:
-                - bearerAuth: []
             description: Create a cart
             tags: [Cart]
             requestBody:
@@ -1147,16 +1188,16 @@ paths:
                                         type: object
                                         properties:
                                             id:
-                                                type: integer
-                                                example: 1232
+                                                type: string
+                                                example: 1sf2sd3sd2
                                             books:
                                                 type: array
                                                 items:
                                                     type: object
                                                     properties:
                                                         id:
-                                                            type: integer
-                                                            example: 324324
+                                                            type: string
+                                                            example: 3sf2sd43d24
                                                         title:
                                                             type: string
                                                             example: clean code
@@ -1273,7 +1314,78 @@ paths:
                     $ref: "#/components/responses/404"
                 "500":
                     $ref: "#/components/responses/500"
-
+    /orders/{id}/order-status:
+        patch:
+            security:
+                - bearerAuth: []
+            description: Upadate a order
+            tags: [Order]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                orderStatus:
+                                    type: string
+                                    example: pending
+            responses:
+                "200":
+                    description: Order updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        allOf:
+                                            - type: object
+                                              properties:
+                                                  id:
+                                                      type: string
+                                                      example: 1sd2d3fdf2
+                                                  cart:
+                                                      type: string
+                                                      example: 1sd2d3fdf2
+                                                  quantity:
+                                                      type: integer
+                                                      example: 4
+                                                  amount:
+                                                      type: integer
+                                                      example: 12000
+                                                  orderStatus:
+                                                      type: string
+                                                      example: pending
+                                                  shippingMethod:
+                                                      type: string
+                                                      enum: [standard, priority]
+                                                      default: standard
+                                            - $ref: "#/components/schemas/Timestamp"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: "/api/v1/order/:id"
+                                            user:
+                                                type: string
+                                                format: url
+                                                example: "/api/v1/user/:id"
+                                            cart:
+                                                type: string
+                                                format: url
+                                                example: "/api/v1/cart/:id"
+                "400":
+                    $ref: "#/components/responses/400"
+                "401":
+                    $ref: "#/components/responses/401"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
     /orders/{id}:
         get:
             security:
@@ -1325,11 +1437,6 @@ paths:
                                 cartId:
                                     type: string
                                     example: g2d34ddff2f3
-                                orderStatus:
-                                    type: string
-                                    enum:
-                                        [pending, shipped, delivered, cancelled]
-                                    default: pending
                                 shippingMethod:
                                     type: string
                                     enum: [standard, priority]
@@ -1439,9 +1546,9 @@ paths:
                                                 - type: object
                                                   properties:
                                                       id:
-                                                          type: integer
-                                                          format: int32
-                                                          example: 32423
+                                                          type: string
+
+                                                          example: sdf3d2sdf423
                                                       userId:
                                                           type: integer
                                                       cartId:
@@ -1513,8 +1620,8 @@ paths:
                                         type: object
                                         properties:
                                             id:
-                                                type: integer
-                                                example: 1232
+                                                type: string
+                                                example: 1sdf2sd3fd322
                                             cart:
                                                 type: string
                                                 example: d4f2kd423kdd
@@ -1637,9 +1744,9 @@ paths:
                                             - type: object
                                               properties:
                                                   id:
-                                                      type: integer
-                                                      format: int32
-                                                      example: 942384
+                                                      type: string
+
+                                                      example: 9sd42sdf38d4
                                                   user:
                                                       type: object
                                                       properties:
@@ -1835,7 +1942,7 @@ paths:
                             properties:
                                 bookId:
                                     type: string
-                                    example: 64f0a96f225f0a8434489535
+                                    example: 64f0a96f2a8434489535
                                 ratting:
                                     type: integer
                                     format: int32
@@ -1856,8 +1963,8 @@ paths:
                                         type: object
                                         properties:
                                             id:
-                                                type: integer
-                                                example: 1232
+                                                type: string
+                                                example: 12sdsdf3d2
                                             bookId:
                                                 type: string
                                                 example: 64f0a96f225f0a8434489535
@@ -1895,8 +2002,8 @@ components:
                 - type: object
                   properties:
                       id:
-                          type: integer
-                          format: int32
+                          type: string
+                          example: 34sdsdf34
                       title:
                           type: string
                           example: Clean Architecture
@@ -1932,9 +2039,8 @@ components:
                 - type: object
                   properties:
                       id:
-                          type: integer
-                          format: int32
-                          example: 345
+                          type: string
+                          example: 3d4dfs5asd
                       name:
                           type: string
                           example: al-habib
@@ -2044,16 +2150,14 @@ components:
                 - type: object
                   properties:
                       id:
-                          type: integer
-                          format: int32
-                          example: 234234
+                          type: string
+                          example: 2sd3sd42df34
                       user:
                           type: object
                           properties:
                               id:
-                                  type: integer
-                                  format: int32
-                                  example: 234234
+                                  type: string
+                                  example: 2dfg342f34
                               name:
                                   type: string
                                   example: asif ahmed

@@ -8,6 +8,7 @@ const deleteItem = require("./deleteItem");
 const allBooks = require("./findAllBooks");
 const allOrders = require("./findAllOrders");
 const allReviews = require("./findAllReviews");
+const changePassword = require("./ChangePass");
 
 module.exports = {
     createItem,
@@ -18,4 +19,5 @@ module.exports = {
     allBooks,
     allOrders,
     allReviews,
+    changePassword,
 };

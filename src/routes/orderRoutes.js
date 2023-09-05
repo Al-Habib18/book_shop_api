@@ -6,6 +6,7 @@ const authenticate = require("../middleware/authenticate");
 
 router.get("/:id/cart", authenticate, orderControllers.findCart);
 router.get("/:id/user", authenticate, orderControllers.findUser);
+router.patch("/:id/order-status", authenticate, orderControllers.orderStatus);
 
 router
     .route("/:id")

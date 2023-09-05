@@ -2,17 +2,17 @@
 const orderService = require("../../../../lib/order");
 const { notFound } = require("../../../../utils/error");
 
-const update = async (req, res, next) => {
+const orderStatus = async (req, res, next) => {
     const { id } = req.params;
-    const { cartId, orderStatus, shippingMethod } = req.body;
+    const { orderStatus } = req.body;
     try {
-        const order = await orderService.updatePorperties(id, {
-            cartId,
-            orderStatus,
-            shippingMethod,
-        });
+        let order = await orderService.findById(id);
+        if (!order) {
+            throw notFound("Order not found");
+        }
+        order = await orderService.updatePorperties(id, { orderStatus });
 
-        const cartObj = await orderService.getCart(cartId);
+        const cartObj = await orderService.getCart(order.cartId);
         if (!cartObj) {
             throw notFound("Cart not found");
         }
@@ -39,4 +39,4 @@ const update = async (req, res, next) => {
     }
 };
 
-module.exports = update;
+module.exports = orderStatus;

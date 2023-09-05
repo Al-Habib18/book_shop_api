@@ -8,6 +8,8 @@ router.get("/:id/books", authenticate, userControllers.allBooks);
 router.get("/:id/orders", authenticate, userControllers.allOrders);
 router.get("/:id/reviews", authenticate, userControllers.allReviews);
 
+router.patch("/:id/password", authenticate, userControllers.changePassword);
+
 router
     .route("/:id")
     .get(authenticate, userControllers.findSingleItem)
