@@ -53,20 +53,29 @@ const findAll = async ({
 const count = () => {
     return Order.count();
 };
-const updatePorperties = async (
-    id,
-    { cartId, orderStatus, shippingMethod }
-) => {
+// update order
+const updatePorperties = async (id, { cartId, shippingMethod }) => {
     const order = await Order.findById(id);
     if (!order) {
         throw notFound();
     }
     const cart = cartId;
-    const payload = { cart, orderStatus, shippingMethod };
+    const payload = { cart, shippingMethod };
 
     Object.keys(payload).forEach(
         (key) => (order[key] = payload[key] ?? order[key])
     );
+    await order.save();
+    return order;
+};
+
+// update order-status
+const updateOrderStatus = async (id, { orderStatus }) => {
+    const order = await Order.findById(id);
+    if (!order) {
+        throw notFound();
+    }
+    order.orderStatus = orderStatus;
     await order.save();
     return order;
 };
@@ -129,4 +138,5 @@ module.exports = {
     findByCartId,
     getCart,
     getUser,
+    updateOrderStatus,
 };

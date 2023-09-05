@@ -11,8 +11,8 @@ const registerValidator = (req, res, next) => {
         if (name.length < 3)
             throw badRequest("Your name must be at least 3 characters");
 
-        if (name.length > 40)
-            throw badRequest("Your name must be under 40 characters");
+        if (name.length > 50)
+            throw badRequest("Your name must be under 50 characters");
 
         const isValidEmail =
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);

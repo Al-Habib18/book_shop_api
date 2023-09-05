@@ -6,6 +6,8 @@ const userSchema = new Schema(
     {
         name: {
             type: String,
+            maxlength: 50,
+            minlength: 3,
             require: true,
         },
         email: {
@@ -14,6 +16,8 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
+            maxlength: 10,
+            minlength: 4,
             require: true,
         },
         role: {
@@ -23,6 +27,8 @@ const userSchema = new Schema(
         },
         account: {
             type: String,
+            maxlength: 11,
+            minlength: 11,
         },
     },
     { timestamps: true }

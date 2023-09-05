@@ -18,6 +18,8 @@ const reviewSchema = new Schema(
         },
         summary: {
             type: String,
+            maxlength: 255,
+            minlength: 5,
         },
     },
     { timestamps: true }

@@ -1165,6 +1165,8 @@ paths:
                 "500":
                     $ref: "#/components/responses/500"
         post:
+            security:
+                - bearerAuth: []
             description: Create a cart
             tags: [Cart]
             requestBody:
@@ -1330,7 +1332,14 @@ paths:
                             properties:
                                 orderStatus:
                                     type: string
-                                    example: pending
+                                    enum:
+                                        [
+                                            "pending",
+                                            "shipped",
+                                            "delivered",
+                                            "cancelled ",
+                                        ]
+                                    default: "pending"
             responses:
                 "200":
                     description: Order updated successfully

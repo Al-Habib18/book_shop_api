@@ -4,15 +4,14 @@ const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
-    const { cartId, orderStatus, shippingMethod } = req.body;
+    const { cartId, shippingMethod } = req.body;
     try {
         const order = await orderService.updatePorperties(id, {
             cartId,
-            orderStatus,
             shippingMethod,
         });
 
-        const cartObj = await orderService.getCart(cartId);
+        const cartObj = await orderService.getCart(order.cartId);
         if (!cartObj) {
             throw notFound("Cart not found");
         }

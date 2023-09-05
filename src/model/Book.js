@@ -6,6 +6,8 @@ const bookSchema = new Schema(
     {
         title: {
             type: String,
+            maxlength: 50,
+            minlength: 3,
             required: true,
         },
         userId: {
@@ -18,12 +20,18 @@ const bookSchema = new Schema(
         },
         publisher: {
             type: String,
+            maxlength: 50,
+            minlength: 3,
         },
         category: {
             type: String,
+            maxlength: 50,
+            minlength: 3,
         },
         summary: {
             type: String,
+            maxlength: 250,
+            minlength: 10,
         },
         price: {
             type: Number,

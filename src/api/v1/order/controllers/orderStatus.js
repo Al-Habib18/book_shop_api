@@ -10,7 +10,7 @@ const orderStatus = async (req, res, next) => {
         if (!order) {
             throw notFound("Order not found");
         }
-        order = await orderService.updatePorperties(id, { orderStatus });
+        order = await orderService.updateOrderStatus(id, { orderStatus });
 
         const cartObj = await orderService.getCart(order.cartId);
         if (!cartObj) {
