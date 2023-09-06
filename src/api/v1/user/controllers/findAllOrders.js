@@ -23,7 +23,7 @@ const allOrders = async (req, res, next) => {
         });
 
         if (orders.length < 1) {
-            throw notFound();
+            throw notFound("You didn't have any order");
         }
         const totalItems = orders.length;
 

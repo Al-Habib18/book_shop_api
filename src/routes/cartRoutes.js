@@ -3,16 +3,33 @@
 const router = require("express").Router();
 const { cartControllers } = require("../api/v1/cart");
 const authenticate = require("../middleware/authenticate");
+const authorize = require("../middleware/authorize");
 
 router
     .route("/:id")
-    .get(authenticate, cartControllers.findSingle)
-    .patch(authenticate, cartControllers.update)
-    .delete(authenticate, cartControllers.remove);
+    .get(
+        authenticate,
+        authorize(["admin", "seller", "customer"]),
+        cartControllers.findSingle
+    )
+    .patch(
+        authenticate,
+        authorize(["admin", "seller", "customer"]),
+        cartControllers.update
+    )
+    .delete(
+        authenticate,
+        authorize(["admin", "seller", "customer"]),
+        cartControllers.remove
+    );
 
 router
     .route("/")
-    .get(authenticate, cartControllers.findAll)
-    .post(authenticate, cartControllers.create);
+    .get(authenticate, authorize(["admin"]), cartControllers.findAll)
+    .post(
+        authenticate,
+        authorize(["admin", "seller", "customer"]),
+        cartControllers.create
+    );
 
 module.exports = router;

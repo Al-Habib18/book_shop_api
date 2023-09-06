@@ -24,8 +24,8 @@ const allBooks = async (req, res, next) => {
             search,
         });
 
-        if (!books) {
-            throw notFound();
+        if (books.length < 1) {
+            throw notFound("Book not found");
         }
         const totalItems = books.length;
 

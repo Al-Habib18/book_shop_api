@@ -34,6 +34,7 @@ const userValidator = (req, _res, next) => {
             if (account.length > 11)
                 throw badRequest("Your account must be  11 characters");
         }
+
         next();
     } catch (e) {
         next(e);

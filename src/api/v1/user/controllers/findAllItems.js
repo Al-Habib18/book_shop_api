@@ -21,7 +21,7 @@ const findAllItems = async (req, res, next) => {
             sortBy,
             search,
         });
-        if (!users) {
+        if (users.length < 1) {
             throw notFound();
         }
         const totalItems = await userService.count({ search });

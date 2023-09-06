@@ -24,7 +24,7 @@ const findByBookId = async (req, res, next) => {
             sortBy,
         });
         if (reviews.length < 1) {
-            throw notFound();
+            throw notFound("There are no reviews");
         }
 
         const totalItems = reviews.length;

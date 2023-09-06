@@ -50,8 +50,8 @@ paths:
                                     example: pass123
                                 role:
                                     type: string
-                                    enum: [customer, author, admin]
-                                    example: author
+                                    enum: [customer, seller, admin]
+                                    default: customer
                                 account:
                                     type: string
                                     example: 01313306149
@@ -82,7 +82,7 @@ paths:
                                         properties:
                                             login:
                                                 type: string
-                                                example: /api/v1/login
+                                                example: /auth/login
 
                 400:
                     $ref: "#/components/responses/400"
@@ -416,8 +416,8 @@ paths:
                                     type: string
                                     example: customer
                                 account:
-                                    type: integer
-                                    example: 13306149
+                                    type: string
+                                    example: 13sdsd30dd6149
             responses:
                 "200":
                     description: User update successfully
@@ -512,15 +512,15 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: /api/v1/users?page=2&limit=5
+                                                example: /users?page=2&limit=5
                                             next:
                                                 type: string
                                                 format: url
-                                                example: /api/v1/users?page=3&limit=5
+                                                example: /users?page=3&limit=5
                                             prev:
                                                 type: string
                                                 format: url
-                                                example: /api/v1/users?page=1&limit=5
+                                                example: /users?page=1&limit=5
                 "404":
                     $ref: "#/components/responses/404"
                 "400":
@@ -551,7 +551,7 @@ paths:
                                     example: pass123
                                 role:
                                     type: string
-                                    enum: [customer, author, admin]
+                                    enum: [customer, seller, admin]
                                     default: customer
                                 account:
                                     type: string
@@ -665,8 +665,6 @@ paths:
 
     /books/{id}:
         get:
-            security:
-                - bearerAuth: []
             description: Retrive a single book
             tags: [Book]
             parameters:
@@ -689,14 +687,11 @@ paths:
                                                 type: string
                                                 format: url
                                                 example: "/books/:id"
-                                            review:
+                                            reviews:
                                                 type: string
                                                 format: url
                                                 example: "/books/:id/reviews"
-                                            cover:
-                                                type: string
-                                                format: url
-                                                example: "/books/:id/photos"
+
                 "400":
                     $ref: "#/components/responses/400"
                 "404":
@@ -932,7 +927,7 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/books/:id"
+                                                example: "/books/:id"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -988,7 +983,7 @@ paths:
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/users/:id"
+                                                example: "/users/:id"
                 "404":
                     $ref: "#/components/responses/404"
                 "401":
@@ -1056,7 +1051,7 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/cart/:id"
+                                                example: "/cart/:id"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -1217,7 +1212,7 @@ paths:
                                         properties:
                                             cart:
                                                 type: string
-                                                example: "/api/v1/cart/:id"
+                                                example: "/cart/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -1253,7 +1248,7 @@ paths:
                                             cart:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/carts/${order.cartId}"
+                                                example: "/carts/${order.cartId}"
 
                 "401":
                     $ref: "#/components/responses/401"
@@ -1308,7 +1303,7 @@ paths:
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/users/${order.userId}"
+                                                example: "/users/${order.userId}"
 
                 "401":
                     $ref: "#/components/responses/401"
@@ -1378,15 +1373,15 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/order/:id"
+                                                example: "/order/:id"
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/user/:id"
+                                                example: "/user/:id"
                                             cart:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/cart/:id"
+                                                example: "/cart/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -1419,11 +1414,11 @@ paths:
                                             cart:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/carts/:id"
+                                                example: "/carts/:id"
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/users/:id"
+                                                example: "/users/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "404":
@@ -1450,6 +1445,10 @@ paths:
                                     type: string
                                     enum: [standard, priority]
                                     default: standard
+                                orderStatus:
+                                    type: string
+                                    enum: [pending, cancelled]
+                                    default: "pending"
             responses:
                 "200":
                     description: Order updated successfully
@@ -1495,15 +1494,15 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/order/:id"
+                                                example: "/order/:id"
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/user/:id"
+                                                example: "/user/:id"
                                             cart:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/cart/:id"
+                                                example: "/cart/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -1659,11 +1658,11 @@ paths:
                                             self:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/orders/:id"
+                                                example: "/orders/:id"
                                             cart:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/carts/:id"
+                                                example: "/carts/:id"
 
                 "400":
                     $ref: "#/components/responses/400"
@@ -1696,7 +1695,7 @@ paths:
                                             book:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/reviews/:id/book"
+                                                example: "/reviews/:id/book"
                 "404":
                     $ref: "#/components/responses/404"
                 "500":
@@ -1790,11 +1789,11 @@ paths:
                                             book:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/book/:id"
+                                                example: "/book/:id"
                                             user:
                                                 type: string
                                                 format: url
-                                                example: "/api/v1/user/:id"
+                                                example: "/user/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":
@@ -1992,7 +1991,7 @@ paths:
                                         properties:
                                             book:
                                                 type: string
-                                                example: "/api/v1/book/:id"
+                                                example: "/book/:id"
                 "400":
                     $ref: "#/components/responses/400"
                 "401":

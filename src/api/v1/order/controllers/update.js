@@ -4,10 +4,11 @@ const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
-    const { cartId, shippingMethod } = req.body;
+    const { cartId, shippingMethod, orderStatus } = req.body;
     try {
         const order = await orderService.updatePorperties(id, {
             cartId,
+            orderStatus,
             shippingMethod,
         });
 

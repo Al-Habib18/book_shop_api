@@ -24,8 +24,8 @@ const allReviews = async (req, res, next) => {
             sortBy,
         });
 
-        if (!reviews) {
-            throw notFound();
+        if (reviews.length < 1) {
+            throw notFound("Review not found");
         }
         const totalItems = reviews.length;
 

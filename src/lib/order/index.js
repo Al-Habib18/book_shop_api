@@ -54,13 +54,16 @@ const count = () => {
     return Order.count();
 };
 // update order
-const updatePorperties = async (id, { cartId, shippingMethod }) => {
+const updatePorperties = async (
+    id,
+    { cartId, shippingMethod, orderStatus }
+) => {
     const order = await Order.findById(id);
     if (!order) {
         throw notFound();
     }
     const cart = cartId;
-    const payload = { cart, shippingMethod };
+    const payload = { cart, shippingMethod, orderStatus };
 
     Object.keys(payload).forEach(
         (key) => (order[key] = payload[key] ?? order[key])
@@ -75,7 +78,7 @@ const updateOrderStatus = async (id, { orderStatus }) => {
     if (!order) {
         throw notFound();
     }
-    order.orderStatus = orderStatus;
+    order.orderStatus = orderStatus || order.orderStatus;
     await order.save();
     return order;
 };

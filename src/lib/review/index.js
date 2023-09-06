@@ -8,8 +8,13 @@ const create = async ({ userId, bookId, ratting, summary = "" }) => {
     if (!userId || !bookId || !ratting) {
         throw badRequest();
     }
+    const book = await bookService.findBookById(bookId);
+    if (!book) {
+        throw badRequest("Book does not Exist");
+    }
     // only one user can create a review of a book
     const reviews = await findByBookId(bookId, { page: 1, limit: 0 });
+
     for (const review of reviews) {
         let reviewerId = `${review.userId}`;
         if (reviewerId === userId) {
