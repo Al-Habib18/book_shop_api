@@ -1,5 +1,6 @@
 /** @format */
 const reviewService = require("../../../../lib/review");
+const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
@@ -11,6 +12,7 @@ const update = async (req, res, next) => {
         });
 
         const book = await reviewService.getBookByReview(review.bookId);
+        if (!book) throw notFound("Book not found");
 
         const response = {
             book: book.title,

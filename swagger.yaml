@@ -1453,7 +1453,7 @@ paths:
                 "200":
                     description: Order updated successfully
                     content:
-                        application/json:
+                        "application/json":
                             schema:
                                 type: object
                                 properties:
@@ -1475,18 +1475,10 @@ paths:
                                                       example: 12000
                                                   orderStatus:
                                                       type: string
-                                                      enum:
-                                                          [
-                                                              pending,
-                                                              shipped,
-                                                              delivered,
-                                                              cancelled,
-                                                          ]
-                                                      default: pending
+                                                      example: "pending"
                                                   shippingMethod:
                                                       type: string
-                                                      enum: [standard, priority]
-                                                      default: standard
+                                                      example: "standard"
                                             - $ref: "#/components/schemas/Timestamp"
                                     links:
                                         type: object

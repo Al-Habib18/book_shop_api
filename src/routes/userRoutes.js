@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { userControllers } = require("../api/v1/user");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
-const userValidator = require("../middleware/user");
+const { userValidator } = require("../middleware/user");
 
 router.get(
     "/:id/books",

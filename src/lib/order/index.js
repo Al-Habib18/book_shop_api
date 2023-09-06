@@ -15,7 +15,7 @@ const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     const order_arr = await findByCartId(cartId);
 
     if (order_arr.length > 0) {
-        throw badRequest("Order already created by this cart");
+        throw badRequest("Order already has been created by this cart");
     }
 
     const order = new Order({
@@ -59,15 +59,17 @@ const updatePorperties = async (
     { cartId, shippingMethod, orderStatus }
 ) => {
     const order = await Order.findById(id);
+
     if (!order) {
-        throw notFound();
+        throw notFound("Order not found");
     }
-    const cart = cartId;
-    const payload = { cart, shippingMethod, orderStatus };
+
+    const payload = { cart: cartId, shippingMethod, orderStatus };
 
     Object.keys(payload).forEach(
         (key) => (order[key] = payload[key] ?? order[key])
     );
+
     await order.save();
     return order;
 };
@@ -125,11 +127,19 @@ const getCart = (id) => {
     return cartService.findById(id);
 };
 
-// get user of a order by user id
-const getUser = (id) => {
-    return userService.findById(id);
-};
+// check owner ship of a order
+const checkOwnership = async ({ id, userId }) => {
+    const order = await findById(id);
 
+    if (!order) {
+        throw "Order not found";
+    }
+
+    if (order.userId === userId) {
+        return true;
+    }
+    return false;
+};
 module.exports = {
     create,
     findById,
@@ -140,6 +150,6 @@ module.exports = {
     findByUserId,
     findByCartId,
     getCart,
-    getUser,
     updateOrderStatus,
+    checkOwnership,
 };

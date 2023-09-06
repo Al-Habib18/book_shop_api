@@ -3,7 +3,7 @@
 const router = require("express").Router();
 const { reviewControllers } = require("../api/v1/review");
 const authenticate = require("../middleware/authenticate");
-const reviewValidator = require("../middleware/review");
+const { reviewValidator, ownership } = require("../middleware/review");
 const authorize = require("../middleware/authorize");
 
 router.get(
@@ -26,11 +26,13 @@ router
         authenticate,
         authorize(["admin", "seller", "customer"]),
         reviewValidator,
+        ownership("Review"),
         reviewControllers.update
     )
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        ownership("Review"),
         reviewControllers.remove
     );
 
@@ -41,6 +43,7 @@ router
         authenticate,
         authorize(["admin", "seller", "customer"]),
         reviewValidator,
+        ownership("Book"),
         reviewControllers.create
     );
 

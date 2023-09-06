@@ -98,6 +98,20 @@ const getBooks = async ({ bookArray = [] }) => {
     return booksObj;
 };
 
+// check owner ship of a cart
+const checkOwnership = async ({ id, userId }) => {
+    const cart = await findById(id);
+    if (!cart) {
+        throw "Cart not found";
+    }
+    const cartUserId = cart.userId.toString();
+
+    if (cartUserId === userId) {
+        return true;
+    }
+    return false;
+};
+
 module.exports = {
     create,
     findById,
@@ -107,4 +121,5 @@ module.exports = {
     removeItem,
     count,
     getBooks,
+    checkOwnership,
 };

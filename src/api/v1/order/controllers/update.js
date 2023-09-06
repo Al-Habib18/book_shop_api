@@ -1,5 +1,6 @@
 /** @format */
 const orderService = require("../../../../lib/order");
+const { link } = require("../../../../routes");
 const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
@@ -19,9 +20,9 @@ const update = async (req, res, next) => {
 
         const data = {
             ...order._doc,
-            cart: order.cart,
+            cart: order.cartId,
             quantity: cartObj.quantity,
-            amount: cartObj.amount,
+            amount: order.amount,
         };
 
         const links = {
@@ -33,6 +34,7 @@ const update = async (req, res, next) => {
             data,
             links,
         };
+
         res.status(200).json(response);
     } catch (err) {
         next(err);

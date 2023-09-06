@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { orderControllers } = require("../api/v1/order");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
-const orderValidator = require("../middleware/order");
+const { orderValidator, ownership } = require("../middleware/order");
 router.get(
     "/:id/cart",
     authenticate,
@@ -35,11 +35,13 @@ router
         authenticate,
         authorize(["admin", "seller", "customer"]),
         orderValidator,
+        ownership("Order"),
         orderControllers.update
     )
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        ownership("Order"),
         orderControllers.remove
     );
 
@@ -50,6 +52,7 @@ router
         authenticate,
         authorize(["admin", "seller", "customer"]),
         orderValidator,
+        ownership("Cart"),
         orderControllers.create
     );
 

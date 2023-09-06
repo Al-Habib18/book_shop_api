@@ -151,10 +151,17 @@ const getBookByReview = async (id) => {
     return book;
 };
 
-// get ratting of a book
-/**
- * @param {string} bookId
- */
+const checkOwnership = async ({ id, userId }) => {
+    const review = await findReviewById(id);
+    if (!review) {
+        throw "Review not found";
+    }
+
+    if (review.userId === userId) {
+        return true;
+    }
+    return false;
+};
 module.exports = {
     create,
     removeItem,
@@ -166,4 +173,5 @@ module.exports = {
     findByBookId,
     getBook,
     getBookByReview,
+    checkOwnership,
 };

@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { bookControllers } = require("../api/v1/book");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
-const bookValidator = require("../middleware/book");
+const { bookValidator } = require("../middleware/book");
 
 router.get("/:id/reviews", bookControllers.findReviews);
 

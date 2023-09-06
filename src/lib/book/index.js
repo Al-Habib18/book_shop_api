@@ -144,19 +144,18 @@ const findByUserId = async (
  * @param {BooK id}
  * returns {ratting}
  */
-const getRatting = async (id) => {
-    let totalRatting = 0;
-    const reviewArray = await reviewService.findByBookId(id, {
-        page: 1,
-        limit: 0,
-    });
 
-    for (const review of reviewArray) {
-        totalRatting += review.ratting;
+// check ownership of a book
+const checkOwnership = async ({ bookId, userId }) => {
+    const book = await findBookById(bookId);
+    if (!book) {
+        throw notFound("Book not found");
     }
 
-    const ratting = totalRatting / reviewArray.length;
-    return ratting;
+    if (book.userId === userId) {
+        return true;
+    }
+    return false;
 };
 
 module.exports = {
@@ -168,5 +167,5 @@ module.exports = {
     count,
     bookObj,
     findByUserId,
-    getRatting,
+    checkOwnership,
 };
