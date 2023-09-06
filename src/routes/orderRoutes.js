@@ -9,6 +9,7 @@ router.get(
     "/:id/cart",
     authenticate,
     authorize(["admin", "seller", "customer"]),
+    ownership("Order"),
     orderControllers.findCart
 );
 router.get(
