@@ -9,6 +9,7 @@ router.get(
     "/:id/cart",
     authenticate,
     authorize(["admin", "seller", "customer"]),
+    orderValidator,
     ownership("Order"),
     orderControllers.findCart
 );
@@ -16,12 +17,14 @@ router.get(
     "/:id/user",
     authenticate,
     authorize(["admin"]),
+    orderValidator,
     orderControllers.findUser
 );
 router.patch(
     "/:id/order-status",
     authenticate,
     authorize(["admin"]),
+    orderValidator,
     orderControllers.orderStatus
 );
 
@@ -30,6 +33,7 @@ router
     .get(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        orderValidator,
         orderControllers.findSingle
     )
     .patch(
@@ -42,6 +46,7 @@ router
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        orderValidator,
         ownership("Order"),
         orderControllers.remove
     );

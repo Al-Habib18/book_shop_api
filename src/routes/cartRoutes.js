@@ -11,6 +11,7 @@ router
     .get(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        cartValidator,
         ownership("Cart"),
         cartControllers.findSingle
     )
@@ -24,6 +25,7 @@ router
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        cartValidator,
         ownership("Cart"),
         cartControllers.remove
     );

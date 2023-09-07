@@ -4,11 +4,18 @@ const mongoose = require("mongoose");
 const { badRequest } = require("../../utils/error");
 
 const reviewValidator = (req, res, next) => {
-    const { ratting, summary } = req.body;
-    const bookId = req.params;
+    const { ratting, summary, bookId } = req.body;
+    const { id } = req.params;
     try {
-        if (!mongoose.Types.ObjectId.isValid(bookId)) {
-            next(badRequest("Invalid book ID"));
+        if (id) {
+            if (!mongoose.Types.ObjectId.isValid(bookId)) {
+                next(badRequest("Invalid review ID in parameter"));
+            }
+        }
+        if (bookId) {
+            if (!mongoose.Types.ObjectId.isValid(bookId)) {
+                next(badRequest("Invalid book ID in request body"));
+            }
         }
         if (ratting) {
             if (ratting < 0) next(badRequest("ratings must be in range [0,5]"));

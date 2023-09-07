@@ -1,10 +1,17 @@
 /** @format */
 
 const { badRequest } = require("../../utils/error");
+const mongoose = require("mongoose");
 
 const bookValidator = (req, res, next) => {
     const { title, author, publisher, category, summary, price } = req.body;
+    const { id } = req.params;
     try {
+        if (id) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw badRequest("Invalid Book ID");
+            }
+        }
         if (title) {
             if (title.length < 3)
                 next(badRequest("title must be at least 3 characters"));

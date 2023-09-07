@@ -21,6 +21,7 @@ router
     .delete(
         authenticate,
         authorize(["admin", "seller"]),
+        bookValidator,
         ownership("Book"),
         bookControllers.deleteItem
     );

@@ -10,6 +10,7 @@ router.get(
     "/:id/books",
     authenticate,
     authorize(["admin", "seller"]),
+    userValidator,
     ownership("User"),
     userControllers.allBooks
 );
@@ -17,6 +18,7 @@ router.get(
     "/:id/orders",
     authenticate,
     authorize(["admin", "seller", "customer"]),
+    userValidator,
     ownership("User"),
     userControllers.allOrders
 );
@@ -24,6 +26,7 @@ router.get(
     "/:id/reviews",
     authenticate,
     authorize(["admin"]),
+    userValidator,
     userControllers.allReviews
 );
 
@@ -41,6 +44,7 @@ router
     .get(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        userValidator,
         ownership("User"),
         userControllers.findSingleItem
     )
@@ -54,6 +58,7 @@ router
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        userValidator,
         ownership("User"),
         userControllers.deleteItem
     );

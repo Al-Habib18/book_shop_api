@@ -1,10 +1,18 @@
 /** @format */
 
 const { badRequest } = require("../../utils/error");
+const mongoose = require("mongoose");
 
 const userValidator = (req, _res, next) => {
     const { name, email, password, account } = req.body;
+    const { id } = req.params;
+
     try {
+        if (id) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                next(badRequest("Invalid user ID in params"));
+            }
+        }
         if (name) {
             if (name.length < 3)
                 next(badRequest("Name must be at least 3 characters"));

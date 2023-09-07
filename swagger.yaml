@@ -1315,7 +1315,7 @@ paths:
         patch:
             security:
                 - bearerAuth: []
-            description: Upadate a order
+            description: Upadate  order-status
             tags: [Order]
             parameters:
                 - $ref: "#/components/parameters/idPathParam"
@@ -1330,6 +1330,7 @@ paths:
                                     enum:
                                         [
                                             "pending",
+                                            approved,
                                             "shipped",
                                             "delivered",
                                             "cancelled ",
@@ -1337,7 +1338,7 @@ paths:
                                     default: "pending"
             responses:
                 "200":
-                    description: Order updated successfully
+                    description: Order-status updated successfully
                     content:
                         application/json:
                             schema:
@@ -1447,8 +1448,8 @@ paths:
                                     default: standard
                                 orderStatus:
                                     type: string
-                                    enum: [pending, cancelled]
-                                    default: "pending"
+                                    enum: [cancel]
+                                    default: "cencel"
             responses:
                 "200":
                     description: Order updated successfully
@@ -1636,8 +1637,9 @@ paths:
                                                 enum:
                                                     [
                                                         pending,
+                                                        approved,
                                                         successfull,
-                                                        cancel,
+                                                        "cancelled",
                                                     ]
                                                 default: pending
                                             shippingMethod:

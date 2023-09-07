@@ -5,8 +5,11 @@ const { notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
-    const { cartId, shippingMethod, orderStatus } = req.body;
+    let { cartId, shippingMethod, orderStatus } = req.body;
     try {
+        if (orderStatus === "cancel") {
+            orderStatus = "cancelled";
+        }
         const order = await orderService.updatePorperties(id, {
             cartId,
             orderStatus,

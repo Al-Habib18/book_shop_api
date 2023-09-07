@@ -10,18 +10,20 @@ router.get(
     "/:id/book",
     authenticate,
     authorize(["admin"]),
+    reviewValidator,
     reviewControllers.findBook
 );
 router.get(
     "/:id/user",
     authenticate,
     authorize(["admin"]),
+    reviewValidator,
     reviewControllers.findUser
 );
 
 router
     .route("/:id")
-    .get(reviewControllers.findSingle)
+    .get(reviewValidator, reviewControllers.findSingle)
     .patch(
         authenticate,
         authorize(["admin", "seller", "customer"]),
@@ -32,6 +34,7 @@ router
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        reviewValidator,
         ownership("Review"),
         reviewControllers.remove
     );
