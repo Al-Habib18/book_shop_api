@@ -1,5 +1,5 @@
 /** @format */
 
 const userValidator = require("./validate");
-
-module.exports = { userValidator };
+const ownership = require("./ownership");
+module.exports = { userValidator, ownership };

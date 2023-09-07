@@ -4,18 +4,20 @@ const router = require("express").Router();
 const { userControllers } = require("../api/v1/user");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
-const { userValidator } = require("../middleware/user");
+const { userValidator, ownership } = require("../middleware/user");
 
 router.get(
     "/:id/books",
     authenticate,
     authorize(["admin", "seller"]),
+    ownership("User"),
     userControllers.allBooks
 );
 router.get(
     "/:id/orders",
     authenticate,
     authorize(["admin", "seller", "customer"]),
+    ownership("User"),
     userControllers.allOrders
 );
 router.get(
@@ -30,6 +32,7 @@ router.patch(
     authenticate,
     authorize(["admin", "seller", "customer"]),
     userValidator,
+    ownership("User"),
     userControllers.changePassword
 );
 
@@ -38,17 +41,20 @@ router
     .get(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        ownership("User"),
         userControllers.findSingleItem
     )
     .patch(
         authenticate,
         authorize(["admin", "seller", "customer"]),
         userValidator,
+        ownership("User"),
         userControllers.updateItem
     )
     .delete(
         authenticate,
         authorize(["admin", "seller", "customer"]),
+        ownership("User"),
         userControllers.deleteItem
     );
 

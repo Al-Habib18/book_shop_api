@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { bookControllers } = require("../api/v1/book");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
-const { bookValidator } = require("../middleware/book");
+const { bookValidator, ownership } = require("../middleware/book");
 
 router.get("/:id/reviews", bookControllers.findReviews);
 
@@ -15,11 +15,13 @@ router
         authenticate,
         authorize(["admin", "seller"]),
         bookValidator,
+        ownership("Book"),
         bookControllers.updateItem
     )
     .delete(
         authenticate,
         authorize(["admin", "seller"]),
+        ownership("Book"),
         bookControllers.deleteItem
     );
 

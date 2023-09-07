@@ -181,6 +181,17 @@ const changePassword = async (id, { oldPassword, newPassword }) => {
 
     return user.save();
 };
+// check ,,,this is he or not ?
+const checkOwnership = async ({ id, userId }) => {
+    const user = await findUserById(id);
+    if (!user) {
+        throw notFound("User not found");
+    }
+    if (user.id === userId) {
+        return true;
+    }
+    return false;
+};
 module.exports = {
     create,
     count,
@@ -194,4 +205,5 @@ module.exports = {
     getAllReviews,
     getAllOrders,
     changePassword,
+    checkOwnership,
 };
