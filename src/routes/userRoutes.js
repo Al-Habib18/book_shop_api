@@ -14,6 +14,15 @@ router.get(
     ownership("User"),
     userControllers.allBooks
 );
+
+router.get(
+    "/:id/carts",
+    authenticate,
+    authorize(["admin"]),
+    userValidator,
+    userControllers.allCarts
+);
+
 router.get(
     "/:id/orders",
     authenticate,

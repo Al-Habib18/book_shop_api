@@ -52,7 +52,22 @@ const findAll = async ({
 
     return carts;
 };
+// find all reviewers for given user
+const findAllByUserId = async (
+    id,
+    { page = 1, limit = 5, sortBy = "updatedAt", sortType = "desc" }
+) => {
+    if (!id) {
+        throw badRequest("User id required");
+    }
+    const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
+    const carts = await Cart.find({ userId: id })
+        .sort(sortString)
+        .skip(page * limit - limit)
+        .limit(limit);
 
+    return carts;
+};
 // update a carts
 const updateProperties = async (
     id,
@@ -117,6 +132,7 @@ module.exports = {
     findById,
     findByUserId,
     findAll,
+    findAllByUserId,
     updateProperties,
     removeItem,
     count,

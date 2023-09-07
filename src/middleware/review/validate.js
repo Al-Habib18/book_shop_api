@@ -27,6 +27,7 @@ const reviewValidator = (req, res, next) => {
 
             if (summary.length > 200) next(badRequest("summary is too long"));
         }
+
         next();
     } catch (e) {
         next(e);

@@ -214,7 +214,90 @@ paths:
                     $ref: "#/components/responses/404"
                 "500":
                     $ref: "#/components/responses/500"
+    /users/{id}/carts:
+        get:
+            security:
+                - bearerAuth: []
+            description: Retrive a list of carts for given a user
+            tags: [User]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+                - $ref: "#/components/parameters/sortByParam"
 
+            responses:
+                "200":
+                    description: Carts retured successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            allOf:
+                                                - type: object
+                                                  properties:
+                                                      id:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 2342
+                                                      userId:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 23423
+                                                      books:
+                                                          type: array
+                                                          items:
+                                                              type: object
+                                                              properties:
+                                                                  id:
+                                                                      type: string
+                                                                      example: sd23sd423jfb
+                                                                  title:
+                                                                      type: string
+                                                                      example: grokking algoorithms
+                                                                  price:
+                                                                      type: integer
+                                                                      example: 800
+
+                                                      quantity:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3
+                                                      amount:
+                                                          type: integer
+                                                          format: int32
+                                                          example: 3240
+
+                                                - $ref: "#/components/schemas/Timestamp"
+
+                                    pagination:
+                                        $ref: "#/components/schemas/Pagination"
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                format: url
+                                                example: /books?page=2&limit=5
+                                            next:
+                                                type: string
+                                                format: url
+                                                example: /books?page=3&limit=5
+                                            prev:
+                                                type: string
+                                                format: url
+                                                example: /books?page=1&limit=5
+                "400":
+                    $ref: "#/components/responses/400"
+                "404":
+                    $ref: "#/components/responses/404"
+                "500":
+                    $ref: "#/components/responses/500"
     /users/{id}/orders:
         get:
             security:
@@ -1157,6 +1240,8 @@ paths:
                                                 example: /books?page=1&limit=5
                 "400":
                     $ref: "#/components/responses/400"
+                "404":
+                    $ref: "#/components/responses/404"
                 "500":
                     $ref: "#/components/responses/500"
         post:

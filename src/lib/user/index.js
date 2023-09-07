@@ -151,6 +151,16 @@ const getAllReviews = async (id, { page, limit, sortType, sortBy }) => {
     return reviews;
 };
 
+//get all carts of a user
+const getAllCarts = async (id, { page, limit, sortType, sortBy }) => {
+    const carts = await cartService.findAllByUserId(id, {
+        page,
+        limit,
+        sortType,
+        sortBy,
+    });
+    return carts;
+};
 //get all orders of user
 const getAllOrders = async (id, { page, limit, sortType, sortBy }) => {
     const orders = await orderService.findByUserId(id, {
@@ -203,6 +213,7 @@ module.exports = {
     isUserExist,
     getAllBooks,
     getAllReviews,
+    getAllCarts,
     getAllOrders,
     changePassword,
     checkOwnership,
