@@ -1,9 +1,6 @@
 /** @format */
-
-const loginValidator = require("./loginValidate");
-const registerValidator = require("./registerValidate");
+const validator = require("./validate");
 
 module.exports = {
-    registerValidator,
-    loginValidator,
+    validator,
 };
