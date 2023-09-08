@@ -16,6 +16,60 @@ Sellers can add books, update their own books and delete their own books.They ca
 
 Administarations have access to an admin dashboard for managing users a, books , carts, orders and reviews.
 
+# Backend
+
+The API implemented using JavaScript and Express.js framework.It userd JWT (jsonwebtoken) for user authentication, and Mongodb to store all of the data for users, books,reviews, orders, and cart.
+
+# Mongodb
+
+The API create six tables in Mongodb.These are User, Book, Review, Cart,Order and Refresh_token.
+
+### Entities :
+
+-   User:
+    -   id
+    -   name - string
+    -   email - string
+    -   password - string
+    -   role - enum[customer,seller, admin]
+    -   account - string
+    -   timestamp - date-time
+-   Book :
+    -   id
+    -   userId - string
+    -   title - string
+    -   authors - array of string
+    -   publisher - string
+    -   category - string
+    -   summary - string
+    -   price - number
+    -   available - enum[yes , no]
+    -   timestamp - date-time
+-   Cart :
+    -   id
+    -   userId - string
+    -   bookId - array of string
+    -   timestamp - date-time
+-   Order :
+    -   id
+    -   userId - string
+    -   cartId - string
+    -   amount - number
+    -   shippingMethod - enum [standard , prioprity]
+    -   orderStatus - enum [pending, approved, shipped, delivered, cancelled]
+    -   timestamp - date-time
+-   Review :
+    -   id
+    -   userId - string
+    -   bookId - string
+    -   ratting - number
+    -   summary - string
+    -   timestamp - date-time
+-   Refresh_token :
+    -   id
+    -   email - string
+    -   token - string
+
 ## Funtionality
 
 ### a. Authencation
