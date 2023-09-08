@@ -770,8 +770,6 @@ paths:
 
     /books/{id}/reviews:
         get:
-            security:
-                - bearerAuth: []
             description: Retrive a list of reviews for a specific book
             tags: [Book]
             parameters:
@@ -818,6 +816,8 @@ paths:
 
     /books/{id}:
         get:
+            security:
+                - bearerAuth: []
             description: Retrive a single book
             tags: [Book]
             parameters:

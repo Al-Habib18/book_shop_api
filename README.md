@@ -131,15 +131,11 @@ The API create six tables in Mongodb.These are User, Book, Review, Cart,Order an
 
 #### Auth
 
--   POST /auth/register
-    This endpoint takes user's name, email and password by request body and responses a access_token.
+-   POST /auth/register ,,, { register a user }
 
--   POST /auth/login
-    This endpoint takes user's email and password , responses a access_token and refresh.
+-   POST /auth/login ,,, { login a user}
 
--   POST /auth/refresh
-
-User's can input a refresh token by request body in this endpoint.It responses a access_token and refresh token.
+-   POST /auth/refresh ,,, { generate a refresh token and access token }
 
 #### Book
 
