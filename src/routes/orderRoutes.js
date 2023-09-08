@@ -45,7 +45,7 @@ router
     )
     .delete(
         authenticate,
-        authorize(["admin", "seller", "customer"]),
+        authorize(["admin"]),
         orderValidator,
         ownership("Order"),
         orderControllers.remove
