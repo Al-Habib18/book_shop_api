@@ -133,126 +133,107 @@ The API create six tables in Mongodb.These are User, Book, Review, Cart,Order an
 
 -   POST /auth/register ,,, { register a user }
 
--   POST /auth/login ,,, { login a user}
+-   POST /auth/login ,,, { login a user }
 
 -   POST /auth/refresh ,,, { generate a refresh token and access token }
 
 #### Book
 
--   GET /books
-    This endpoint retrives all books from databate with pagination accordingly user's given page, limit , sortType ,sortBy and search parameters
+-   GET /books ,,, { retrives all books }
 
--   GET /books/:id
-    This endpoint retrive a single book for given the book's id.
+-   GET /books/:id ,,, {retrive a single book }
 
--   GET /books/:id/reviews
-    This endpoint give all reviews of a specific book's id with pagination.
+-   GET /books/:id/reviews ,,, { retrive all reviews of a book }
 
 ### - Authenticate User's endpoints
 
 #### Auth
 
--   POST /auth/logout
-    This endpoint takes a refresh token and logout a user.
+-   POST /auth/logout ,,, { logout a user }
 
 #### User
 
--   GET /users/:id
-    It retrives a user's inforamtion for given the user's id.
+-   GET /users/:id ,,, { retrives a user }
 
--   PATCH /users/:id
-    It updates a user's inforamtion for given the user's id.
+-   PATCH /users/:id ,,, { updates a user }
 
--   DELETE /users/:id
-    It deletes a user for given the user's id.
+-   DELETE /users/:id ,,, { deletes a user }
 
--   PATCH /user/:id/password.
-    It updates a user password for given a user's id
+-   PATCH /user/:id/password ,,, { updates a user password }
 
--   GET /users/:id/orders
-    It retrives a user's own orders with pagination.
+-   GET /users/:id/orders ,,, { retrives a user's own orders }
 
--   GET /users/:id/books
-    It retrives all books for given a seller id with pagination.
+-   GET /users/:id/books ,,, { retrives all books of a seller id }
 
 #### Book
 
--   POST /books
-    This endpoint creates a book. Only seller and admin can create a book.
+-   POST /books ,,, { creates a book }
 
--   PATCH /books/:id
-    This endpoint update a book for given a book id. Only seller and admin can update a book.
+-   PATCH /books/:id ,,, { update a book }
 
--   DELETE /books/:id
-    This endpoint delete a book for given a book id . Only seller and admin can update.
+-   DELETE /books/:id ,,, { delete a book }
 
 #### Cart
 
--   POST /cart
-    This endpoint creates a new cart
+-   POST /cart ,,, { creates a new cart }
 
--   PATCH /carts/:id
-    This endpoint update a cart
+-   PATCH /carts/:id ,,, { update a cart }
 
--   DELETE /carts/:id
-    This endpoint delete a cart
+-   DELETE /carts/:id ,,, { delete a cart }
 
 #### Order
 
--   POST /orders
-    This endpoint creates new order
+-   POST /orders ,,, { creates new order }
 
--   PATCH /orders/:id
-    This routes cancel a order . If not order is shipped or delivered.
+-   PATCH /orders/:id ,,, { cancel a order }
 
--   GET /orders/:id/cart
-    This endpoint responses a cart by whice the order is created.
+-   GET /orders/:id/cart ,,, { retrive a cart }
 
 #### Review
 
--   POST /reviews
-    creates a new review
+-   POST /reviews ,,, { creates a new review }
 
--   PATCH /reviews/:id
-    updates a review for given a review's id
+-   PATCH /reviews/:id ,,, { updates a review }
 
--   DELETE /reviews/:id
-    deletes a review for given a review's id
+-   DELETE /reviews/:id ,,, { deletes a review }
 
-### - Admin
-
-These endpoints retrives data
+### - Admin Endpoints
 
 #### User
 
--   GET /users
-    retrives all users
+-   GET /users ,,, { retrives all users }
 
--   GET /users/:id/reviews
-    retrives all reviews for given a user's id
+-   GET /users/:id/reviews ,,, { retrives all reviews of a user }
 
--   GET /users/:id/carts
-    retrives all carts for given a user's id rs
+-   GET /users/:id/carts ,,, { retrives all carts of a user }
 
 #### Review
 
--   GET /reviews/:id/book
-    retrive a book for given a review id
--   GET /reviews/:id/user
-    retrives a user for for given a review id
+-   GET /reviews/:id/book ,,, { retrives a book }
+
+-   GET /reviews/:id/user ,,, { retrives a user }
 
 #### Cart
 
--   GET /reviews
-    retrives all carts
+-   GET /reviews ,,, { retrives all carts}
 
 #### Order
 
--   GET /orders
-    retrives all orders
--   DELETE /orders/:id
-    deletes a order for given a order's id
--   PATCH /orders/:id/order-status
-    update a order for given order id and status
--   GET /orders/:id/user
-    retrives a user for given a user's id
+-   GET /orders ,,, { retrives all orders }
+
+-   DELETE /orders/:id ,,, { delete a order }
+
+-   PATCH /orders/:id/order-status ,,, { update a order }
+
+-   GET /orders/:id/user ,,, { retrives a user }
+
+## Run this API locally
+
+    1. Choose the HTTPS button underneath the  Clone URL column.
+    2. Choose the HTTPS button underneath the Clone URL column.
+
+    3. Open up your terminal, type git clone  paste the Clone URL and hit enter.
+
+    4. Once the repository has created, run npm install.
+
+    4. After all dependencies have been downloaded, run npm run start.
