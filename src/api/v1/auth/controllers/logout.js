@@ -1,10 +1,10 @@
 /** @format */
-
-const logout = (req, res, next) => {
-    const user = req.user;
+const authService = require("../../../../lib/auth");
+const logout = async (req, res, next) => {
+    const { refresh_token } = req.body;
     try {
-        // const refreshToken =
-        res.status(200).json({ user: user });
+        await authService.removeRefreshToken({ token: refresh_token });
+        res.status(204).end();
     } catch (e) {
         next(e);
     }

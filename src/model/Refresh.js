@@ -6,7 +6,7 @@ const refreshSchema = new Schema(
     {
         email: {
             type: String,
-            // required: true,
+            required: true,
         },
         token: {
             type: String,

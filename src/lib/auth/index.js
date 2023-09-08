@@ -1,6 +1,10 @@
 /** @format */
 const Refresh = require("../../model/Refresh");
-const { badRequest } = require("../../utils/error");
+const {
+    badRequest,
+    notFound,
+    authenticationError,
+} = require("../../utils/error");
 const { generateHash, hasMatched } = require("../../utils/hashing");
 const userService = require("../user");
 const tokenService = require("../token");
@@ -82,16 +86,32 @@ const createRefreshToken = async ({ email }) => {
 };
 
 const verifyRefreshToken = (refresh_token) => {
-    const decoded = tokenService.verifyToken({ token: refresh_token });
+    const decoded = tokenService.verifyToken(refresh_token);
     return decoded;
 };
 
-const removeAccessToken = async ({ token = "" }) => {
+const removeRefreshToken = async ({ token = "" }) => {
+    const refresh = await Refresh.find({ token: token });
+    if (refresh.length < 1) {
+        throw notFound("Refresh token does not exist");
+    }
     await Refresh.findOneAndDelete({ token: token });
 };
 
+const isExpiredToken = (token) => {
+    return tokenService.isExpired(token);
+};
+// find refresh token by emainl
+const findRefreshToken = async (email) => {
+    const refresh = await Refresh.findOne({ email: email });
+
+    if (refresh.length < 1) {
+        throw authenticationError();
+    }
+    return refresh;
+};
+
 const requestRefresh = async ({ refresh_token }) => {
-    // const BASE_URL = process.env.BASE_URL;
     return axios
         .post(`http://localhost:4000/api/v1/auth/refresh`, { refresh_token })
         .then((response) => response.data.access_token);
@@ -103,5 +123,7 @@ module.exports = {
     createRefreshToken,
     requestRefresh,
     verifyRefreshToken,
-    removeAccessToken,
+    removeRefreshToken,
+    isExpiredToken,
+    findRefreshToken,
 };

@@ -1,8 +1,7 @@
 /** @format */
 
 const authService = require("../../../../lib/auth");
-const tokenService = require("../../../../lib/token");
-const { badRequest } = require("../../../../utils/error");
+const { badRequest, authenticationError } = require("../../../../utils/error");
 
 const refresh = async (req, res, next) => {
     const { refresh_token } = req.body;
@@ -10,18 +9,26 @@ const refresh = async (req, res, next) => {
         if (!refresh_token) {
             throw badRequest("Refresh token is required");
         }
+
         const decode = authService.verifyRefreshToken(refresh_token);
+
+        const isExpired = authService.isExpiredToken(refresh_token);
+
+        if (isExpired) {
+            throw authenticationError("Refresh token Validation failed");
+        }
 
         const accessToken = await authService.createAccessToken({
             email: decode.email,
         });
-        await authService.removeAccessToken({ token: refresh_token });
+        await authService.removeRefreshToken({ token: refresh_token });
 
         const refresh = await authService.createRefreshToken({
             email: decode.email,
         });
+
         const response = {
-            code: 200,
+            code: 201,
             message: "Refresh token create successful",
             data: {
                 access_token: accessToken,

@@ -4,15 +4,12 @@ const authService = require("../../../../lib/auth");
 const login = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        let refresh = {};
-
         const accessToken = await authService.login({ email, password });
 
-        if (accessToken) {
-            refresh = await authService.createRefreshToken({
-                email,
-            });
-        }
+        const refresh = await authService.createRefreshToken({
+            email,
+        });
+
         const response = {
             code: 200,
             message: "Login successful",

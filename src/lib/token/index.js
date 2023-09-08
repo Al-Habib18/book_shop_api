@@ -32,12 +32,25 @@ const decodeToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
     }
 };
 
-const verifyToken = ({ token, secret = process.env.ACCESS_TOKEN_SECRET }) => {
+const verifyToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
     const decoded = jwt.verify(token, secret);
     return decoded;
 };
 
-module.exports = { generateToken, decodeToken, verifyToken };
+// check token expiration
+const isExpired = (token) => {
+    const decoded = decodeToken(token);
+
+    let expiration = decoded.exp;
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (currentTime > expiration) {
+        return true;
+    }
+    return false;
+};
+
+module.exports = { generateToken, decodeToken, verifyToken, isExpired };
 const decodeToken2 = ({ token, algorithm = "HS256" }) => {
     try {
         return jwt.decode(token, { algorithms: [algorithm] });
