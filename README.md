@@ -185,7 +185,7 @@ The API create six tables in Mongodb.These are User, Book, Review, Cart,Order an
 
 -   POST /orders ,,, { creates new order }
 
--   PATCH /orders/:id ,,, { cancel a order }
+-   PATCH /orders/:id/cancel ,,, { cancel a order }
 
 -   GET /orders/:id/cart ,,, { retrive a cart }
 
@@ -223,7 +223,7 @@ The API create six tables in Mongodb.These are User, Book, Review, Cart,Order an
 
 -   DELETE /orders/:id ,,, { delete a order }
 
--   PATCH /orders/:id/order-status ,,, { update a order }
+-   PATCH /orders/:id ,,, { update a order }
 
 -   GET /orders/:id/user ,,, { retrives a user }
 
@@ -232,8 +232,9 @@ The API create six tables in Mongodb.These are User, Book, Review, Cart,Order an
     1. Choose the HTTPS button underneath the  Clone URL column.
     2. Choose the HTTPS button underneath the Clone URL column.
 
-    3. Open up your terminal, type git clone  paste the Clone URL and hit enter.
+    3. Open up your terminal, type "git clone"  paste the Clone URL and hit enter.
 
-    4. Once the repository has created, run npm install.
+    4. Once the repository has created, run "npm install".
+    5. run "docker-compose up -d"
 
-    4. After all dependencies have been downloaded, run npm run start.
+    4. After all dependencies have been downloaded, run "npm  start".

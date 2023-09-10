@@ -2,7 +2,7 @@
 const orderService = require("../../../../lib/order");
 const { notFound } = require("../../../../utils/error");
 
-const orderStatus = async (req, res, next) => {
+const cancleOrder = async (req, res, next) => {
     const { id } = req.params;
     const { orderStatus } = req.body;
     try {
@@ -10,7 +10,8 @@ const orderStatus = async (req, res, next) => {
         if (!order) {
             throw notFound("Order not found");
         }
-        order = await orderService.updateOrderStatus(id, { orderStatus });
+
+        order = await orderService.cancleOrder(id, { orderStatus });
 
         const cartObj = await orderService.getCart(order.cartId);
         if (!cartObj) {
@@ -39,4 +40,4 @@ const orderStatus = async (req, res, next) => {
     }
 };
 
-module.exports = orderStatus;
+module.exports = cancleOrder;

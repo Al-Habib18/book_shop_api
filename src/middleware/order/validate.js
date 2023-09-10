@@ -17,12 +17,6 @@ const orderValidator = (req, res, next) => {
                 next(badRequest("Invalid cart ID"));
             }
         }
-        if (orderStatus) {
-            if (orderStatus !== "cancel") {
-                next(badRequest("Invalid order status"));
-            }
-        }
-
         next();
     } catch (e) {
         next(e);

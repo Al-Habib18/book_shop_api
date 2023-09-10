@@ -1,6 +1,6 @@
 # @format
 
-version: "1.0"
+version: "3.0"
 services:
     # MongoDB
     mongodb:
@@ -27,6 +27,15 @@ services:
             ME_CONFIG_MONGODB_SERVER: mongodb
         ports:
             - "8081:8081"
+        depends_on:
+            - mongodb
+    # book-shop-api
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 4000:4000
         depends_on:
             - mongodb
 volumes:

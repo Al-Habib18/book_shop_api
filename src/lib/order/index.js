@@ -75,10 +75,17 @@ const updatePorperties = async (
 };
 
 // update order-status
-const updateOrderStatus = async (id, { orderStatus }) => {
+const cancleOrder = async (id, { orderStatus }) => {
     const order = await Order.findById(id);
     if (!order) {
         throw notFound();
+    }
+    if (order.orderStatus === "cancelled") {
+        throw badRequest("Your order already cancelled");
+    } else if (order.orderStatus === "shipped") {
+        throw badRequest("Your order has already been shipped");
+    } else if (order.orderStatus === "delivered") {
+        throw badRequest("Your order has already been delivered");
     }
     order.orderStatus = orderStatus || order.orderStatus;
     await order.save();
@@ -150,6 +157,6 @@ module.exports = {
     findByUserId,
     findByCartId,
     getCart,
-    updateOrderStatus,
+    cancleOrder,
     checkOwnership,
 };

@@ -7,7 +7,7 @@ const update = require("./update");
 const remove = require("./delete");
 const findCart = require("./findCart");
 const findUser = require("./findUser");
-const orderStatus = require("./orderStatus");
+const cancleOrder = require("./orderCancel");
 
 module.exports = {
     create,
@@ -17,5 +17,5 @@ module.exports = {
     remove,
     findCart,
     findUser,
-    orderStatus,
+    cancleOrder,
 };

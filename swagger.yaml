@@ -1466,7 +1466,7 @@ paths:
                     $ref: "#/components/responses/404"
                 "500":
                     $ref: "#/components/responses/500"
-    /orders/{id}/order-status:
+    /orders/{id}/cancel:
         patch:
             security:
                 - bearerAuth: []
@@ -1482,14 +1482,7 @@ paths:
                             properties:
                                 orderStatus:
                                     type: string
-                                    enum:
-                                        [
-                                            "pending",
-                                            approved,
-                                            "shipped",
-                                            "delivered",
-                                            "cancelled ",
-                                        ]
+                                    enum: ["cancelled"]
                                     default: "pending"
             responses:
                 "200":
@@ -1603,8 +1596,15 @@ paths:
                                     default: standard
                                 orderStatus:
                                     type: string
-                                    enum: [cancel]
-                                    default: "cencel"
+                                    enum:
+                                        [
+                                            "pending",
+                                            "approved",
+                                            "cancelled",
+                                            "shipped",
+                                            "delivered",
+                                        ]
+                                    default: "cancelled"
             responses:
                 "200":
                     description: Order updated successfully

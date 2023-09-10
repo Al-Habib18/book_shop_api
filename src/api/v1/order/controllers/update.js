@@ -6,9 +6,6 @@ const update = async (req, res, next) => {
     const { id } = req.params;
     let { cartId, shippingMethod, orderStatus } = req.body;
     try {
-        if (orderStatus === "cancel") {
-            orderStatus = "cancelled";
-        }
         const order = await orderService.updatePorperties(id, {
             cartId,
             orderStatus,
