@@ -2,7 +2,7 @@
 const cartService = require("../../../../lib/cart");
 
 const create = async (req, res, next) => {
-    const bookArray = req.body;
+    const { bookArray } = req.body;
     const userId = req.user.id;
     try {
         const booksObj = await cartService.getBooks({ bookArray });

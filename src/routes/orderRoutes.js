@@ -1,7 +1,7 @@
 /** @format */
 
 const router = require("express").Router();
-const { orderControllers } = require("../api/v1/order");
+const orderControllers = require("../api/v1/order");
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
 const { orderValidator, ownership } = require("../middleware/order");

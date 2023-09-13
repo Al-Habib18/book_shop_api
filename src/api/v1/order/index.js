@@ -2,4 +2,4 @@
 
 const orderControllers = require("./controllers");
 
-module.exports = { orderControllers };
+module.exports = orderControllers;

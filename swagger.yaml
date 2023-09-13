@@ -868,8 +868,10 @@ paths:
                                     type: string
                                     example: Clean Code
                                 author:
-                                    type: string
-                                    example: Robert C.Martin
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: Thomous Hunt
                                 publisher:
                                     type: string
                                     example: Pearson
@@ -1154,10 +1156,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: array
-                            items:
-                                type: string
-                                example: 64f167d158
+                            type: object
+                            properties:
+                                bookArray:
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: 64f167d158
             responses:
                 "200":
                     description: Cart updated successfully
@@ -1323,11 +1328,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: array
-                            items:
-                                type: string
-                                example: 64f167d158
-
+                            type: object
+                            properties:
+                                bookArray:
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: 64f167d158
             responses:
                 "201":
                     description: Successfully created a Cart
@@ -2427,7 +2434,8 @@ components:
             description: Search term
             schema:
                 type: string
-                example: search
+                description: search
+                # example: search
         searchTitle:
             in: query
             name: searchTitle

@@ -106,7 +106,7 @@ const getBooks = async ({ bookArray = [] }) => {
     for (let bookId of bookArray) {
         const book = await bookService.bookObj(bookId);
         if (!book) {
-            throw badRequest("Please provide  valid book");
+            throw badRequest("Requested book or books does not exist");
         }
         booksObj.push(book);
     }

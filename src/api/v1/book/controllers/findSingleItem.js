@@ -27,7 +27,6 @@ const findSingleItem = async (req, res, next) => {
         const links = {
             self: `/api/v1/books/${book.id}`,
             reviews: `/api/v1/books/${book.id}/reviews`,
-            photos: `/api/v1/books/${book.id}/photos`,
         };
 
         const data = {

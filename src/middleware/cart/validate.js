@@ -6,7 +6,7 @@ const { badRequest } = require("../../utils/error");
 const mongoose = require("mongoose");
 
 const cartValidator = (req, _res, next) => {
-    const bookArr = req.body;
+    const { bookArray } = req.body;
     const { id } = req.params;
     try {
         if (id) {
@@ -14,14 +14,13 @@ const cartValidator = (req, _res, next) => {
                 throw badRequest("Invalid Cart ID in parameter");
             }
         }
-        if (bookArr) {
-            for (const bookId of bookArr) {
+
+        if (bookArray) {
+            for (const bookId of bookArray) {
                 if (!mongoose.Types.ObjectId.isValid(bookId)) {
                     next(badRequest("Invalid Book ID"));
                 }
             }
-        } else {
-            next(badRequest("Invalid cart Request"));
         }
 
         next();

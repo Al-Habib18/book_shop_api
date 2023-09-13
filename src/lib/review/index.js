@@ -76,7 +76,7 @@ const updateProperties = async (id, { ratting = 0, summary = "" }) => {
     const review = await Review.findById(id);
 
     if (!review) {
-        throw notFound();
+        throw notFound("review not found");
     }
 
     const payload = { ratting, summary };
@@ -154,7 +154,7 @@ const getBookByReview = async (id) => {
 const checkOwnership = async ({ id, userId }) => {
     const review = await findReviewById(id);
     if (!review) {
-        throw "Review not found";
+        throw badRequest("Requested review does not exist");
     }
 
     if (review.userId === userId) {

@@ -5,7 +5,7 @@ const { badRequest, notFound } = require("../../../../utils/error");
 
 const update = async (req, res, next) => {
     const { id } = req.params;
-    const bookArray = req.body;
+    const { bookArray } = req.body;
 
     try {
         const booksObj = await cartService.getBooks({ bookArray });

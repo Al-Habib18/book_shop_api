@@ -1,6 +1,7 @@
 /** @format */
 
 const reviewService = require("../../../../lib/review");
+const bookService = require("../../../../lib/book");
 const { badRequest, notFound } = require("../../../../utils/error");
 const { getPagination } = require("../../../../utils/pagination");
 const defaults = require("../../../../config/defaults");
@@ -16,6 +17,10 @@ const findByBookId = async (req, res, next) => {
     try {
         if (!id) {
             throw badRequest("Id is required");
+        }
+        const book = await bookService.findBookById(id);
+        if (!book) {
+            throw badRequest("Book does not exist");
         }
         const reviews = await reviewService.findByBookId(id, {
             page,

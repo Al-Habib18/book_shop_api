@@ -5,10 +5,10 @@ const { badRequest } = require("../../utils/error");
 
 const reviewValidator = (req, res, next) => {
     const { ratting, summary, bookId } = req.body;
-    const { id } = req.params;
+    let { id } = req.params;
     try {
         if (id) {
-            if (!mongoose.Types.ObjectId.isValid(bookId)) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
                 next(badRequest("Invalid review ID in parameter"));
             }
         }
@@ -18,8 +18,10 @@ const reviewValidator = (req, res, next) => {
             }
         }
         if (ratting) {
-            if (ratting < 0) next(badRequest("ratings must be in range [0,5]"));
-            if (ratting > 5) next(badRequest("ratings must be in range [0,5]"));
+            const validRatting = /^[0-5]+$/.test(ratting);
+            if (!validRatting) {
+                next(badRequest("ratting  must be in range [0,5]"));
+            }
         }
         if (summary) {
             if (summary.length < 3)

@@ -18,19 +18,16 @@ const ownership =
                 });
 
                 if (isOwner) {
-                    next(
-                        authorizationError(
-                            "You cannot create a review in your book"
-                        )
-                    );
-                } else {
                     next();
+                } else if (req.user.role === "admin") {
+                    next();
+                } else {
+                    next(authorizationError("You cannot update other review"));
                 }
             } catch (err) {
                 next(err);
             }
-        }
-        if (model === "Review") {
+        } else if (model === "Review") {
             const { id } = req.params;
             const userId = req.user.id;
             try {
@@ -44,17 +41,14 @@ const ownership =
                 } else if (req.user.role === "admin") {
                     next();
                 } else {
-                    next(
-                        authorizationError(
-                            "You cannot create a review in your book"
-                        )
-                    );
+                    next(authorizationError("You cannot update other review"));
                 }
             } catch (err) {
                 next(err);
             }
+        } else {
+            next(notFound("Ownershpip validation failed"));
         }
-        next(notFound("Ownershpip validation failed"));
     };
 
 module.exports = ownership;

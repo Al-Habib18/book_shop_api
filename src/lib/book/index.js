@@ -56,12 +56,6 @@ const removeItem = async (id) => {
     if (!book) {
         throw notFound();
     }
-    let reviews = await reviewService.findByBookId(id, { page: 1, limit: 0 });
-
-    // asyncronously delete all reviews of a book
-    for (const review of reviews) {
-        await reviewService.removeItem(review.id);
-    }
     return Book.findByIdAndDelete(id);
 };
 

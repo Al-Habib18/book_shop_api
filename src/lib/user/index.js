@@ -64,8 +64,7 @@ const removeItem = async (id) => {
         await cartService.removeItem(cart.id);
     }
 
-    // return User.findByIdAndDelete(id);
-    return 1;
+    return User.findByIdAndDelete(id);
 };
 
 // check existence of a user
