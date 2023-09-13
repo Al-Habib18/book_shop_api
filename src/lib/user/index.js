@@ -75,6 +75,13 @@ const isUserExist = async (email) => {
 };
 
 // Create a new user
+/**
+ * @param {string} name
+ * @param {string} email
+ * @param {string} password
+ * @param {Enumerator} role
+ * @param {string} account
+ */
 const create = async ({
     name,
     email,

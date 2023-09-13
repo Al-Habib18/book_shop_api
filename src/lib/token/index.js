@@ -3,7 +3,13 @@
 const { serverError } = require("../../utils/error");
 
 const jwt = require("jsonwebtoken");
-
+/**
+ * @param {object} payload -
+ * @param {string} algorithm
+ * @param {string} secret
+ * @param {string} expiresIn
+ * @returns {string} jsonwebtoken
+ */
 const generateToken = ({
     payload,
     algorithm = "HS256",
@@ -51,11 +57,3 @@ const isExpired = (token) => {
 };
 
 module.exports = { generateToken, decodeToken, verifyToken, isExpired };
-const decodeToken2 = ({ token, algorithm = "HS256" }) => {
-    try {
-        return jwt.decode(token, { algorithms: [algorithm] });
-    } catch (err) {
-        console.log("[JWT]", err);
-        throw serverError();
-    }
-};

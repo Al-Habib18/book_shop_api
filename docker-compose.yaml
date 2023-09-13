@@ -30,14 +30,14 @@ services:
         depends_on:
             - mongodb
     # book-shop-api
-    api:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - 4000:4000
-        depends_on:
-            - mongodb
+    # api:
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 4000:4000
+    #     depends_on:
+    #         - mongodb
 volumes:
     my_mongodb_data:
         driver: local

@@ -43,6 +43,11 @@ const userValidator = (req, _res, next) => {
                 next(badRequest("Your account must be  11 characters"));
             if (account.length > 11)
                 next(badRequest("Your account must be  11 characters"));
+
+            const validAccount = /^[0-9]+$/.test(account);
+            if (!validAccount) {
+                next(badRequest("account should not contain letter"));
+            }
         }
 
         next();
