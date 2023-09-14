@@ -816,8 +816,6 @@ paths:
 
     /books/{id}:
         get:
-            security:
-                - bearerAuth: []
             description: Retrive a single book
             tags: [Book]
             parameters:
