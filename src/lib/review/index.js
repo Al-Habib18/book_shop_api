@@ -3,7 +3,13 @@ const Review = require("../../model/Review");
 const bookService = require("../book");
 const { notFound, badRequest } = require("../../utils/error");
 
-// create a new review
+/** - create a new review
+ * @param {string} userId - requested user id
+ * @param {string} bookId - for which book is being reviewed
+ * @param {number} ratting - ratting of the book
+ * @param {string} summary - summary of the review
+ * @return {Promise} Promise of review of object
+ */
 const create = async ({ userId, bookId, ratting, summary = "" }) => {
     if (!userId || !bookId || !ratting) {
         throw badRequest();
@@ -33,7 +39,10 @@ const create = async ({ userId, bookId, ratting, summary = "" }) => {
     return review.save();
 };
 
-// count reviews
+/** - count reviews
+ * @param {string} search - search term
+ * @return {number} number of reviews counted by search
+ */
 const count = ({ search = "" }) => {
     const filter = {
         summary: { $regex: search, $options: "i" },
@@ -42,7 +51,13 @@ const count = ({ search = "" }) => {
     return Review.count(filter);
 };
 
-//find all reviews
+/** - find all reviews
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} reviews  - array of reviews
+ */
 const findAll = async ({
     page = 1,
     limit = 5,
@@ -63,7 +78,10 @@ const findAll = async ({
     return reviews;
 };
 
-//find a single review
+/** - find a single review
+ * @param {string} id - id of a review
+ * @return {Promise} promise a review
+ */
 const findReviewById = async (id) => {
     if (!id) {
         throw badRequest("id is required");
@@ -71,7 +89,12 @@ const findReviewById = async (id) => {
     return Review.findById(id);
 };
 
-// update a review
+/** -  update a review
+ * @param {string} id - review id
+ * @param {number} ratting - ratting of the book
+ * @param {string} summary - summary of the review
+ * @return {object} object of review
+ */
 const updateProperties = async (id, { ratting = 0, summary = "" }) => {
     const review = await Review.findById(id);
 
@@ -88,7 +111,11 @@ const updateProperties = async (id, { ratting = 0, summary = "" }) => {
     await review.save();
     return review;
 };
-// delete a review
+//
+/** - delete a review
+ * @param {string} id - review id
+ * @return {promise}  - promise of review
+ */
 const removeItem = async (id) => {
     if (!id) {
         throw badRequest("id is required");
@@ -101,7 +128,14 @@ const removeItem = async (id) => {
     return Review.findByIdAndDelete(id);
 };
 
-// find all reviews of a user
+/** - find all reviews for given user
+ * @param {string} id - id of a user
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} reviews  - array of reviews
+ */
 const findByUserId = async (
     id,
     { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
@@ -110,8 +144,6 @@ const findByUserId = async (
         throw badRequest();
     }
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
-
-    //TODO: implement summary regex for find reviews
     const reviews = await Review.find({ userId: id })
         .sort(sortString)
         .skip(page * limit - limit)
@@ -120,7 +152,14 @@ const findByUserId = async (
     return reviews;
 };
 
-// find all reviews of a given book
+/** - find all reviews for given book
+ * @param {string} id - id of a book
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} reviews  - array of reviews
+ */
 const findByBookId = async (
     id,
     { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
@@ -130,7 +169,6 @@ const findByBookId = async (
     }
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
 
-    //TODO: implement summary regex for find reviews
     const reviews = await Review.find({ bookId: id })
         .sort(sortString)
         .skip(page * limit - limit)
@@ -139,18 +177,29 @@ const findByBookId = async (
     return reviews;
 };
 
-// get a book by book_id
+/** get a book by book id
+ * @param {string} id - book id
+ * @return {object} book - book object
+ */
 const getBook = async (id) => {
     const book = await bookService.findBookById(id);
     return book;
 };
 
-// get a book by review_id
+/** get a book by review_id
+ * @param {string} id - review id
+ * @return {object} book - book object
+ */
 const getBookByReview = async (id) => {
     const book = await bookService.findBookById(id);
     return book;
 };
 
+/** check owner ship of a review
+ * @param {string} id - review id
+ * @param {string} userId - requested user id
+ * @return {boolean} -
+ */
 const checkOwnership = async ({ id, userId }) => {
     const review = await findReviewById(id);
     if (!review) {

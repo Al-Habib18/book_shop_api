@@ -2,6 +2,12 @@
 
 const defaults = require("../config/defaults");
 
+/** - get a pagination object
+ * @param {number} totalItems
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @return {object} pagination object
+ */
 const getPagination = ({
     totalItems = defaults.totalItems,
     limit = defaults.limit,

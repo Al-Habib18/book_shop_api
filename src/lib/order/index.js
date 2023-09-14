@@ -1,12 +1,17 @@
 /** @format */
 
 const Order = require("../../model/Order");
-const cartService = require("../cart");
-const userService = require("../user");
-
-const { badRequest, notFound } = require("../../utils/error");
 const defaults = require("../../config/defaults");
+const cartService = require("../cart");
+const { badRequest, notFound } = require("../../utils/error");
 
+/** create a new Order
+ * @param {string} userId - user id of the order
+ * @param {string} cartId - cart id of the order
+ * @param {enum} shippingMethod - shipping method of the order
+ * @param {number}  amount - total amount of the order
+ * @return {Promise} promise of a new Order
+ */
 const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     if (!cartId || !userId) {
         throw badRequest();
@@ -27,7 +32,9 @@ const create = async ({ userId, cartId, shippingMethod = "", amount = 0 }) => {
     return order.save();
 };
 
-// find a  single order by order_id
+/** - find a  single order by order_id
+ * @param {string} id - order id
+ */
 const findById = async (id) => {
     if (!id) {
         throw badRequest("id is required");
@@ -35,7 +42,13 @@ const findById = async (id) => {
     return Order.findById(id);
 };
 
-// find all orders
+/** - find all orders
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} orders  - array of orders
+ */
 const findAll = async ({
     page = defaults.page || 1,
     limit = defaults.limit || 5,
@@ -49,11 +62,20 @@ const findAll = async ({
         .limit(limit);
 };
 
-// count all orders
+/**
+ * count all orders
+ */
 const count = () => {
     return Order.count();
 };
-// update order
+
+/** update a Order
+ * @param {string} id -  id of the order
+ * @param {string} cartId - cart id of the order
+ * @param {enum} shippingMethod - shipping method of the order
+ * @param {enum}  orderStatus - status of the order
+ * @return {object} object of a the updated Order
+ */
 const updatePorperties = async (
     id,
     { cartId, shippingMethod, orderStatus }
@@ -74,7 +96,10 @@ const updatePorperties = async (
     return order;
 };
 
-// update order-status
+/** - cancel a order
+ * @param {string} id - order id
+ * @param {enum} orderStatus [canelled] - status of the order
+ */
 const cancleOrder = async (id, { orderStatus }) => {
     const order = await Order.findById(id);
     if (!order) {
@@ -92,7 +117,10 @@ const cancleOrder = async (id, { orderStatus }) => {
     return order;
 };
 
-// delete a order
+/** delete a order
+ * @param {string} id - order id
+ * @returns {Promise} - promise of the deleted order
+ */
 const removeItem = async (id) => {
     if (!id) {
         throw badRequest("id is required");
@@ -106,7 +134,14 @@ const removeItem = async (id) => {
     return Order.findByIdAndDelete(id);
 };
 
-// find order by user id
+/** - find order by user id
+ * @param {string} id - id of a user
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} order  - array of order
+ */
 const findByUserId = async (
     id,
     { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
@@ -121,7 +156,10 @@ const findByUserId = async (
     return orders;
 };
 
-// find order by cart id
+/** - find order by cart id
+ * @param {string} id - cart id
+ * @return {Array} order - array of order- technicaly it is returns a single order
+ */
 const findByCartId = async (id) => {
     if (!id) {
         throw badRequest();
@@ -129,12 +167,19 @@ const findByCartId = async (id) => {
     return Order.find({ cartId: id });
 };
 
-// get cart of a  by cart id
+/** get cart of a  by cart id
+ * @param {string} id - cart id
+ * @return {object}  cart object
+ */
 const getCart = (id) => {
     return cartService.findById(id);
 };
 
-// check owner ship of a order
+/** -  check owner ship of a order
+ * @param {string} id - order id
+ * @param {string} userId - requested user id
+ * @returns {boolean}
+ */
 const checkOwnership = async ({ id, userId }) => {
     const order = await findById(id);
 

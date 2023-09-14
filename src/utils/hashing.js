@@ -11,6 +11,11 @@ const generateHash = async (payload, saltRound = 10) => {
     return bcrypt.hash(payload, salt);
 };
 
+/**
+ * @param {object} raw - raw password
+ * @param {string} hash - hashed password
+ * @returns {boolean}
+ */
 const hasMatched = async (raw, hash) => {
     const result = await bcrypt.compare(raw, hash);
     return result;

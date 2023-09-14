@@ -1,9 +1,16 @@
 /** @format */
-const { badRequest, notFound } = require("../../utils/error");
+
 const Cart = require("../../model/Cart");
 const bookService = require("../book");
+const { badRequest, notFound } = require("../../utils/error");
 
-// create a new Cart
+/** - create a new Cart
+ * @param {string} userId - request user id
+ * @param {Array} bookArray - list of books
+ * @param {number} quantity - quantity of books
+ * @param {number} amount - total amount of all books
+ * @returns {object} Cart object
+ */
 const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     if (!userId) {
         throw badRequest();
@@ -17,7 +24,10 @@ const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
     return cart;
 };
 
-// find cart by cart id
+/** find cart by cart id
+ * @param {string} id - cart id
+ * @return {object}  cart object
+ */
 const findById = (id) => {
     if (!id) {
         throw badRequest("Id is required");
@@ -25,19 +35,29 @@ const findById = (id) => {
     return Cart.findById(id);
 };
 
-// find cart by userId
+/** find cart by user id
+ * @param {string} id - user id of a cart
+ * @return {object}  cart object
+ */
 const findByUserId = (id) => {
     if (!id) {
         throw badRequest();
     }
     return Cart.find({ userId: id });
 };
+
 // count all cart
 const count = () => {
     return Cart.count();
 };
 
-//find all carts
+/** - find all carts
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} carts  - array of carts
+ */
 const findAll = async ({
     page = 1,
     limit = 5,
@@ -52,7 +72,15 @@ const findAll = async ({
 
     return carts;
 };
-// find all reviewers for given user
+
+/** - find all carts for given user
+ * @param {string} id - id of a user
+ * @param {string} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} carts  - array of carts
+ */
 const findAllByUserId = async (
     id,
     { page = 1, limit = 5, sortBy = "updatedAt", sortType = "desc" }
@@ -68,7 +96,14 @@ const findAllByUserId = async (
 
     return carts;
 };
-// update a carts
+
+/** - update a cart
+ * @param {string} id  - cart id
+ * @param {Array} bookArray - list of books
+ * @param {number} quantity - quantity of books
+ * @param {number} amount - total amount of all books
+ * @returns {object} Cart object
+ */
 const updateProperties = async (
     id,
     { bookArray = [], quantity = 0, amount = 0 }
@@ -87,7 +122,10 @@ const updateProperties = async (
     return cart;
 };
 
-// delete a carts
+/** delete a cart
+ * @param {string} id - cart id
+ * @return {promise} - promise of a deleted cart
+ */
 const removeItem = async (id) => {
     if (!id) throw badRequest("id is required");
 
@@ -99,7 +137,10 @@ const removeItem = async (id) => {
     return Cart.findByIdAndDelete(id);
 };
 
-// get books of a requested cart
+/** -  get books of a requested cart
+ * @param {Array} bookArray - book array of a cart
+ * @return {Array} book object - array of book objects with id ,title and price
+ */
 const getBooks = async ({ bookArray = [] }) => {
     let booksObj = [];
 
@@ -113,7 +154,11 @@ const getBooks = async ({ bookArray = [] }) => {
     return booksObj;
 };
 
-// check owner ship of a cart
+/** check owner ship of a cart
+ * @param {string} id - cart id
+ * @param {string} userId - requested user id
+ * @return {boolean} -
+ */
 const checkOwnership = async ({ id, userId }) => {
     const cart = await findById(id);
     if (!cart) {

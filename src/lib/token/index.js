@@ -1,10 +1,10 @@
 /** @format */
 
+const jwt = require("jsonwebtoken");
 const { serverError } = require("../../utils/error");
 
-const jwt = require("jsonwebtoken");
 /**
- * @param {object} payload -
+ * @param {object} payload - The payload will be sign
  * @param {string} algorithm
  * @param {string} secret
  * @param {string} expiresIn
@@ -28,6 +28,11 @@ const generateToken = ({
     }
 };
 
+/** - decode a token
+ * @param {string} token  - token will be decoded
+ * @param {string} secret - token will be decoded with the secret
+ * @returns {object} - decoded object
+ */
 const decodeToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
     try {
         const decoded = jwt.decode(token, secret);
@@ -38,12 +43,20 @@ const decodeToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
     }
 };
 
+/** - varify a token
+ * @param {string} token  - token will be decoded
+ * @param {string} secret - token will be decoded with the secret
+ * @returns {object} - decoded object
+ */
 const verifyToken = (token, secret = process.env.ACCESS_TOKEN_SECRET) => {
     const decoded = jwt.verify(token, secret);
     return decoded;
 };
 
-// check token expiration
+/** - check token expiration
+ * @param {string} token  - token will be decoded
+ * @returns {boolean}
+ */
 const isExpired = (token) => {
     const decoded = decodeToken(token);
 

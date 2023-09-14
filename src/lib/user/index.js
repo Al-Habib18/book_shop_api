@@ -10,13 +10,19 @@ const reviewService = require("../review");
 const { badRequest, notFound } = require("../../utils/error");
 const { generateHash, hasMatched } = require("../../utils/hashing");
 
-// find a user by email
+/** - find a user by email
+ * @param {string} email - email of a  user
+ * @returns {object or boolean} - user object
+ */
 const findUserByEmail = async (email) => {
     const user = await User.findOne({ email: email });
     return user ? user : false;
 };
 
-// find a user by user id
+/** - find a user by user id
+ * @param {string} id - id of a  user
+ * @returns {object} - user object
+ */
 const findUserById = async (id) => {
     if (!id) {
         throw badRequest("Id is required");
@@ -24,7 +30,13 @@ const findUserById = async (id) => {
     return await User.findById(id).select("-password");
 };
 
-// update a user
+/** - update a user
+ * @param {string} id - id of the user
+ * @param {string} name - new name of the  user
+ * @param {Enumerator} role - new role of the  user
+ * @param {string} account - new account number of the  user
+ * @returns {object} -  user object
+ */
 const updateProperties = async (id, { name, role, account }) => {
     const user = await findUserById(id);
     if (!user) {
@@ -41,7 +53,10 @@ const updateProperties = async (id, { name, role, account }) => {
     return user;
 };
 
-// delete a user
+/** -delete a user
+ * @param {string} id - id of a new user
+ * @returns {Promise} - promise of a deleted user
+ */
 const removeItem = async (id) => {
     if (!id) {
         throw badRequest("Id is required");
@@ -67,19 +82,22 @@ const removeItem = async (id) => {
     return User.findByIdAndDelete(id);
 };
 
-// check existence of a user
+/** - check existence of a user
+ * @param {string} email - email of a new user
+ * @returns {boolean}
+ */
 const isUserExist = async (email) => {
     const user = await findUserByEmail(email);
     return user ? true : false;
 };
 
-// Create a new user
-/**
- * @param {string} name
- * @param {string} email
- * @param {string} password
- * @param {Enumerator} role
- * @param {string} account
+/** - Create a new user
+ * @param {string} name - name of the new user
+ * @param {string} email - email of the new user
+ * @param {string} password - password of the new user
+ * @param {Enumerator} role - role of the new user
+ * @param {string} account - account number of the new user
+ * @returns {Promise} - promise of a user object
  */
 const create = async ({
     name,
@@ -104,7 +122,13 @@ const create = async ({
     return user.save();
 };
 
-// find all users
+/** - find all user
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} user  - array of user
+ */
 const findAll = async ({
     page = 1,
     limit = 10,
@@ -126,7 +150,10 @@ const findAll = async ({
     return users;
 };
 
-// count users with search option
+/** -  count users with search option
+ * @param {string} search - search term
+ * @return {number} number of users counted by search
+ */
 const count = ({ search = "" }) => {
     const filter = {
         name: { $regex: search, $options: "i" },
@@ -134,7 +161,14 @@ const count = ({ search = "" }) => {
     return User.count(filter);
 };
 
-// get all books of a user
+/** - get all books of user
+ * @param {string} id - id of a user
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} books  - array of books
+ */
 const getAllBooks = async (id, { page, limit, sortType, sortBy, search }) => {
     const books = await bookService.findByUserId(id, {
         page,
@@ -146,7 +180,14 @@ const getAllBooks = async (id, { page, limit, sortType, sortBy, search }) => {
     return books;
 };
 
-//get all reviews of a user
+/** - get all reviews of user
+ * @param {string} id - id of a user
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} reviews  - array of reviews
+ */
 const getAllReviews = async (id, { page, limit, sortType, sortBy }) => {
     const reviews = await reviewService.findByUserId(id, {
         page,
@@ -157,7 +198,14 @@ const getAllReviews = async (id, { page, limit, sortType, sortBy }) => {
     return reviews;
 };
 
-//get all carts of a user
+/** - get all carts of user
+ * @param {string} id - id of a user
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} cart  - array of cart
+ */
 const getAllCarts = async (id, { page, limit, sortType, sortBy }) => {
     const carts = await cartService.findAllByUserId(id, {
         page,
@@ -167,7 +215,15 @@ const getAllCarts = async (id, { page, limit, sortType, sortBy }) => {
     });
     return carts;
 };
-//get all orders of user
+
+/** - get all orders of user
+ * @param {string} id - id of a user
+ * @param {number} page - current page number,
+ * @param {number} limit- limit of result
+ * @param {enum} sortType - sort type of result
+ * @param {enum} sortBy - sort by of result
+ * @return {Array} order  - array of orders
+ */
 const getAllOrders = async (id, { page, limit, sortType, sortBy }) => {
     const orders = await orderService.findByUserId(id, {
         page,
@@ -178,7 +234,12 @@ const getAllOrders = async (id, { page, limit, sortType, sortBy }) => {
     return orders;
 };
 
-// change password of user
+/** - change password of user
+ * @param {string} id - id of a user
+ * @param {string} oldPassword - old password of user,
+ * @param {string} newPassword - new password of user,
+ * @return {promis} promise of updated user
+ */
 const changePassword = async (id, { oldPassword, newPassword }) => {
     let user = await User.findById(id);
     if (!user) {
@@ -197,7 +258,12 @@ const changePassword = async (id, { oldPassword, newPassword }) => {
 
     return user.save();
 };
-// check ,,,this is he or not ?
+
+/** check ,,,this is he or not ?
+ * @param {string} id - user id in params
+ * @param {string} userId - requested user id
+ * @return {boolean} -
+ */
 const checkOwnership = async ({ id, userId }) => {
     const user = await findUserById(id);
     if (!user) {

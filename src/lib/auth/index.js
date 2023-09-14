@@ -5,12 +5,20 @@ const {
     notFound,
     authenticationError,
 } = require("../../utils/error");
-const { generateHash, hasMatched } = require("../../utils/hashing");
+const { hasMatched } = require("../../utils/hashing");
 const userService = require("../user");
 const tokenService = require("../token");
 const { generateToken } = require("../token");
 const axios = require("axios");
-// register service
+
+/**  - register service
+ * @param {string} name - name of a user
+ * @param {string} email - email of a user
+ * @param {string} password - password of a user
+ * @param {enum} role - role of a user
+ * @param {string} account - account of a user
+ * @return {Promise} user
+ */
 const register = async ({
     name,
     email,
@@ -34,7 +42,11 @@ const register = async ({
     return user;
 };
 
-// login service
+/** - login service
+ * @param {string} email - email of a user
+ * @param {string} password - password of a user
+ * @returns {string} accessToken
+ */
 const login = async ({ email, password }) => {
     const user = await userService.findUserByEmail(email);
     if (!user) {
@@ -50,6 +62,10 @@ const login = async ({ email, password }) => {
     return accessToken;
 };
 
+/** -  create a access token
+ * @param {string} email - email of a user
+ * @returns {string} accessToken
+ */
 const createAccessToken = async ({ email }) => {
     const user = await userService.findUserByEmail(email);
 
@@ -67,6 +83,10 @@ const createAccessToken = async ({ email }) => {
     return generateToken({ payload });
 };
 
+/** - create a refresh token
+ * @param {string} email - email of a user
+ * @returns {string} refresh token
+ */
 const createRefreshToken = async ({ email }) => {
     const user = await userService.findUserByEmail(email);
     if (!user) {
@@ -85,11 +105,18 @@ const createRefreshToken = async ({ email }) => {
     return refreshToken;
 };
 
+/** -  vafiy a refresh token
+ * @param {string} refresh_token - refresh_token of a user
+ * @returns {object} - decoded object of a refresh token
+ */
 const verifyRefreshToken = (refresh_token) => {
     const decoded = tokenService.verifyToken(refresh_token);
     return decoded;
 };
 
+/** - delete a refresh token
+ * @param {string} token - refresh token of a user
+ */
 const removeRefreshToken = async ({ token = "" }) => {
     const refresh = await Refresh.find({ token: token });
     if (refresh.length < 1) {
@@ -98,10 +125,18 @@ const removeRefreshToken = async ({ token = "" }) => {
     await Refresh.findOneAndDelete({ token: token });
 };
 
+/** -  check expiration of token
+ * @param {string} token - refresh token or access token of a user
+ * @returns {boolean}
+ */
 const isExpiredToken = (token) => {
     return tokenService.isExpired(token);
 };
-// find refresh token by emainl
+
+/** - find refresh token by email
+ * @param {string} email email of a user
+ * @return {string} refesh token
+ */
 const findRefreshToken = async (email) => {
     const refresh = await Refresh.findOne({ email: email });
 
@@ -111,6 +146,9 @@ const findRefreshToken = async (email) => {
     return refresh;
 };
 
+/**
+ * @param {string}
+ */
 const requestRefresh = async ({ refresh_token }) => {
     return axios
         .post(`http://localhost:4000/api/v1/auth/refresh`, { refresh_token })
