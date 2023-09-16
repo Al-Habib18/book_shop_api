@@ -14,7 +14,7 @@ const generateToken = ({
     payload,
     algorithm = "HS256",
     secret = process.env.ACCESS_TOKEN_SECRET,
-    expiresIn = "30s", // 30 seconds
+    expiresIn = "5m", // 30 seconds
 }) => {
     try {
         const jsonWebToken = jwt.sign(payload, secret, {
@@ -62,7 +62,6 @@ const isExpired = (token) => {
 
     let expiration = decoded.exp;
     const currentTime = Math.floor(Date.now() / 1000);
-
     if (currentTime > expiration) {
         return true;
     }
