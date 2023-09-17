@@ -50,6 +50,7 @@ const updateProperties = async (id, { name, role, account }) => {
     );
 
     await user.save();
+
     return user;
 };
 
@@ -104,7 +105,7 @@ const create = async ({
     email,
     password,
     role = "customer",
-    account = "",
+    account,
 }) => {
     if (!name || !email || !password) {
         throw badRequest();
@@ -119,7 +120,8 @@ const create = async ({
 
     const user = new User({ name, email, password, role, account });
 
-    return user.save();
+    await user.save();
+    return user;
 };
 
 /** - find all user
