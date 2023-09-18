@@ -91,7 +91,7 @@ describe("find review by id", () => {
     });
 });
 
-describe("update  properties of review", () => {
+describe("update a review", () => {
     describe("if review  exist", () => {
         test("should return a updated review", async () => {
             const ratting = 3;
@@ -294,7 +294,7 @@ describe("get book", () => {
     });
 });
 
-describe("get book by revieew id", () => {
+describe("get book by review id", () => {
     /*     describe("if book exist", () => {
         test("should return a book", async () => {
             const book = await getBookByReview(review.id);

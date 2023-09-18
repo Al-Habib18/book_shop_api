@@ -30,8 +30,9 @@ const create = async ({ userId, bookArray = [], quantity = 0, amount = 0 }) => {
  */
 const findById = (id) => {
     if (!id) {
-        throw badRequest("Id is required");
+        badRequest("Id is required");
     }
+    console.log("id is " + id);
     return Cart.findById(id);
 };
 
@@ -41,7 +42,7 @@ const findById = (id) => {
  */
 const findByUserId = (id) => {
     if (!id) {
-        throw badRequest();
+        badRequest();
     }
     return Cart.find({ userId: id });
 };
@@ -64,6 +65,7 @@ const findAll = async ({
     sortBy = "updatedAt",
     sortType = "desc",
 }) => {
+    console.log("limit", limit);
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
     const carts = await Cart.find({})
         .sort(sortString)
@@ -162,7 +164,7 @@ const getBooks = async ({ bookArray = [] }) => {
 const checkOwnership = async ({ id, userId }) => {
     const cart = await findById(id);
     if (!cart) {
-        throw "Cart not found";
+        throw badRequest("Cart not found");
     }
     const cartUserId = cart.userId.toString();
 
