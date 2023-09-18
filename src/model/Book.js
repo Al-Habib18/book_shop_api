@@ -21,17 +21,17 @@ const bookSchema = new Schema(
         publisher: {
             type: String,
             maxlength: 50,
-            minlength: 3,
+            minlength: 0,
         },
         category: {
             type: String,
             maxlength: 50,
-            minlength: 3,
+            minlength: 0,
         },
         summary: {
             type: String,
             maxlength: 250,
-            minlength: 10,
+            minlength: 0,
         },
         price: {
             type: Number,

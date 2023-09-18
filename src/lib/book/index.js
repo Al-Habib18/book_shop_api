@@ -1,6 +1,6 @@
 /** @format */
 const Book = require("../../model/Book");
-const defaults = require("../../config/defaults");
+const { config } = require("../../config/defaults");
 const { badRequest, notFound } = require("../../utils/error");
 
 /** - create a new book
@@ -85,9 +85,9 @@ const removeItem = async (id) => {
  * @param {string} id  - id of a user
  * @return {Promise} - promise of a book
  */
-const findBookById = (id) => {
+const findBookById = async (id) => {
     if (!id) {
-        badRequest("id is required");
+        throw badRequest("id is required");
     }
     return Book.findById(id);
 };
@@ -154,12 +154,7 @@ const bookObj = async (id) => {
  */
 const findByUserId = async (
     id,
-    {
-        page = defaults.page || 1,
-        limit = defaults.limit || 5,
-        sortType = "desc",
-        sortBy = "updatedAt",
-    }
+    { page = 1, limit = 10, sortType = "desc", sortBy = "updatedAt" }
 ) => {
     if (!id) {
         throw badRequest("Id is required");
