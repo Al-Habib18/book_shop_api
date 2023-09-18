@@ -95,7 +95,7 @@ const findReviewById = async (id) => {
  * @param {string} summary - summary of the review
  * @return {object} object of review
  */
-const updateProperties = async (id, { ratting = 0, summary = "" }) => {
+const updateProperties = async (id, { ratting, summary }) => {
     const review = await Review.findById(id);
 
     if (!review) {
@@ -205,8 +205,9 @@ const checkOwnership = async ({ id, userId }) => {
     if (!review) {
         throw badRequest("Requested review does not exist");
     }
+    const reviewer = review.userId.toString();
 
-    if (review.userId === userId) {
+    if (reviewer === userId) {
         return true;
     }
     return false;

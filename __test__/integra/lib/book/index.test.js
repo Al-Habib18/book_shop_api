@@ -260,7 +260,6 @@ describe("get a book object by id", () => {
         });
     });
 });
-
 describe("remove book", () => {
     describe(" if id is not passed", () => {
         test("should throw error", async () => {
