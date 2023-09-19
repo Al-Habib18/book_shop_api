@@ -105,6 +105,9 @@ const updateProperties = async (
  */
 const cancleOrder = async (id, { orderStatus }) => {
     const order = await Order.findById(id);
+    if (!id) {
+        throw badRequest();
+    }
     if (!order) {
         throw notFound();
     }
