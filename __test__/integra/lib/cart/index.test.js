@@ -62,8 +62,8 @@ describe("find cart by id", () => {
             expect(cart_2).toHaveProperty("quantity");
         });
     });
-    describe("if book is not found", () => {
-        test("should throw a error", async () => {
+    describe("if cart is not found", () => {
+        test("should should retrun null", async () => {
             const id = "950811bb5213f0e426048d21";
             const cart = await findById(id);
             expect(cart).toBeNull();
@@ -81,14 +81,14 @@ describe("find a  cart by user id", () => {});
 describe("Find all carts", () => {
     describe("if too many carts", () => {
         test("should return array of carts", async () => {
-            const books = await findAll({
+            const carts = await findAll({
                 page,
                 limit,
                 sortBy,
                 sortType,
             });
-            expect(books.length).toBeDefined();
-            expect(books.length).toBeGreaterThan(0);
+            expect(carts.length).toBeDefined();
+            expect(carts.length).toBeGreaterThan(0);
         });
     });
 });
@@ -130,7 +130,7 @@ describe("Find all carts of a user", () => {
     });
 });
 
-describe("Find a carts of a user", () => {
+describe("Find a cart of a user", () => {
     describe("if id is not provided", () => {
         test("should throw a error", async () => {
             const id = "";
@@ -246,7 +246,7 @@ describe("remove cart", () => {
         });
     });
     describe(" if cart is exists", () => {
-        test("should return deleted book", async () => {
+        test("should return deleted cart", async () => {
             const deletedCart = await removeItem(cart.id);
 
             expect(deletedCart).toBeDefined();

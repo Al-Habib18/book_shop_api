@@ -76,10 +76,13 @@ const count = () => {
  * @param {enum}  orderStatus - status of the order
  * @return {object} object of a the updated Order
  */
-const updatePorperties = async (
+const updateProperties = async (
     id,
     { cartId, shippingMethod, orderStatus }
 ) => {
+    if (!id) {
+        throw badRequest();
+    }
     const order = await Order.findById(id);
 
     if (!order) {
@@ -181,13 +184,17 @@ const getCart = (id) => {
  * @returns {boolean}
  */
 const checkOwnership = async ({ id, userId }) => {
+    if (!id) {
+        throw badRequest();
+    }
     const order = await findById(id);
 
     if (!order) {
-        throw "Order not found";
+        throw badRequest("order does not exist");
     }
+    const orderOwner = order.userId.toString();
 
-    if (order.userId === userId) {
+    if (orderOwner === userId) {
         return true;
     }
     return false;
@@ -198,7 +205,7 @@ module.exports = {
     findAll,
     count,
     removeItem,
-    updatePorperties,
+    updateProperties,
     findByUserId,
     findByCartId,
     getCart,

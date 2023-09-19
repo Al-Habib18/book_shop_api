@@ -32,7 +32,6 @@ const findById = (id) => {
     if (!id) {
         badRequest("Id is required");
     }
-    console.log("id is " + id);
     return Cart.findById(id);
 };
 
@@ -65,7 +64,6 @@ const findAll = async ({
     sortBy = "updatedAt",
     sortType = "desc",
 }) => {
-    console.log("limit", limit);
     const sortString = `${sortType === "desc" ? "-" : ""}${sortBy}`;
     const carts = await Cart.find({})
         .sort(sortString)
